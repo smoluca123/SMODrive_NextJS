@@ -1,0 +1,131 @@
+'use server';
+import { env } from '@/lib/env.config';
+import { kyInstance } from '@/lib/kyInstance/ky';
+import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
+import {
+  IUserDataWithAccessTokenType,
+  IUserWithStatsAndSubscriptionDataType,
+} from '@/lib/types/interfaces/user.interfaces';
+import { LoginValues } from '@/lib/zod-schemas/auth.schema';
+import ky from 'ky';
+import { cookies } from 'next/headers';
+
+export const signInApi = async (credentials: LoginValues) => {
+  try {
+    const data = await kyInstance
+      .post('auth/signin', { json: credentials })
+      .json<
+        IApiResponseWrapperType<
+          IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
+        >
+      >();
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const getMeApi = async ({ accessToken }: { accessToken: string }) => {
+  try {
+    const data = await kyInstance
+      .get('user/me', {
+        headers: {
+          accessToken: accessToken,
+        },
+      })
+      .json<IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType>>();
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const validateAccessTokenApi = async (payload?: {
+  accessToken?: string;
+}): Promise<
+  | {
+      success: true;
+      data: IUserWithStatsAndSubscriptionDataType &
+        IUserDataWithAccessTokenType & { expiresAt: number };
+    }
+  | { success: false; message: string }
+> => {
+  try {
+    const cookieStore = await cookies();
+    const accessTokenCookie = cookieStore.get('accessToken');
+
+    if (!payload?.accessToken && !accessTokenCookie?.value) {
+      return {
+        success: false,
+        message: 'No access token found',
+      };
+    }
+
+    const data = await ky
+      .get(`${env.NEXT_PUBLIC_API_URL}auth/validate-token`, {
+        headers: {
+          Authorization: `Bearer ${env.NEXT_PUBLIC_AUTHORIZATION_TOKEN}`,
+          accessToken: payload?.accessToken || accessTokenCookie?.value,
+        },
+      })
+      .json<
+        IApiResponseWrapperType<
+          IUserWithStatsAndSubscriptionDataType &
+            IUserDataWithAccessTokenType & {
+              expiresAt: number;
+            }
+        >
+      >();
+    return {
+      success: true,
+      ...data,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    // throw error;
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export const refreshAccessTokenApi = async (payload?: {
+  accessToken?: string;
+}) => {
+  const cookieStore = await cookies();
+  const accessTokenCookie = cookieStore.get('accessToken');
+
+  try {
+    const data = await ky
+      .post(`${env.NEXT_PUBLIC_API_URL}auth/refresh-token`, {
+        json: { accessToken: payload?.accessToken || accessTokenCookie?.value },
+        headers: {
+          Authorization: `Bearer ${env.NEXT_PUBLIC_AUTHORIZATION_TOKEN}`,
+        },
+      })
+      .json<
+        IApiResponseWrapperType<
+          IUserWithStatsAndSubscriptionDataType & { accessToken: string }
+        >
+      >();
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
