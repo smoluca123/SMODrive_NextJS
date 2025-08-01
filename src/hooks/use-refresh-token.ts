@@ -2,7 +2,6 @@
 import { useAuth } from '@/hooks/use-auth';
 import { setAuthCookie } from '@/lib/apis/auth-apis';
 import { refreshAccessTokenApi } from '@/lib/apis/user-apis';
-import { kyNextInstance } from '@/lib/kyInstance/kyNext';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -21,7 +20,10 @@ export default function useRefreshToken() {
           accessToken: user.accessToken,
         });
 
-        await setAuthCookie(data.accessToken);
+        await setAuthCookie({
+          accessToken: data.accessToken,
+          userId: user.id,
+        });
 
         return data;
       } catch (error) {
