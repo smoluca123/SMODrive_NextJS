@@ -1,15 +1,18 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { ChevronRight, Home } from "lucide-react"
-import type { FileItem } from "@/hooks/use-file-system"
+import { Button } from '@/components/ui/button';
+import { ChevronRight, Home } from 'lucide-react';
+import type { FileItem } from '@/hooks/use-file-system';
 
 interface BreadcrumbNavigationProps {
-  path: FileItem[]
-  onNavigate: (folderId: string | null) => void
+  path: FileItem[];
+  onNavigate: (folderId: string | null) => void;
 }
 
-export function BreadcrumbNavigation({ path, onNavigate }: BreadcrumbNavigationProps) {
+export function BreadcrumbNavigation({
+  path,
+  onNavigate,
+}: BreadcrumbNavigationProps) {
   return (
     <div className="flex items-center space-x-1 text-sm">
       <Button
@@ -22,7 +25,7 @@ export function BreadcrumbNavigation({ path, onNavigate }: BreadcrumbNavigationP
         My Files
       </Button>
 
-      {path.map((folder, index) => (
+      {path.map((folder) => (
         <div key={folder.id} className="flex items-center space-x-1">
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
           <Button
@@ -36,5 +39,5 @@ export function BreadcrumbNavigation({ path, onNavigate }: BreadcrumbNavigationP
         </div>
       ))}
     </div>
-  )
+  );
 }
