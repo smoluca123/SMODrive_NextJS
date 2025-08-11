@@ -1,6 +1,6 @@
 'use client';
 import { AuthContext } from '@/context/auth-context';
-import { setAuthCookie } from '@/lib/apis/auth-apis';
+import { deleteAuthCookie, setAuthCookie } from '@/lib/apis/auth-apis';
 import {
   refreshAccessTokenApi,
   signInApi,
@@ -39,6 +39,7 @@ export default function AuthProvider({
   const [user, setUser] = useState<UserType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   // // Kiểm tra auth state khi component mount
@@ -106,6 +107,7 @@ export default function AuthProvider({
 
   const login = async (credentials: LoginValues) => {
     setIsLoading(true);
+    setError(null);
     try {
       const { data } = await signInApi(credentials);
 
@@ -117,9 +119,9 @@ export default function AuthProvider({
       });
 
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError(error.message as string);
     } finally {
       setIsLoading(false);
     }
@@ -128,16 +130,19 @@ export default function AuthProvider({
   const logout = async () => {
     try {
       updateAuthState(null);
-      router.refresh();
+      await deleteAuthCookie();
+      // refresh page
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      router.refresh();
+      // router.refresh();
+      window.location.reload();
     }
   };
 
   const register = async (userData: RegisterValues) => {
     setIsLoading(true);
+    setError(null);
     try {
       await kyClientInstance
         .post('auth/signup', {
@@ -146,9 +151,9 @@ export default function AuthProvider({
         .json();
 
       router.push('/login');
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw error;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError(error.message as string);
     } finally {
       setIsLoading(false);
     }
@@ -165,6 +170,7 @@ export default function AuthProvider({
               login,
               logout,
               register,
+              error,
             }
           : {
               user: null,
@@ -173,6 +179,7 @@ export default function AuthProvider({
               login,
               logout,
               register,
+              error,
             }
       }
     >

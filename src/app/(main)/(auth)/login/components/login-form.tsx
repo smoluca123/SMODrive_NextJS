@@ -28,9 +28,11 @@ import {
 } from '@/components/ui/form';
 import PasswordInput from '@/components/ui/password-input';
 import LoadingButton from '@/components/ui/LoadingButton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export function LoginForm() {
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, error } = useAuth();
+
   const form = useForm<LoginValues>({
     defaultValues: {
       usernameOrEmail: '',
@@ -43,6 +45,7 @@ export function LoginForm() {
   const handleSubmit = (credentials: LoginValues) => {
     // Login logic would go here
     console.log('Login attempt:', credentials);
+
     login(credentials);
   };
   return (
@@ -65,6 +68,14 @@ export function LoginForm() {
             </span>
           </div>
         </div>
+
+        {error && (
+          <Alert variant="destructive" className="text-center">
+            <AlertDescription className="justify-items-center">
+              {error}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Form {...form}>
           <form

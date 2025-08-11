@@ -1,23 +1,29 @@
-import { IPlanDataType } from '@/lib/types/interfaces/plan.interfaces';
+import { IUserWithStatsAndSubscriptionDataType } from '@/lib/types/interfaces/user.interfaces';
 
-export interface ISubscriptionDataType {
+export interface IFileDataType {
   id: string;
-  planId: string;
+  ownerId: string;
+  originalName: string;
+  key: string;
+  size: string;
+  mimetype: string;
   status: string;
-  startDate: string;
-  endDate: null;
-  autoRenew: boolean;
-  paymentMethod: null;
-  paymentStatus: string;
-  amountPaid: number;
-  currency: string;
-  transactionId: null;
-  notes: null;
-  userId: string;
+  description: string;
+  tags: string[];
+  isPublic: boolean;
   createdAt: string;
   updatedAt: string;
+  owner: IUserWithStatsAndSubscriptionDataType;
+  downloadCount: number;
+  expiredAt: null;
 }
 
-export interface ISubscriptionWithPlanDataType extends ISubscriptionDataType {
-  plan: IPlanDataType;
+export interface IDownloadSessionDataType {
+  id: string;
+  fileId: string;
+  userId: string;
+  step: number;
+  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  createdAt: string;
+  updatedAt: string;
 }

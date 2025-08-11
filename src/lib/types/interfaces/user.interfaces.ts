@@ -16,7 +16,7 @@
 //   subscription: ISubscriptionDataType;
 //   accessToken: string;
 
-import { ISubscriptionWithPlanDataType } from '@/lib/types/interfaces/storage.interfaces';
+import { ISubscriptionWithPlanDataType } from '@/lib/types/interfaces/plan.interfaces';
 
 // }
 export interface IUserDataType {
@@ -61,15 +61,21 @@ export interface IUserRoleDataType {
 
 export interface IUserStatsDataType {
   id: string;
-  totalUploadedSize: number;
+  totalUploadedSize: string;
   totalFilesUploaded: number;
   totalFilesShared: number;
   totalFilesReceived: number;
   totalDownloads: number;
-  totalStorageUsed: number;
+  totalEarnings: number;
+  totalViews: string;
+  totalStorageUsed: string;
   isOverStorageLimit: boolean;
   lastUploadAt: Date;
   lastDownloadAt: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IUserStatsAndUserDataType extends IUserStatsDataType {
+  user: IUserDataType;
 }

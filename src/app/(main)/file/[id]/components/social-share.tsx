@@ -13,10 +13,15 @@ interface SocialShareProps {
 }
 
 export function SocialShare({ fileId, fileTitle }: SocialShareProps) {
-  const shareUrl = `${window.location.origin}/file/${fileId}`;
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/file/${fileId}`
+      : '';
 
   const handleShare = async (platform: string) => {
     try {
+      if (!window) return;
+
       switch (platform) {
         case 'twitter':
           window.open(
@@ -41,6 +46,7 @@ export function SocialShare({ fileId, fileTitle }: SocialShareProps) {
       }
     } catch (error) {
       toast.error('Failed to share');
+      console.error(error);
     }
   };
 

@@ -1,4 +1,5 @@
 'use client';
+'use no memo';
 
 import { useState } from 'react';
 import {
@@ -18,13 +19,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatFileSize } from '@/lib/utils';
 
 interface FileUploadZoneProps {
-  files: File[];
-  onFilesChange: (files: File[]) => void;
+  file: File | null;
+  onFileChange: (file: File | null) => void;
 }
 
-export function FileUploadZone({ files, onFilesChange }: FileUploadZoneProps) {
+export function FileUploadZone({ file, onFileChange }: FileUploadZoneProps) {
   const [dragActive, setDragActive] = useState(false);
 
   const getFileIcon = (type: string) => {
@@ -37,16 +39,6 @@ export function FileUploadZone({ files, onFilesChange }: FileUploadZoneProps) {
     if (type.includes('zip') || type.includes('rar'))
       return <Archive className="h-6 w-6 text-orange-500" />;
     return <FileText className="h-6 w-6 text-gray-500" />;
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (
-      Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-    );
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -65,18 +57,18 @@ export function FileUploadZone({ files, onFilesChange }: FileUploadZoneProps) {
     setDragActive(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
-    onFilesChange([...files, ...droppedFiles]);
+    onFileChange(droppedFiles[0]);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
-      onFilesChange([...files, ...selectedFiles]);
+      onFileChange(selectedFiles[0]);
     }
   };
 
-  const removeFile = (index: number) => {
-    onFilesChange(files.filter((_, i) => i !== index));
+  const removeFile = () => {
+    onFileChange(null);
   };
 
   return (
@@ -124,35 +116,33 @@ export function FileUploadZone({ files, onFilesChange }: FileUploadZoneProps) {
         </div>
 
         {/* Selected Files */}
-        {files.length > 0 && (
+        {file && (
           <div className="mt-6 space-y-3">
-            <h3 className="font-semibold">Selected Files ({files.length})</h3>
+            <h3 className="font-semibold">Selected Files ({file.name})</h3>
             <div className="space-y-2">
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
-                >
-                  <div className="flex items-center space-x-3">
-                    {getFileIcon(file.type)}
-                    <div>
-                      <p className="font-medium text-sm">{file.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatFileSize(file.size)}
-                      </p>
-                    </div>
+              <div
+                key={file.name}
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+              >
+                <div className="flex items-center space-x-3">
+                  {getFileIcon(file.type)}
+                  <div>
+                    <p className="font-medium text-sm">{file.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatFileSize(file.size)}
+                    </p>
                   </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeFile(index)}
-                    className="h-8 w-8 p-0"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
                 </div>
-              ))}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeFile()}
+                  className="h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         )}

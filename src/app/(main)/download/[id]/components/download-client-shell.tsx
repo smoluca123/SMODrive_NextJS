@@ -4,13 +4,7 @@ import { DownloadCountdown } from './download-countdown';
 import { DownloadInfo } from './download-info';
 import { RelatedFiles } from './related-files';
 import { DownloadCTA } from './download-cta';
-
-interface FileInfo {
-  id: string;
-  title: string;
-  uploader: string;
-  size: string;
-}
+import { IFileDataType } from '@/lib/types/interfaces/storage.interfaces';
 
 interface RelatedFile {
   id: string;
@@ -20,7 +14,7 @@ interface RelatedFile {
 }
 
 interface DownloadClientShellProps {
-  file: FileInfo;
+  file: IFileDataType;
   relatedFiles: RelatedFile[];
 }
 
@@ -32,8 +26,8 @@ export function DownloadClientShell({
   if (!isReady) {
     return (
       <DownloadCountdown
-        fileTitle={file.title}
-        uploader={file.uploader}
+        fileTitle={file.originalName}
+        uploader={file.owner.firstName + ' ' + file.owner.lastName}
         onReady={() => setIsReady(true)}
       />
     );

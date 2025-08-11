@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Clock, Heart } from 'lucide-react';
 import { BannerAd } from '@/components/ads';
+import { useUpdateDownloadSession } from '@/app/(main)/download/[id]/components/mutations';
 
 interface DownloadCountdownProps {
   fileTitle: string;
@@ -19,6 +20,7 @@ export function DownloadCountdown({
 }: DownloadCountdownProps) {
   const [countdown, setCountdown] = useState(7);
   const [progress, setProgress] = useState(0);
+  const { mutate: updateDownloadSession } = useUpdateDownloadSession();
 
   useEffect(() => {
     if (countdown > 0) {
@@ -29,9 +31,10 @@ export function DownloadCountdown({
       return () => clearTimeout(timer);
     } else {
       setProgress(100);
+      updateDownloadSession({ step: 1 });
       onReady();
     }
-  }, [countdown, onReady]);
+  }, [countdown, onReady, updateDownloadSession]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">

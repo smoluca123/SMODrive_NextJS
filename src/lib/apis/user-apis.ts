@@ -4,6 +4,7 @@ import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import {
   IUserDataWithAccessTokenType,
+  IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
 } from '@/lib/types/interfaces/user.interfaces';
 import { LoginValues } from '@/lib/zod-schemas/auth.schema';
@@ -47,6 +48,18 @@ export const getMeApi = async ({ accessToken }: { accessToken: string }) => {
       throw errorData.message;
     }
     throw error.message;
+  }
+};
+
+export const getMyStatsApi = async () => {
+  try {
+    const data = await kyInstance
+      .get('user/stats')
+      .json<IApiResponseWrapperType<IUserStatsAndUserDataType>>();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error as string);
   }
 };
 
