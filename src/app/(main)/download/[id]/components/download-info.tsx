@@ -7,6 +7,8 @@ import { formatFileSize } from '@/lib/utils';
 import { useCompleteDownloadSession } from '@/app/(main)/download/[id]/components/mutations';
 import { useRouter } from 'next/navigation';
 import { getCookieApi } from '@/lib/apis/next-apis';
+import ky from 'ky';
+import fileDownload from 'js-file-download';
 
 interface DownloadInfoProps {
   file: IFileDataType;
@@ -24,7 +26,17 @@ export function DownloadInfo({ file }: DownloadInfoProps) {
     completeDownloadSession(undefined, {
       onSuccess: async (data) => {
         // router.push(data.data.downloadUrl);
-        window.location.href = data.data.downloadUrl; //open in new tab instead of redirecting
+        if (
+          data.data.file.mimetype.startsWith('image/') ||
+          data.data.file.mimetype.startsWith('video/') ||
+          data.data.file.mimetype.startsWith('audio/')
+        ) {
+          // For images, force download instead of opening in browser
+          const blob = await ky.get(data.data.downloadUrl).blob();
+          fileDownload(blob, data.data.file.originalName);
+        } else {
+          window.location.href = data.data.downloadUrl; //open in new tab instead of redirecting
+        }
       },
     });
   };
