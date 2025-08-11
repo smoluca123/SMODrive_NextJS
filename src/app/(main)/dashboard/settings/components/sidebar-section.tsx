@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CreditCard, Globe, Trash2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 
 export function SidebarSection() {
   return (

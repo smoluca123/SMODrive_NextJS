@@ -7,6 +7,26 @@ import { SocialShare } from './components/social-share';
 import { CommentsSection } from './components/comments-section';
 import { ReportButton } from './components/report-button';
 import { BannerAd, SkyscraperAd } from '@/components/ads';
+import { getFileDetailAPI } from '@/lib/apis/storage-apis';
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+
+  const { data } = await getFileDetailAPI({ id });
+
+  return {
+    title: `${data.originalName.split('.')[0]} Free Download | ShareEarn`,
+    description: data.description,
+    openGraph: {
+      title: `${data.originalName.split('.')[0]} Free Download`,
+      description: data.description,
+    },
+  };
+};
 
 export default async function FileDetailPage({
   params,
@@ -14,6 +34,8 @@ export default async function FileDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  const { data } = await getFileDetailAPI({ id });
 
   // Mock file data
   const file = {
@@ -76,7 +98,7 @@ export default async function FileDetailPage({
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            <FileHeader file={file} />
+            <FileHeader file={data} />
 
             <BannerAd size="medium" />
 
@@ -94,8 +116,8 @@ export default async function FileDetailPage({
             <SkyscraperAd />
 
             <FileStats
-              views={file.views}
-              downloads={file.downloads}
+              views={data.downloadCount}
+              downloads={data.downloadCount}
               rating={4.9}
             />
 

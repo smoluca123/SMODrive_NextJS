@@ -5,7 +5,7 @@ interface AdBannerProps {
   size?: string;
 }
 
-export function AdBanner({ type, size }: AdBannerProps) {
+export function AdBanner({ type }: AdBannerProps) {
   const getAdContent = () => {
     switch (type) {
       case 'banner':

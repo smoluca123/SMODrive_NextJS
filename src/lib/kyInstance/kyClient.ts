@@ -1,5 +1,6 @@
 'use client';
 import { env } from '@/lib/env.config';
+import { kyNextInstance } from '@/lib/kyInstance/kyNext';
 import ky from 'ky';
 
 export const kyClientInstance = ky.create({
@@ -12,5 +13,15 @@ export const kyClientInstance = ky.create({
       if (key.endsWith('At')) return new Date(value);
       return value;
     });
+  },
+  hooks: {
+    beforeRequest: [
+      async (request) => {
+        const accessToken = await kyNextInstance
+          .get('auth/auth-cookie')
+          .json<{ accessToken: string; userId: string }>();
+        request.headers.set('accessToken', accessToken.accessToken);
+      },
+    ],
   },
 });

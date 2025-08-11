@@ -15,6 +15,7 @@ type AuthContextType = {
   login: (credentials: LoginValues) => Promise<void>;
   logout: () => Promise<void>;
   register: (userData: RegisterValues) => Promise<void>;
+  error: string | null;
 } & (
   | {
       user: UserType;

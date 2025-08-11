@@ -15,6 +15,7 @@ export function ShareLinkButton() {
         });
       } catch (e) {
         // user cancelled
+        console.log(e);
       }
     } else {
       toast.info('Sharing not supported on this device.');

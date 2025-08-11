@@ -20,3 +20,13 @@ export const setAuthCookie = async ({
     throw error;
   }
 };
+
+export const deleteAuthCookie = async () => {
+  try {
+    await kyNextInstance.delete('auth/auth-cookie');
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

@@ -7,7 +7,7 @@ interface FileStatsProps {
   rating: number;
 }
 
-export function FileStats({ views, downloads, rating }: FileStatsProps) {
+export async function FileStats({ views, downloads, rating }: FileStatsProps) {
   return (
     <Card>
       <CardHeader>
