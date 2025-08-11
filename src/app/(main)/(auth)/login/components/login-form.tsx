@@ -8,11 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Lock } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { SocialButtons } from './social-buttons';
 import { useAuth } from '@/hooks/use-auth';
 import { useForm } from 'react-hook-form';
@@ -29,6 +28,7 @@ import {
 import PasswordInput from '@/components/ui/password-input';
 import LoadingButton from '@/components/ui/LoadingButton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import InputIcon from '@/components/ui/input-icon';
 
 export function LoginForm() {
   const { login, isLoading, error } = useAuth();
@@ -89,17 +89,12 @@ export function LoginForm() {
                 <FormItem className="space-y-2">
                   <FormLabel>Username or Email</FormLabel>
                   <FormControl>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="usernameOrEmail"
-                        type="text"
-                        placeholder="Enter your username or email"
-                        className="pl-10"
-                        required
-                        {...field}
-                      />
-                    </div>
+                    <InputIcon
+                      Icon={Mail}
+                      {...field}
+                      type="text"
+                      placeholder="Enter your username or email"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,10 +135,7 @@ export function LoginForm() {
                 <FormItem className="space-y-2">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <PasswordInput className="pl-10" {...field} />
-                    </div>
+                    <PasswordInput showIcon {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

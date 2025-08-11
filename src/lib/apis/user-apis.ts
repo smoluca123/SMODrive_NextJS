@@ -7,7 +7,7 @@ import {
   IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
 } from '@/lib/types/interfaces/user.interfaces';
-import { LoginValues } from '@/lib/zod-schemas/auth.schema';
+import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import ky from 'ky';
 import { cookies } from 'next/headers';
 
@@ -25,7 +25,36 @@ export const signInApi = async (credentials: LoginValues) => {
   } catch (error: any) {
     if (error.response) {
       const errorData = await error.response.json();
-      throw errorData.message;
+
+      if (Array.isArray(errorData.message)) {
+        throw errorData.message[0];
+      } else {
+        throw errorData.message;
+      }
+    }
+    throw error.message;
+  }
+};
+
+export const signUpApi = async (credentials: RegisterValues) => {
+  try {
+    const data = await kyInstance
+      .post('auth/signup', { json: credentials })
+      .json<
+        IApiResponseWrapperType<
+          IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
+        >
+      >();
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      if (Array.isArray(errorData.message)) {
+        throw errorData.message[0];
+      } else {
+        throw errorData.message;
+      }
     }
     throw error.message;
   }

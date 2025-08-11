@@ -1,4 +1,7 @@
-import { IUserWithStatsAndSubscriptionDataType } from '@/lib/types/interfaces/user.interfaces';
+import {
+  IUserDataType,
+  IUserWithStatsAndSubscriptionDataType,
+} from '@/lib/types/interfaces/user.interfaces';
 
 export interface IFileDataType {
   id: string;
@@ -26,4 +29,19 @@ export interface IDownloadSessionDataType {
   status: 'PENDING' | 'COMPLETED' | 'FAILED';
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IDownloadSessionWithFileDataType
+  extends IDownloadSessionDataType {
+  file: IFileDataType;
+}
+
+export interface IDownloadSessionWithFileAndUserDataType
+  extends IDownloadSessionWithFileDataType {
+  user: IUserDataType;
+}
+
+export interface IDownloadSessionWithUserDataType
+  extends IDownloadSessionDataType {
+  user: IUserDataType;
 }
