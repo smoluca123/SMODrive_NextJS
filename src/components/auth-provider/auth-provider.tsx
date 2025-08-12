@@ -109,16 +109,19 @@ export default function AuthProvider({
     setIsLoading(true);
     setError(null);
     try {
-      const { data } = await signInApi(credentials);
+      const res = await signInApi(credentials);
 
-      updateAuthState(data);
+      if (res.success) {
+        updateAuthState(res.data.data);
+        await setAuthCookie({
+          accessToken: res.data.data.accessToken,
+          userId: res.data.data.id,
+        });
+        router.push('/dashboard');
+      } else {
+        throw new Error(res.message);
+      }
 
-      await setAuthCookie({
-        accessToken: data.accessToken,
-        userId: data.id,
-      });
-
-      router.push('/dashboard');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message as string);
@@ -144,15 +147,19 @@ export default function AuthProvider({
     setIsLoading(true);
     setError(null);
     try {
-      const { data } = await signUpApi(userData);
+      const res = await signUpApi(userData);
 
-      updateAuthState(data);
+      if (res.success) {
+        updateAuthState(res.data.data);
+        await setAuthCookie({
+          accessToken: res.data.data.accessToken,
+          userId: res.data.data.id,
+        });
+        router.push('/dashboard');
+      } else {
+        throw new Error(res.message);
+      }
 
-      await setAuthCookie({
-        accessToken: data.accessToken,
-        userId: data.id,
-      });
-      router.push('/dashboard');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message as string);

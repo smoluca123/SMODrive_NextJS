@@ -6,12 +6,12 @@ export async function GET() {
   const accessToken = cookieStore.get('accessToken')?.value;
   const userId = cookieStore.get('userId')?.value;
 
-  if (!accessToken || !userId) {
-    return NextResponse.json(
-      { message: 'No access token or user id' },
-      { status: 401 }
-    );
-  }
+  // if (!accessToken || !userId) {
+  //   return NextResponse.json(
+  //     { message: 'No access token or user id' },
+  //     { status: 401 }
+  //   );
+  // }
 
   return NextResponse.json({ accessToken, userId });
 }
