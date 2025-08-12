@@ -19,8 +19,13 @@ export const kyClientInstance = ky.create({
       async (request) => {
         const accessToken = await kyNextInstance
           .get('auth/auth-cookie')
-          .json<{ accessToken: string; userId: string }>();
-        request.headers.set('accessToken', accessToken.accessToken);
+          .json<{
+            accessToken: string | undefined;
+            userId: string | undefined;
+          }>();
+        if (accessToken.accessToken) {
+          request.headers.set('accessToken', accessToken.accessToken);
+        }
       },
     ],
   },
