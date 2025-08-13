@@ -12,7 +12,6 @@ import {
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import { UpdateUserInfomationValues } from '@/lib/zod-schemas/user-schema';
 import ky from 'ky';
-import { UpdateUserInfomationValues } from '../zod-schemas/user-schema';
 
 export const signInApi = async (
   credentials: LoginValues
