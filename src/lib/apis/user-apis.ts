@@ -1,5 +1,4 @@
 'use server';
-import { getCookieApi } from '@/lib/apis/next-apis';
 import { env } from '@/lib/env.config';
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
@@ -12,6 +11,7 @@ import {
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import { UpdateUserInfomationValues } from '@/lib/zod-schemas/user-schema';
 import ky from 'ky';
+import { cookies } from 'next/headers';
 
 export const signInApi = async (
   credentials: LoginValues,
@@ -109,14 +109,10 @@ export const signUpApi = async (
   }
 };
 
-export const getMeApi = async ({ accessToken }: { accessToken: string }) => {
+export const getMeApi = async () => {
   try {
     const data = await kyInstance
-      .get('user/me', {
-        headers: {
-          accessToken: accessToken,
-        },
-      })
+      .get('user/me')
       .json<IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType>>();
     return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -146,13 +142,15 @@ export const validateAccessTokenApi = async (payload?: {
 }): Promise<
   | {
       success: true;
-      data: IUserWithStatsAndSubscriptionDataType &
-        IUserDataWithAccessTokenType & { expiresAt: number };
+      data: IApiResponseWrapperType<
+        IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType & { expiresAt: number }
+      >;
     }
   | { success: false; message: string }
 > => {
   try {
-    const accessTokenCookie = await getCookieApi({ key: 'accessToken' });
+    const cookieStore = await cookies();
+    const accessTokenCookie = cookieStore.get('accessToken');
 
     if (!payload?.accessToken && !accessTokenCookie) {
       return {
@@ -178,7 +176,7 @@ export const validateAccessTokenApi = async (payload?: {
       >();
     return {
       success: true,
-      ...data,
+      data: data,
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -191,7 +189,11 @@ export const validateAccessTokenApi = async (payload?: {
 };
 
 export const refreshAccessTokenApi = async (payload?: { accessToken?: string }) => {
-  const accessTokenCookie = await getCookieApi({ key: 'accessToken' });
+  const cookieStore = await cookies();
+  const accessTokenCookie = cookieStore.get('accessToken');
+  if (!accessTokenCookie) {
+    throw new Error('No access token found');
+  }
 
   try {
     const data = await ky
