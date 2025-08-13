@@ -2,7 +2,7 @@ import { kyInstance } from '@/lib/kyInstance/ky';
 import { kyClientInstance } from '@/lib/kyInstance/kyClient';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import {
-  IDownloadSessionDataType,
+  IDownloadSessionWithFileAndUserDataType,
   IFileDataType,
 } from '@/lib/types/interfaces/storage.interfaces';
 import {
@@ -191,7 +191,7 @@ export const initiateDownloadAPI = async ({ fileId }: { fileId: string }) => {
   try {
     const response = await kyInstance
       .post(`storage/initiate-download-session/${fileId}`)
-      .json<IApiResponseWrapperType<IDownloadSessionDataType>>();
+      .json<IApiResponseWrapperType<IDownloadSessionWithFileAndUserDataType>>();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -207,7 +207,7 @@ export const getDownloadSessionAPI = async ({ id }: { id: string }) => {
   try {
     const response = await kyInstance
       .get(`storage/get-download-session/${id}`)
-      .json<IApiResponseWrapperType<IDownloadSessionDataType>>();
+      .json<IApiResponseWrapperType<IDownloadSessionWithFileAndUserDataType>>();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -232,7 +232,7 @@ export const updateDownloadSessionAPI = async ({
       .post(`storage/update-download-session/${id}`, {
         json: validatedData,
       })
-      .json<IApiResponseWrapperType<IDownloadSessionDataType>>();
+      .json<IApiResponseWrapperType<IDownloadSessionWithFileAndUserDataType>>();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -250,7 +250,7 @@ export const completeDownloadSessionAPI = async ({ id }: { id: string }) => {
       .post(`storage/complete-download-session/${id}`)
       .json<
         IApiResponseWrapperType<
-          IDownloadSessionDataType & { downloadUrl: string }
+          IDownloadSessionWithFileAndUserDataType & { downloadUrl: string }
         >
       >();
     return response;

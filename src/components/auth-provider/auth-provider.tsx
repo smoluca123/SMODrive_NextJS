@@ -4,9 +4,9 @@ import { deleteAuthCookie, setAuthCookie } from '@/lib/apis/auth-apis';
 import {
   refreshAccessTokenApi,
   signInApi,
+  signUpApi,
   validateAccessTokenApi,
 } from '@/lib/apis/user-apis';
-import { kyClientInstance } from '@/lib/kyInstance/kyClient';
 import {
   IUserDataWithAccessTokenType,
   IUserWithStatsAndSubscriptionDataType,
@@ -109,16 +109,19 @@ export default function AuthProvider({
     setIsLoading(true);
     setError(null);
     try {
-      const { data } = await signInApi(credentials);
+      const res = await signInApi(credentials);
 
-      updateAuthState(data);
+      if (res.success) {
+        updateAuthState(res.data.data);
+        await setAuthCookie({
+          accessToken: res.data.data.accessToken,
+          userId: res.data.data.id,
+        });
+        router.push('/dashboard');
+      } else {
+        throw new Error(res.message);
+      }
 
-      await setAuthCookie({
-        accessToken: data.accessToken,
-        userId: data.id,
-      });
-
-      router.push('/dashboard');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message as string);
@@ -144,13 +147,19 @@ export default function AuthProvider({
     setIsLoading(true);
     setError(null);
     try {
-      await kyClientInstance
-        .post('auth/signup', {
-          json: userData,
-        })
-        .json();
+      const res = await signUpApi(userData);
 
-      router.push('/login');
+      if (res.success) {
+        updateAuthState(res.data.data);
+        await setAuthCookie({
+          accessToken: res.data.data.accessToken,
+          userId: res.data.data.id,
+        });
+        router.push('/dashboard');
+      } else {
+        throw new Error(res.message);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message as string);

@@ -1,4 +1,5 @@
 'use server';
+import { getCookieApi } from '@/lib/apis/next-apis';
 import { env } from '@/lib/env.config';
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
@@ -8,12 +9,25 @@ import {
   IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
 } from '@/lib/types/interfaces/user.interfaces';
-import { LoginValues } from '@/lib/zod-schemas/auth.schema';
+import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
+import { UpdateUserInfomationValues } from '@/lib/zod-schemas/user-schema';
 import ky from 'ky';
-import { cookies } from 'next/headers';
 import { UpdateUserInfomationValues } from '../zod-schemas/user-schema';
 
-export const signInApi = async (credentials: LoginValues) => {
+export const signInApi = async (
+  credentials: LoginValues
+): Promise<
+  | {
+      success: true;
+      data: IApiResponseWrapperType<
+        IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
+      >;
+    }
+  | {
+      success: false;
+      message: string;
+    }
+> => {
   try {
     const data = await kyInstance
       .post('auth/signin', { json: credentials })
@@ -22,14 +36,77 @@ export const signInApi = async (credentials: LoginValues) => {
           IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
         >
       >();
-    return data;
+    return {
+      success: true,
+      data: data,
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response) {
       const errorData = await error.response.json();
-      throw errorData.message;
+
+      if (Array.isArray(errorData.message)) {
+        return {
+          success: false,
+          message: errorData.message,
+        };
+      } else {
+        return {
+          success: false,
+          message: errorData.message,
+        };
+      }
     }
-    throw error.message;
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export const signUpApi = async (
+  credentials: RegisterValues
+): Promise<
+  | {
+      success: true;
+      data: IApiResponseWrapperType<
+        IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
+      >;
+    }
+  | { success: false; message: string }
+> => {
+  try {
+    const data = await kyInstance
+      .post('auth/signup', { json: credentials })
+      .json<
+        IApiResponseWrapperType<
+          IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType
+        >
+      >();
+    return {
+      success: true,
+      data: data,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      if (Array.isArray(errorData.message)) {
+        return {
+          success: false,
+          message: errorData.message[0],
+        };
+      } else {
+        return {
+          success: false,
+          message: errorData.message,
+        };
+      }
+    }
+    return {
+      success: false,
+      message: 'Something went wrong',
+    };
   }
 };
 
@@ -76,10 +153,9 @@ export const validateAccessTokenApi = async (payload?: {
   | { success: false; message: string }
 > => {
   try {
-    const cookieStore = await cookies();
-    const accessTokenCookie = cookieStore.get('accessToken');
+    const accessTokenCookie = await getCookieApi({ key: 'accessToken' });
 
-    if (!payload?.accessToken && !accessTokenCookie?.value) {
+    if (!payload?.accessToken && !accessTokenCookie) {
       return {
         success: false,
         message: 'No access token found',
@@ -118,8 +194,7 @@ export const validateAccessTokenApi = async (payload?: {
 export const refreshAccessTokenApi = async (payload?: {
   accessToken?: string;
 }) => {
-  const cookieStore = await cookies();
-  const accessTokenCookie = cookieStore.get('accessToken');
+  const accessTokenCookie = await getCookieApi({ key: 'accessToken' });
 
   try {
     const data = await ky

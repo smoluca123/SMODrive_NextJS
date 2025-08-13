@@ -2,6 +2,7 @@
 
 import { Progress } from '@/components/ui/progress';
 import { Check, X } from 'lucide-react';
+import { z } from 'zod';
 
 interface PasswordStrengthIndicatorProps {
   password: string;
@@ -10,13 +11,37 @@ interface PasswordStrengthIndicatorProps {
 export function PasswordStrengthIndicator({
   password,
 }: PasswordStrengthIndicatorProps) {
-  const getPasswordStrength = (password: string) => {
-    let strength = 0;
-    if (password.length >= 8) strength += 25;
-    if (/[A-Z]/.test(password)) strength += 25;
-    if (/[a-z]/.test(password)) strength += 25;
-    if (/[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) strength += 25;
-    return strength;
+  // Function to check individual requirements using Zod schema
+  const validateRequirement = (schema: z.ZodType): boolean => {
+    const result = schema.safeParse(password);
+    return result.success;
+  };
+
+  // Define password requirements with their validation schemas
+  const passwordRequirements = [
+    {
+      label: 'At least 8 characters',
+      met: validateRequirement(z.string().min(8)),
+    },
+    {
+      label: 'One uppercase letter',
+      met: validateRequirement(z.string().regex(/[A-Z]/)),
+    },
+    {
+      label: 'One lowercase letter',
+      met: validateRequirement(z.string().regex(/[a-z]/)),
+    },
+    {
+      label: 'One number or symbol',
+      met: validateRequirement(z.string().regex(/[0-9]|[^A-Za-z0-9]/)),
+    },
+  ];
+
+  // Calculate password strength based on requirements met
+  const getPasswordStrength = (): number => {
+    return passwordRequirements.reduce((strength, req) => {
+      return req.met ? strength + 25 : strength;
+    }, 0);
   };
 
   const getStrengthLabel = (strength: number) => {
@@ -27,17 +52,8 @@ export function PasswordStrengthIndicator({
     return 'Strong';
   };
 
-  const passwordRequirements = [
-    { label: 'At least 8 characters', met: password.length >= 8 },
-    { label: 'One uppercase letter', met: /[A-Z]/.test(password) },
-    { label: 'One lowercase letter', met: /[a-z]/.test(password) },
-    {
-      label: 'One number or symbol',
-      met: /[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password),
-    },
-  ];
-
-  const passwordStrength = getPasswordStrength(password);
+  // Calculate password strength
+  const passwordStrength = getPasswordStrength();
 
   if (!password) return null;
 
