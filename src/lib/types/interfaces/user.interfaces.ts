@@ -26,6 +26,9 @@ export interface IUserDataType {
   firstName: string;
   lastName: string;
   avatar: string;
+  phone: string;
+  bio: string;
+  website: string;
   createdAt: Date;
   updatedAt: Date;
   isActive: boolean;
