@@ -35,7 +35,7 @@ export default function AuthProvider({
   // const validInitialUser = initialIsAuthenticated ? initialUser : null;
   // const validInitialIsAuthenticated = !!initialUser;
 
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<IUserWithStatsAndSubscriptionDataType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export default function AuthProvider({
   // // Kiểm tra auth state khi component mount
   useEffect(() => {
     const checkAuth = async () => {
-      // setIsLoading(true);
+      setIsLoading(true);
       try {
         if (!accessToken || !userId) {
           setUser(null);
@@ -74,10 +74,17 @@ export default function AuthProvider({
             return;
           }
         }
-        setUser(res.data);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { accessToken: _accessToken, ...userData } = res.data.data;
+        // queryClient.setQueryData<IUserWithStatsAndSubscriptionDataType>([QUERY_KEYS.ME], userData, {
+        //   updatedAt: Date.now(),
+        // });
+
+        setUser(userData);
         setIsAuthenticated(true);
         await setAuthCookie({
-          accessToken: res.data.accessToken,
+          accessToken: res.data.data.accessToken,
           userId,
         });
       } catch (error) {
@@ -94,9 +101,12 @@ export default function AuthProvider({
   }, [accessToken, userId]);
 
   // Helper function to update both user and authentication state consistently
-  const updateAuthState = (newUser: UserType | null) => {
+  const updateAuthState = (newUser: IUserWithStatsAndSubscriptionDataType | null) => {
     if (newUser) {
-      setUser(newUser);
+      setUser((currentUser) => ({
+        ...(currentUser || {}),
+        ...newUser,
+      }));
       setIsAuthenticated(true);
     } else {
       setUser(null);
@@ -175,6 +185,7 @@ export default function AuthProvider({
               user: user as UserType, // TypeScript knows user must be non-null when isAuthenticated is true
               isLoading,
               isAuthenticated: true,
+              updateAuthState,
               login,
               logout,
               register,
@@ -184,6 +195,7 @@ export default function AuthProvider({
               user: null,
               isLoading,
               isAuthenticated: false,
+              updateAuthState,
               login,
               logout,
               register,

@@ -56,8 +56,8 @@ export default async function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
-        <AuthProvider accessToken={accessToken?.value || ''} userId={userId?.value || ''}>
-          <ReactQueryProvider>
+        <ReactQueryProvider>
+          <AuthProvider accessToken={accessToken?.value || ''} userId={userId?.value || ''}>
             <ThemeProvider
               attribute='class'
               defaultTheme='system'
@@ -68,8 +68,8 @@ export default async function RootLayout({
               {children}
               <Toaster />
             </ThemeProvider>
-          </ReactQueryProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
