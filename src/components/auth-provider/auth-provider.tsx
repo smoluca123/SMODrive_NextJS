@@ -101,7 +101,25 @@ export default function AuthProvider({
   }, [accessToken, userId]);
 
   // Helper function to update both user and authentication state consistently
-  const updateAuthState = (newUser: IUserWithStatsAndSubscriptionDataType | null) => {
+  const updateAuthState = (
+    newUser:
+      | (IUserWithStatsAndSubscriptionDataType | null)
+      | ((
+          user: IUserWithStatsAndSubscriptionDataType | null,
+        ) => IUserWithStatsAndSubscriptionDataType | null),
+  ) => {
+    if (typeof newUser === 'function') {
+      const newData = newUser(user);
+      if (newData) {
+        setUser(newData);
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+      return;
+    }
+
     if (newUser) {
       setUser((currentUser) => ({
         ...(currentUser || {}),

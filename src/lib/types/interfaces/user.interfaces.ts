@@ -44,7 +44,7 @@ export interface IUserWithSubscriptionDataType extends IUserDataType {
 }
 
 export interface IUserWithUserStatsDataType extends IUserDataType {
-  stats: IUserStatsDataType;
+  userStats: IUserStatsDataType;
 }
 
 export interface IUserWithStatsAndSubscriptionDataType

@@ -15,7 +15,14 @@ type AuthContextType = {
   logout: () => Promise<void>;
   register: (userData: RegisterValues) => Promise<void>;
   error: string | null;
-  updateAuthState: (newUser: IUserWithStatsAndSubscriptionDataType | null) => void;
+  updateAuthState: (
+    newUser:
+      | IUserWithStatsAndSubscriptionDataType
+      | null
+      | ((
+          user: IUserWithStatsAndSubscriptionDataType | null,
+        ) => IUserWithStatsAndSubscriptionDataType | null),
+  ) => void;
 } & (
   | {
       user: UserType;
