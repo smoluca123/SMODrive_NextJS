@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const deviceTypes = [
@@ -21,16 +15,16 @@ export function DeviceTypesCard() {
         <CardDescription>User device preferences</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {deviceTypes.map((device, index) => (
-            <div key={index} className="flex items-center justify-between">
+            <div key={index} className='flex items-center justify-between'>
               <div>
-                <p className="font-medium text-sm">{device.device}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className='font-medium text-sm'>{device.device}</p>
+                <p className='text-xs text-muted-foreground'>
                   {device.users.toLocaleString()} users
                 </p>
               </div>
-              <Badge variant="secondary">{device.percentage}%</Badge>
+              <Badge variant='secondary'>{device.percentage}%</Badge>
             </div>
           ))}
         </div>

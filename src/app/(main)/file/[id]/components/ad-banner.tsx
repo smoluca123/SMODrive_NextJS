@@ -34,16 +34,14 @@ export function AdBanner({ type }: AdBannerProps) {
   const content = getAdContent();
 
   return (
-    <Card className="border-dashed border-2 border-muted-foreground/20">
-      <CardContent className="p-4 text-center">
-        <div className="space-y-2">
-          <p className="text-xs text-muted-foreground">Advertisement</p>
+    <Card className='border-dashed border-2 border-muted-foreground/20'>
+      <CardContent className='p-4 text-center'>
+        <div className='space-y-2'>
+          <p className='text-xs text-muted-foreground'>Advertisement</p>
           <div
             className={`${content.height} bg-muted/50 rounded-lg flex items-center justify-center`}
           >
-            <span className="text-muted-foreground text-sm">
-              {content.label}
-            </span>
+            <span className='text-muted-foreground text-sm'>{content.label}</span>
           </div>
         </div>
       </CardContent>

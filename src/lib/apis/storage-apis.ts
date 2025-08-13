@@ -249,9 +249,7 @@ export const completeDownloadSessionAPI = async ({ id }: { id: string }) => {
     const response = await kyInstance
       .post(`storage/complete-download-session/${id}`)
       .json<
-        IApiResponseWrapperType<
-          IDownloadSessionWithFileAndUserDataType & { downloadUrl: string }
-        >
+        IApiResponseWrapperType<IDownloadSessionWithFileAndUserDataType & { downloadUrl: string }>
       >();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

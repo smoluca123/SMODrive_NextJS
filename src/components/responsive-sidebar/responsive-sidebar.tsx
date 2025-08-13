@@ -8,10 +8,7 @@ interface ResponsiveSidebarProps {
   onToggle: () => void;
 }
 
-export function ResponsiveSidebar({
-  collapsed,
-  onToggle,
-}: ResponsiveSidebarProps) {
+export function ResponsiveSidebar({ collapsed, onToggle }: ResponsiveSidebarProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -30,7 +27,7 @@ export function ResponsiveSidebar({
   }
 
   return (
-    <div className="hidden md:block">
+    <div className='hidden md:block'>
       <SidebarContent collapsed={collapsed} onToggle={onToggle} />
     </div>
   );

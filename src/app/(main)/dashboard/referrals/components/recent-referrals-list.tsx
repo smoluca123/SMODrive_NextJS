@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -21,20 +15,15 @@ export function RecentReferralsList({ referrals }: { referrals: Referral[] }) {
     <Card>
       <CardHeader>
         <CardTitle>Recent Referrals</CardTitle>
-        <CardDescription>
-          Users who joined through your referral link
-        </CardDescription>
+        <CardDescription>Users who joined through your referral link</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {referrals.map((referral, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-4 border rounded-lg"
-            >
-              <div className="flex items-center space-x-4">
+            <div key={index} className='flex items-center justify-between p-4 border rounded-lg'>
+              <div className='flex items-center space-x-4'>
                 <Avatar>
-                  <AvatarImage src="/placeholder.png" />
+                  <AvatarImage src='/placeholder.png' />
                   <AvatarFallback>
                     {referral.name
                       .split(' ')
@@ -43,24 +32,18 @@ export function RecentReferralsList({ referrals }: { referrals: Referral[] }) {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">{referral.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {referral.email}
-                  </p>
+                  <p className='font-medium'>{referral.name}</p>
+                  <p className='text-sm text-muted-foreground'>{referral.email}</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-right">
-                  <p className="font-medium">{referral.earnings}</p>
-                  <p className="text-xs text-muted-foreground">
+              <div className='flex items-center space-x-4'>
+                <div className='text-right'>
+                  <p className='font-medium'>{referral.earnings}</p>
+                  <p className='text-xs text-muted-foreground'>
                     Joined {new Date(referral.joinDate).toLocaleDateString()}
                   </p>
                 </div>
-                <Badge
-                  variant={
-                    referral.status === 'active' ? 'default' : 'secondary'
-                  }
-                >
+                <Badge variant={referral.status === 'active' ? 'default' : 'secondary'}>
                   {referral.status}
                 </Badge>
               </div>

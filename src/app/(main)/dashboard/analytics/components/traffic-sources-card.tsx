@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const trafficSources = [
@@ -22,16 +16,16 @@ export function TrafficSourcesCard() {
         <CardDescription>How users find your files</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {trafficSources.map((source, index) => (
-            <div key={index} className="flex items-center justify-between">
+            <div key={index} className='flex items-center justify-between'>
               <div>
-                <p className="font-medium text-sm">{source.source}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className='font-medium text-sm'>{source.source}</p>
+                <p className='text-xs text-muted-foreground'>
                   {source.visits.toLocaleString()} visits
                 </p>
               </div>
-              <Badge variant="secondary">{source.percentage}%</Badge>
+              <Badge variant='secondary'>{source.percentage}%</Badge>
             </div>
           ))}
         </div>

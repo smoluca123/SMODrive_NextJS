@@ -7,9 +7,7 @@ interface PasswordStrengthIndicatorProps {
   password: string;
 }
 
-export function PasswordStrengthIndicator({
-  password,
-}: PasswordStrengthIndicatorProps) {
+export function PasswordStrengthIndicator({ password }: PasswordStrengthIndicatorProps) {
   const getPasswordStrength = (password: string) => {
     let strength = 0;
     if (password.length >= 8) strength += 25;
@@ -42,36 +40,34 @@ export function PasswordStrengthIndicator({
   if (!password) return null;
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">Password strength</span>
+    <div className='space-y-2'>
+      <div className='flex items-center justify-between'>
+        <span className='text-xs text-muted-foreground'>Password strength</span>
         <span
           className={`text-xs font-medium ${
             passwordStrength <= 25
               ? 'text-red-500'
               : passwordStrength <= 50
-              ? 'text-yellow-500'
-              : passwordStrength <= 75
-              ? 'text-blue-500'
-              : 'text-green-500'
+                ? 'text-yellow-500'
+                : passwordStrength <= 75
+                  ? 'text-blue-500'
+                  : 'text-green-500'
           }`}
         >
           {getStrengthLabel(passwordStrength)}
         </span>
       </div>
-      <Progress value={passwordStrength} className="h-2" />
+      <Progress value={passwordStrength} className='h-2' />
 
-      <div className="space-y-1">
+      <div className='space-y-1'>
         {passwordRequirements.map((req, index) => (
-          <div key={index} className="flex items-center space-x-2 text-xs">
+          <div key={index} className='flex items-center space-x-2 text-xs'>
             {req.met ? (
-              <Check className="h-3 w-3 text-green-500" />
+              <Check className='h-3 w-3 text-green-500' />
             ) : (
-              <X className="h-3 w-3 text-muted-foreground" />
+              <X className='h-3 w-3 text-muted-foreground' />
             )}
-            <span
-              className={req.met ? 'text-green-600' : 'text-muted-foreground'}
-            >
+            <span className={req.met ? 'text-green-600' : 'text-muted-foreground'}>
               {req.label}
             </span>
           </div>

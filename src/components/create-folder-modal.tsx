@@ -23,11 +23,7 @@ interface CreateFolderModalProps {
   onFolderCreated: (name: string, description: string) => void;
 }
 
-export function CreateFolderModal({
-  open,
-  onOpenChange,
-  onFolderCreated,
-}: CreateFolderModalProps) {
+export function CreateFolderModal({ open, onOpenChange, onFolderCreated }: CreateFolderModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -54,35 +50,31 @@ export function CreateFolderModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <FolderPlus className="h-5 w-5" />
+          <DialogTitle className='flex items-center gap-2'>
+            <FolderPlus className='h-5 w-5' />
             Create New Folder
           </DialogTitle>
-          <DialogDescription>
-            Create a new folder to organize your files.
-          </DialogDescription>
+          <DialogDescription>Create a new folder to organize your files.</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="folder-name">Folder Name</Label>
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='folder-name'>Folder Name</Label>
             <Input
-              id="folder-name"
+              id='folder-name'
               value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              placeholder="Enter folder name"
+              onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+              placeholder='Enter folder name'
               required
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="folder-description">Description (Optional)</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='folder-description'>Description (Optional)</Label>
             <Textarea
-              id="folder-description"
+              id='folder-description'
               value={formData.description}
               onChange={(e) =>
                 setFormData((prev) => ({
@@ -90,20 +82,16 @@ export function CreateFolderModal({
                   description: e.target.value,
                 }))
               }
-              placeholder="Describe this folder..."
+              placeholder='Describe this folder...'
               rows={3}
             />
           </div>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button type='button' variant='outline' onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type='submit' disabled={isLoading}>
               {isLoading ? 'Creating...' : 'Create Folder'}
             </Button>
           </DialogFooter>

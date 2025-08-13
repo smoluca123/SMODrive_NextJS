@@ -4,16 +4,13 @@ export async function POST(request: NextRequest) {
   try {
     const { refreshToken } = await request.json();
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken }),
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
 
     if (!response.ok) {
       throw new Error('Failed to refresh token');
@@ -24,9 +21,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Token refresh error:', error);
-    return NextResponse.json(
-      { error: 'Failed to refresh token' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: 'Failed to refresh token' }, { status: 401 });
   }
 }

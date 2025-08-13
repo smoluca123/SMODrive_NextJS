@@ -1,13 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
@@ -49,51 +43,46 @@ export function LoginForm() {
     login(credentials);
   };
   return (
-    <Card className="border-0 shadow-2xl">
-      <CardHeader className="text-center space-y-2">
-        <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+    <Card className='border-0 shadow-2xl'>
+      <CardHeader className='text-center space-y-2'>
+        <CardTitle className='text-2xl font-bold'>Welcome back</CardTitle>
         <CardDescription>Sign in to your account to continue</CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className='space-y-6'>
         <SocialButtons />
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
+        <div className='relative'>
+          <div className='absolute inset-0 flex items-center'>
             <Separator />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 py-1 rounded-sm text-muted-foreground">
+          <div className='relative flex justify-center text-xs uppercase'>
+            <span className='bg-background px-2 py-1 rounded-sm text-muted-foreground'>
               Or continue with email
             </span>
           </div>
         </div>
 
         {error && (
-          <Alert variant="destructive" className="text-center">
-            <AlertDescription className="justify-items-center">
-              {error}
-            </AlertDescription>
+          <Alert variant='destructive' className='text-center'>
+            <AlertDescription className='justify-items-center'>{error}</AlertDescription>
           </Alert>
         )}
 
         <Form {...form}>
-          <form
-            className="space-y-4"
-            onSubmit={form.handleSubmit(handleSubmit)}
-          >
+          <form className='space-y-4' onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               control={form.control}
-              name="usernameOrEmail"
+              name='usernameOrEmail'
               render={({ field }) => (
-                <FormItem className="space-y-2">
+                <FormItem className='space-y-2'>
                   <FormLabel>Username or Email</FormLabel>
                   <FormControl>
                     <InputIcon
                       Icon={Mail}
                       {...field}
-                      type="text"
-                      placeholder="Enter your username or email"
+                      type='text'
+                      placeholder='Enter your username or email'
                     />
                   </FormControl>
                   <FormMessage />
@@ -130,9 +119,9 @@ export function LoginForm() {
 
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
-                <FormItem className="space-y-2">
+                <FormItem className='space-y-2'>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <PasswordInput showIcon {...field} />
@@ -142,39 +131,27 @@ export function LoginForm() {
               )}
             />
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember" className="text-sm">
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='remember' />
+                <Label htmlFor='remember' className='text-sm'>
                   Remember me
                 </Label>
               </div>
-              <Link
-                href="/forgot-password"
-                className="text-sm text-primary hover:underline"
-              >
+              <Link href='/forgot-password' className='text-sm text-primary hover:underline'>
                 Forgot password?
               </Link>
             </div>
 
-            <LoadingButton
-              type="submit"
-              className="w-full rounded-2xl"
-              loading={isLoading}
-            >
+            <LoadingButton type='submit' className='w-full rounded-2xl' loading={isLoading}>
               {!isLoading && 'Sign In'}
             </LoadingButton>
           </form>
         </Form>
 
-        <div className="text-center text-sm">
-          <span className="text-muted-foreground">
-            Don&apos;t have an account?{' '}
-          </span>
-          <Link
-            href="/register"
-            className="text-primary hover:underline font-medium"
-          >
+        <div className='text-center text-sm'>
+          <span className='text-muted-foreground'>Don&apos;t have an account? </span>
+          <Link href='/register' className='text-primary hover:underline font-medium'>
             Sign up
           </Link>
         </div>

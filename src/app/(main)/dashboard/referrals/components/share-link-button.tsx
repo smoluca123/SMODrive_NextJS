@@ -22,8 +22,8 @@ export function ShareLinkButton() {
     }
   };
   return (
-    <Button onClick={handleShare} type="button">
-      <Share2 className="h-4 w-4 mr-2" />
+    <Button onClick={handleShare} type='button'>
+      <Share2 className='h-4 w-4 mr-2' />
       Share Link
     </Button>
   );

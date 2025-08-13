@@ -15,11 +15,7 @@ interface SidebarNavItemProps {
   collapsed: boolean;
 }
 
-export function SidebarNavItem({
-  item,
-  isActive,
-  collapsed,
-}: SidebarNavItemProps) {
+export function SidebarNavItem({ item, isActive, collapsed }: SidebarNavItemProps) {
   return (
     <Link href={item.href}>
       <Button
@@ -27,12 +23,12 @@ export function SidebarNavItem({
         className={cn(
           'w-full justify-start',
           // collapsed ? 'px-2' : 'px-3',
-          isActive && 'bg-primary text-primary-foreground'
+          isActive && 'bg-primary text-primary-foreground',
         )}
       >
-        <item.icon className="h-4 w-4" />
+        <item.icon className='h-4 w-4' />
         123
-        {!collapsed && <span className="ml-3">{item.name}</span>}
+        {!collapsed && <span className='ml-3'>{item.name}</span>}
       </Button>
     </Link>
   );

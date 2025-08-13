@@ -7,16 +7,6 @@ interface FilesGridSectionProps {
   onFileAction: (action: string, file: FileItem) => void;
 }
 
-export function FilesGridSection({
-  files,
-  viewMode,
-  onFileAction,
-}: FilesGridSectionProps) {
-  return (
-    <ResponsiveFileGrid
-      files={files}
-      viewMode={viewMode}
-      onFileAction={onFileAction}
-    />
-  );
+export function FilesGridSection({ files, viewMode, onFileAction }: FilesGridSectionProps) {
+  return <ResponsiveFileGrid files={files} viewMode={viewMode} onFileAction={onFileAction} />;
 }

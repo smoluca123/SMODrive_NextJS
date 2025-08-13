@@ -12,7 +12,7 @@ import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import ky from 'ky';
 
 export const signInApi = async (
-  credentials: LoginValues
+  credentials: LoginValues,
 ): Promise<
   | {
       success: true;
@@ -62,7 +62,7 @@ export const signInApi = async (
 };
 
 export const signUpApi = async (
-  credentials: RegisterValues
+  credentials: RegisterValues,
 ): Promise<
   | {
       success: true;
@@ -188,9 +188,7 @@ export const validateAccessTokenApi = async (payload?: {
   }
 };
 
-export const refreshAccessTokenApi = async (payload?: {
-  accessToken?: string;
-}) => {
+export const refreshAccessTokenApi = async (payload?: { accessToken?: string }) => {
   const accessTokenCookie = await getCookieApi({ key: 'accessToken' });
 
   try {
@@ -202,9 +200,7 @@ export const refreshAccessTokenApi = async (payload?: {
         },
       })
       .json<
-        IApiResponseWrapperType<
-          IUserWithStatsAndSubscriptionDataType & { accessToken: string }
-        >
+        IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType & { accessToken: string }>
       >();
     return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

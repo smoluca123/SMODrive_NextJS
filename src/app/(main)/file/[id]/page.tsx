@@ -9,11 +9,7 @@ import { ReportButton } from './components/report-button';
 import { BannerAd, SkyscraperAd } from '@/components/ads';
 import { getFileDetailAPI } from '@/lib/apis/storage-apis';
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
+export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   const { data } = await getFileDetailAPI({ id });
@@ -28,11 +24,7 @@ export const generateMetadata = async ({
   };
 };
 
-export default async function FileDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function FileDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const { data } = await getFileDetailAPI({ id });
@@ -93,14 +85,14 @@ export default async function FileDetailPage({
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+    <div className='min-h-screen bg-background'>
+      <div className='container mx-auto px-4 py-8'>
+        <div className='grid lg:grid-cols-3 gap-8'>
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className='lg:col-span-2 space-y-8'>
             <FileHeader file={data} />
 
-            <BannerAd size="medium" />
+            <BannerAd size='medium' />
 
             <FilePreview preview={file.preview} />
 
@@ -112,14 +104,10 @@ export default async function FileDetailPage({
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <SkyscraperAd />
 
-            <FileStats
-              views={data.downloadCount}
-              downloads={data.downloadCount}
-              rating={4.9}
-            />
+            <FileStats views={data.downloadCount} downloads={data.downloadCount} rating={4.9} />
 
             <ReportButton />
 
@@ -128,9 +116,9 @@ export default async function FileDetailPage({
         </div>
 
         {/* Bottom Native Ad */}
-        <div className="mt-12">
+        <div className='mt-12'>
           {/* <AdBanner type="native" /> */}
-          <BannerAd size="medium" />
+          <BannerAd size='medium' />
         </div>
       </div>
     </div>

@@ -1,8 +1,5 @@
 import { DownloadClientShell } from './components/download-client-shell';
-import {
-  getDownloadSessionAPI,
-  getFileDetailAPI,
-} from '@/lib/apis/storage-apis';
+import { getDownloadSessionAPI, getFileDetailAPI } from '@/lib/apis/storage-apis';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
@@ -27,11 +24,7 @@ const relatedFiles = [
   },
 ];
 
-export default async function DownloadPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function DownloadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: fileId } = await params;
   const cookieStore = await cookies();
   const downloadSessionId = cookieStore.get('download-session')?.value;

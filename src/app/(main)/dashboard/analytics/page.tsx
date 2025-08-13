@@ -8,14 +8,14 @@ import { DeviceTypesCard } from './components/device-types-card';
 
 export default function AnalyticsPage() {
   return (
-    <div className="p-8 space-y-8">
+    <div className='p-8 space-y-8'>
       {/* Header */}
       <AnalyticsHeader />
 
       {/* Metrics Overview */}
       <AnalyticsMetrics />
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className='grid lg:grid-cols-2 gap-8'>
         {/* Views & Downloads Chart */}
         <ViewsDownloadsChart />
 
@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
       <FilePerformanceCard />
 
       {/* Traffic Sources */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className='grid lg:grid-cols-2 gap-8'>
         <TrafficSourcesCard />
         <DeviceTypesCard />
       </div>

@@ -13,8 +13,8 @@ export function LanguageSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="hidden sm:flex">
-          <Globe className="h-4 w-4 mr-2" />
+        <Button variant='ghost' size='sm' className='hidden sm:flex'>
+          <Globe className='h-4 w-4 mr-2' />
           EN
         </Button>
       </DropdownMenuTrigger>

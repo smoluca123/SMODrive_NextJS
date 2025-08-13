@@ -5,9 +5,7 @@ export const initiateMultipartUploadSchema = z.object({
   mimetype: z.string(),
   fileSize: z.number(),
 });
-export type InitiateMultipartUploadSchema = z.infer<
-  typeof initiateMultipartUploadSchema
->;
+export type InitiateMultipartUploadSchema = z.infer<typeof initiateMultipartUploadSchema>;
 
 export const uploadFileSchema = z.object({
   file: z.instanceof(File),
@@ -19,9 +17,7 @@ export const getMultipartSignedUrlSchema = z.object({
   uploadId: z.string(),
   partNumber: z.number(),
 });
-export type GetMultipartSignedUrlSchema = z.infer<
-  typeof getMultipartSignedUrlSchema
->;
+export type GetMultipartSignedUrlSchema = z.infer<typeof getMultipartSignedUrlSchema>;
 
 export const completeMultipartUploadSchema = z.object({
   key: z.string(),
@@ -30,20 +26,16 @@ export const completeMultipartUploadSchema = z.object({
     z.object({
       ETag: z.string(),
       PartNumber: z.number(),
-    })
+    }),
   ),
   originalName: z.string(),
   size: z.number(),
   mimetype: z.string(),
 });
 
-export type CompleteMultipartUploadSchema = z.infer<
-  typeof completeMultipartUploadSchema
->;
+export type CompleteMultipartUploadSchema = z.infer<typeof completeMultipartUploadSchema>;
 
 export const updateDownloadSessionSchema = z.object({
   step: z.coerce.number(),
 });
-export type UpdateDownloadSessionSchema = z.infer<
-  typeof updateDownloadSessionSchema
->;
+export type UpdateDownloadSessionSchema = z.infer<typeof updateDownloadSessionSchema>;

@@ -13,10 +13,7 @@ interface SocialShareProps {
 }
 
 export function SocialShare({ fileId, fileTitle }: SocialShareProps) {
-  const shareUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/file/${fileId}`
-      : '';
+  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/file/${fileId}` : '';
 
   const handleShare = async (platform: string) => {
     try {
@@ -26,17 +23,15 @@ export function SocialShare({ fileId, fileTitle }: SocialShareProps) {
         case 'twitter':
           window.open(
             `https://twitter.com/intent/tweet?text=Check out this amazing file: ${fileTitle}&url=${encodeURIComponent(
-              shareUrl
+              shareUrl,
             )}`,
-            '_blank'
+            '_blank',
           );
           break;
         case 'facebook':
           window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-              shareUrl
-            )}`,
-            '_blank'
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+            '_blank',
           );
           break;
         case 'copy':
@@ -56,32 +51,32 @@ export function SocialShare({ fileId, fileTitle }: SocialShareProps) {
         <CardTitle>Share this file</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-wrap gap-3">
+        <div className='flex flex-wrap gap-3'>
           <Button
-            variant="outline"
-            size="sm"
-            className="rounded-full bg-transparent"
+            variant='outline'
+            size='sm'
+            className='rounded-full bg-transparent'
             onClick={() => handleShare('twitter')}
           >
-            <TwitterIcon className="mr-2 h-4 w-4 text-foreground" />
+            <TwitterIcon className='mr-2 h-4 w-4 text-foreground' />
             Twitter
           </Button>
           <Button
-            variant="outline"
-            size="sm"
-            className="rounded-full bg-transparent"
+            variant='outline'
+            size='sm'
+            className='rounded-full bg-transparent'
             onClick={() => handleShare('facebook')}
           >
-            <FacebookIcon className="mr-2 h-4 w-4" />
+            <FacebookIcon className='mr-2 h-4 w-4' />
             Facebook
           </Button>
           <Button
-            variant="outline"
-            size="sm"
-            className="rounded-full bg-transparent"
+            variant='outline'
+            size='sm'
+            className='rounded-full bg-transparent'
             onClick={() => handleShare('copy')}
           >
-            <Share2 className="mr-2 h-4 w-4" />
+            <Share2 className='mr-2 h-4 w-4' />
             Copy Link
           </Button>
         </div>

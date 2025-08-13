@@ -61,12 +61,12 @@ export default function ReferralsPage() {
   ];
 
   return (
-    <div className="p-8 space-y-8">
+    <div className='p-8 space-y-8'>
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+      <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0'>
         <div>
-          <h1 className="text-3xl font-bold">Referral Program</h1>
-          <p className="text-muted-foreground">
+          <h1 className='text-3xl font-bold'>Referral Program</h1>
+          <p className='text-muted-foreground'>
             Earn 10% commission from users you refer to ShareEarn
           </p>
         </div>
@@ -76,20 +76,20 @@ export default function ReferralsPage() {
       {/* Stats Overview */}
       <ReferralStatsGrid stats={referralStats} />
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className='grid lg:grid-cols-2 gap-8'>
         {/* Referral Link */}
         <div>
-          <div className="bg-card rounded-xl shadow p-6 space-y-4">
-            <h2 className="font-semibold text-lg mb-2">Your Referral Link</h2>
+          <div className='bg-card rounded-xl shadow p-6 space-y-4'>
+            <h2 className='font-semibold text-lg mb-2'>Your Referral Link</h2>
             <ReferralLinkBox />
-            <div className="grid grid-cols-2 gap-4 pt-4">
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <p className="text-2xl font-bold">192</p>
-                <p className="text-sm text-muted-foreground">Link Clicks</p>
+            <div className='grid grid-cols-2 gap-4 pt-4'>
+              <div className='text-center p-4 bg-muted/50 rounded-lg'>
+                <p className='text-2xl font-bold'>192</p>
+                <p className='text-sm text-muted-foreground'>Link Clicks</p>
               </div>
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <p className="text-2xl font-bold">24</p>
-                <p className="text-sm text-muted-foreground">Conversions</p>
+              <div className='text-center p-4 bg-muted/50 rounded-lg'>
+                <p className='text-2xl font-bold'>24</p>
+                <p className='text-sm text-muted-foreground'>Conversions</p>
               </div>
             </div>
             <HowItWorks />

@@ -15,22 +15,19 @@ interface ILogoProps extends IPropsWithClassName {
 export function Logo({ className, classNames }: ILogoProps) {
   return (
     <div className={cn('text-center', className, classNames?.container)}>
-      <Link
-        href="/"
-        className={cn('inline-flex items-center space-x-2', classNames?.link)}
-      >
+      <Link href='/' className={cn('inline-flex items-center space-x-2', classNames?.link)}>
         <div
           className={cn(
             'h-10 w-10 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center',
-            classNames?.uploadIcon
+            classNames?.uploadIcon,
           )}
         >
-          <Upload className="h-5 w-5 text-white" />
+          <Upload className='h-5 w-5 text-white' />
         </div>
         <span
           className={cn(
             'text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent',
-            classNames?.text
+            classNames?.text,
           )}
         >
           ShareEarn

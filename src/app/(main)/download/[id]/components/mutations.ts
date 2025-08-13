@@ -17,9 +17,7 @@ export const useCompleteDownloadSession = () => {
           key: 'download-session',
         });
 
-        const response = await completeDownloadSession(
-          downloadSessionCookie.value
-        );
+        const response = await completeDownloadSession(downloadSessionCookie.value);
         return response;
       } catch (error) {
         throw new Error(error as string);
@@ -46,10 +44,7 @@ export const useUpdateDownloadSession = () => {
           key: 'download-session',
         });
 
-        const response = await updateDownloadSession(
-          downloadSessionCookie.value,
-          payload
-        );
+        const response = await updateDownloadSession(downloadSessionCookie.value, payload);
         return response;
       } catch (error) {
         throw new Error(error as string);

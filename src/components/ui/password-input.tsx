@@ -17,15 +17,15 @@ export default function PasswordInput({
 }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className="space-y-2">
-      <div className="relative">
+    <div className='space-y-2'>
+      <div className='relative'>
         {showIcon && (
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
         )}
         <Input
-          id="password"
+          id='password'
           type={showPassword ? 'text' : 'password'}
-          placeholder="Enter your password"
+          placeholder='Enter your password'
           className={cn('pr-10', className, {
             'pl-10': showIcon,
           })}
@@ -34,16 +34,16 @@ export default function PasswordInput({
           {...props}
         />
         <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+          type='button'
+          variant='ghost'
+          size='sm'
+          className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
           onClick={() => setShowPassword(!showPassword)}
         >
           {showPassword ? (
-            <EyeOff className="h-4 w-4 text-muted-foreground" />
+            <EyeOff className='h-4 w-4 text-muted-foreground' />
           ) : (
-            <Eye className="h-4 w-4 text-muted-foreground" />
+            <Eye className='h-4 w-4 text-muted-foreground' />
           )}
         </Button>
       </div>

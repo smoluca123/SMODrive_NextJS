@@ -20,10 +20,7 @@ export async function POST(request: NextRequest) {
   const { accessToken, userId } = await request.json();
 
   if (!accessToken || !userId) {
-    return NextResponse.json(
-      { message: 'Access token and user id are required' },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: 'Access token and user id are required' }, { status: 400 });
   }
 
   const cookieStore = await cookies();
@@ -54,9 +51,6 @@ export async function DELETE() {
   } catch (error) {
     console.error('Error deleting access token:', error);
 
-    return NextResponse.json(
-      { message: 'Fail to delete cookie' },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: 'Fail to delete cookie' }, { status: 500 });
   }
 }

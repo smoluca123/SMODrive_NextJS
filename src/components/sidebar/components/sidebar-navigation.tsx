@@ -15,23 +15,15 @@ interface SidebarNavigationProps {
   collapsed: boolean;
 }
 
-export function SidebarNavigation({
-  navigation,
-  collapsed,
-}: SidebarNavigationProps) {
+export function SidebarNavigation({ navigation, collapsed }: SidebarNavigationProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex-1 p-4 space-y-2">
+    <nav className='flex-1 p-4 space-y-2'>
       {navigation.map((item) => {
         const isActive = pathname === item.href;
         return (
-          <SidebarNavItem
-            key={item.name}
-            item={item}
-            isActive={isActive}
-            collapsed={collapsed}
-          />
+          <SidebarNavItem key={item.name} item={item} isActive={isActive} collapsed={collapsed} />
         );
       })}
     </nav>
