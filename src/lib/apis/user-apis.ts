@@ -159,10 +159,10 @@ export const validateAccessTokenApi = async (payload?: {
       };
     }
 
-    const data = await ky
-      .get(`${env.NEXT_PUBLIC_API_URL}auth/validate-token`, {
+    const data = await kyInstance
+      .get(`auth/validate-token`, {
         headers: {
-          Authorization: `Bearer ${env.NEXT_PUBLIC_AUTHORIZATION_TOKEN}`,
+          // Authorization: `Bearer ${env.NEXT_PUBLIC_AUTHORIZATION_TOKEN}`,
           accessToken: payload?.accessToken || accessTokenCookie?.value,
         },
       })

@@ -7,7 +7,7 @@ import { useState } from 'react';
 export type UploadStatus = 'idle' | 'uploading' | 'completed' | 'error';
 
 export const useUploadFileMutation = () => {
-  const { user } = useAuth();
+  const { user, updateAuthState } = useAuth();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const smartUploadFile = async ({
@@ -24,7 +24,6 @@ export const useUploadFileMutation = () => {
     setStatus('uploading');
     if (!user) return;
     try {
-      console.log(file.size, FILE_SIZE_THRESHOLD);
       if (file.size >= FILE_SIZE_THRESHOLD) {
         return await multipartUpload(file, (percent) => {
           setUploadProgress(percent);
@@ -51,6 +50,21 @@ export const useUploadFileMutation = () => {
   };
   const mutation = useMutation({
     mutationFn: smartUploadFile,
+    onSuccess: (variables) => {
+      if (!variables) return;
+      updateAuthState((curentUser) => {
+        if (!curentUser) return null;
+        return {
+          ...curentUser,
+          userStats: {
+            ...curentUser.userStats,
+            totalStorageUsed: String(
+              Number(curentUser.userStats.totalStorageUsed) + Number(variables.data.size),
+            ),
+          },
+        };
+      });
+    },
   });
 
   return {

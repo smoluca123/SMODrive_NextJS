@@ -1,6 +1,6 @@
 export interface IPlanDataType {
   id: string;
-  name: string;
+  name: 'FREE' | 'BASIC' | 'PRO' | 'ENTERPRISE';
   description: string;
   price: number;
   duration: number;
@@ -19,7 +19,7 @@ export interface ISubscriptionDataType {
   planId: string;
   status: string;
   startDate: string;
-  endDate: null;
+  endDate: string | null;
   autoRenew: boolean;
   paymentMethod: null;
   paymentStatus: string;
