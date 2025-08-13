@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
@@ -60,55 +54,43 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="border-0 shadow-2xl">
-      <CardHeader className="text-center space-y-2">
-        <CardTitle className="text-2xl font-bold">
-          Create your account
-        </CardTitle>
+    <Card className='border-0 shadow-2xl'>
+      <CardHeader className='text-center space-y-2'>
+        <CardTitle className='text-2xl font-bold'>Create your account</CardTitle>
         <CardDescription>Start earning from your files today</CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className='space-y-6'>
         <SocialButtons />
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
+        <div className='relative'>
+          <div className='absolute inset-0 flex items-center'>
             <Separator />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 py-1 rounded-sm text-muted-foreground">
+          <div className='relative flex justify-center text-xs uppercase'>
+            <span className='bg-background px-2 py-1 rounded-sm text-muted-foreground'>
               Or register with email
             </span>
           </div>
         </div>
 
         {error && (
-          <Alert variant="destructive" className="text-center">
-            <AlertDescription className="justify-items-center">
-              {error}
-            </AlertDescription>
+          <Alert variant='destructive' className='text-center'>
+            <AlertDescription className='justify-items-center'>{error}</AlertDescription>
           </Alert>
         )}
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
+            <div className='grid grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
-                name="firstName"
+                name='firstName'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <InputIcon
-                        Icon={User}
-                        {...field}
-                        type="text"
-                        placeholder="John"
-                      />
+                      <InputIcon Icon={User} {...field} type='text' placeholder='John' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,17 +99,12 @@ export function RegisterForm() {
 
               <FormField
                 control={form.control}
-                name="lastName"
+                name='lastName'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <InputIcon
-                        Icon={User}
-                        {...field}
-                        type="text"
-                        placeholder="Doe"
-                      />
+                      <InputIcon Icon={User} {...field} type='text' placeholder='Doe' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,17 +114,12 @@ export function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <InputIcon
-                      Icon={Mail}
-                      {...field}
-                      type="email"
-                      placeholder="john@example.com"
-                    />
+                    <InputIcon Icon={Mail} {...field} type='email' placeholder='john@example.com' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -156,7 +128,7 @@ export function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="username"
+              name='username'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -172,12 +144,7 @@ export function RegisterForm() {
                         required
                       />
                     </div> */}
-                    <InputIcon
-                      Icon={User}
-                      {...field}
-                      type="text"
-                      placeholder="john_doe"
-                    />
+                    <InputIcon Icon={User} {...field} type='text' placeholder='john_doe' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -186,16 +153,12 @@ export function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      showIcon
-                      passwordStrengthIndicator
-                      {...field}
-                    />
+                    <PasswordInput showIcon passwordStrengthIndicator {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -204,7 +167,7 @@ export function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name='confirmPassword'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
@@ -218,17 +181,12 @@ export function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="phone"
+              name='phone'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <InputIcon
-                      Icon={Phone}
-                      {...field}
-                      type="tel"
-                      placeholder="123-456-7890"
-                    />
+                    <InputIcon Icon={Phone} {...field} type='tel' placeholder='123-456-7890' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -242,66 +200,52 @@ export function RegisterForm() {
 
             <Separator />
 
-            <div className="space-y-3">
-              <div className="flex items-start space-x-2">
+            <div className='space-y-3'>
+              <div className='flex items-start space-x-2'>
                 <Checkbox
-                  id="terms"
+                  id='terms'
                   checked={agreeTerms}
-                  onCheckedChange={(checked) =>
-                    setAgreeTerms(checked as boolean)
-                  }
+                  onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
                   required
                 />
-                <Label htmlFor="terms" className="text-sm leading-relaxed">
+                <Label htmlFor='terms' className='text-sm leading-relaxed'>
                   I agree to the{' '}
-                  <Link href="/terms" className="text-primary hover:underline">
+                  <Link href='/terms' className='text-primary hover:underline'>
                     Terms of Service
                   </Link>{' '}
                   and{' '}
-                  <Link
-                    href="/privacy"
-                    className="text-primary hover:underline"
-                  >
+                  <Link href='/privacy' className='text-primary hover:underline'>
                     Privacy Policy
                   </Link>
                 </Label>
               </div>
 
-              <div className="flex items-start space-x-2">
+              <div className='flex items-start space-x-2'>
                 <Checkbox
-                  id="marketing"
+                  id='marketing'
                   checked={marketingEmails}
-                  onCheckedChange={(checked) =>
-                    setMarketingEmails(checked as boolean)
-                  }
+                  onCheckedChange={(checked) => setMarketingEmails(checked as boolean)}
                 />
-                <Label htmlFor="marketing" className="text-sm leading-relaxed">
+                <Label htmlFor='marketing' className='text-sm leading-relaxed'>
                   I&apos;d like to receive product updates and marketing emails
                 </Label>
               </div>
             </div>
 
             <LoadingButton
-              type="submit"
-              className="w-full rounded-2xl"
+              type='submit'
+              className='w-full rounded-2xl'
               loading={isLoading}
-              disabled={
-                !agreeTerms || Object.keys(form.formState.errors).length > 0
-              }
+              disabled={!agreeTerms || Object.keys(form.formState.errors).length > 0}
             >
               Create Account
             </LoadingButton>
           </form>
         </Form>
 
-        <div className="text-center text-sm">
-          <span className="text-muted-foreground">
-            Already have an account?{' '}
-          </span>
-          <Link
-            href="/login"
-            className="text-primary hover:underline font-medium"
-          >
+        <div className='text-center text-sm'>
+          <span className='text-muted-foreground'>Already have an account? </span>
+          <Link href='/login' className='text-primary hover:underline font-medium'>
             Sign in
           </Link>
         </div>

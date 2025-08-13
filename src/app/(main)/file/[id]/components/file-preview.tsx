@@ -11,11 +11,11 @@ export function FilePreview({ preview }: FilePreviewProps) {
         <CardTitle>Preview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+        <div className='aspect-video bg-muted rounded-lg overflow-hidden'>
           <img
             src={preview || '/placeholder.svg'}
-            alt="File preview"
-            className="w-full h-full object-cover"
+            alt='File preview'
+            className='w-full h-full object-cover'
           />
         </div>
       </CardContent>

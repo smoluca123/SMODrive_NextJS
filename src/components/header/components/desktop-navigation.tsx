@@ -8,12 +8,12 @@ export function DesktopNavigation({
   navigationItems: { label: string; href: string }[];
 }) {
   return (
-    <nav className="hidden md:flex items-center space-x-6">
+    <nav className='hidden md:flex items-center space-x-6'>
       {navigationItems.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className="text-sm font-medium hover:text-primary transition-colors"
+          className='text-sm font-medium hover:text-primary transition-colors'
         >
           {item.label}
         </Link>

@@ -14,17 +14,15 @@ export function SidebarUserProfile({ collapsed }: SidebarUserProfileProps) {
         'p-2': collapsed,
       })}
     >
-      <div className="flex items-center space-x-3">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
+      <div className='flex items-center space-x-3'>
+        <Avatar className='h-10 w-10'>
+          <AvatarImage src='/placeholder.svg?height=40&width=40' alt='User' />
           <AvatarFallback>JD</AvatarFallback>
         </Avatar>
         {!collapsed && (
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">John Doe</p>
-            <p className="text-xs text-muted-foreground truncate">
-              john@example.com
-            </p>
+          <div className='flex-1 min-w-0'>
+            <p className='text-sm font-medium truncate'>John Doe</p>
+            <p className='text-xs text-muted-foreground truncate'>john@example.com</p>
           </div>
         )}
       </div>

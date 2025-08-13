@@ -7,8 +7,7 @@ import {
 } from '@/lib/types/interfaces/user.interfaces';
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 
-type UserType = IUserWithStatsAndSubscriptionDataType &
-  IUserDataWithAccessTokenType;
+type UserType = IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType;
 
 type AuthContextType = {
   isLoading: boolean;
@@ -27,9 +26,7 @@ type AuthContextType = {
     }
 );
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // export function AuthProvider({ children }: { children: ReactNode }) {
 //   const [user, setUser] = useState<User | null>(null);

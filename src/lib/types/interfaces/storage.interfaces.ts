@@ -31,17 +31,14 @@ export interface IDownloadSessionDataType {
   updatedAt: string;
 }
 
-export interface IDownloadSessionWithFileDataType
-  extends IDownloadSessionDataType {
+export interface IDownloadSessionWithFileDataType extends IDownloadSessionDataType {
   file: IFileDataType;
 }
 
-export interface IDownloadSessionWithFileAndUserDataType
-  extends IDownloadSessionWithFileDataType {
+export interface IDownloadSessionWithFileAndUserDataType extends IDownloadSessionWithFileDataType {
   user: IUserDataType;
 }
 
-export interface IDownloadSessionWithUserDataType
-  extends IDownloadSessionDataType {
+export interface IDownloadSessionWithUserDataType extends IDownloadSessionDataType {
   user: IUserDataType;
 }

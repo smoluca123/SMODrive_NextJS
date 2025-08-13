@@ -13,10 +13,10 @@ export function ReferralLinkBox() {
     });
   };
   return (
-    <div className="flex space-x-2">
-      <Input value={referralLink} readOnly className="flex-1" />
-      <Button onClick={handleCopyLink} type="button">
-        <Copy className="h-4 w-4" />
+    <div className='flex space-x-2'>
+      <Input value={referralLink} readOnly className='flex-1' />
+      <Button onClick={handleCopyLink} type='button'>
+        <Copy className='h-4 w-4' />
       </Button>
     </div>
   );

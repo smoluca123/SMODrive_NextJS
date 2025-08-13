@@ -9,6 +9,4 @@ export const updateUserInfomationSchema = z.object({
   website: z.optional(z.string()),
 });
 
-export type UpdateUserInfomationValues = z.infer<
-  typeof updateUserInfomationSchema
->;
+export type UpdateUserInfomationValues = z.infer<typeof updateUserInfomationSchema>;

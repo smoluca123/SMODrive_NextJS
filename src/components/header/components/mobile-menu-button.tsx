@@ -8,23 +8,16 @@ interface MobileMenuButtonProps {
   toggleMenu: () => void;
 }
 
-export function MobileMenuButton({
-  isMenuOpen,
-  toggleMenu,
-}: MobileMenuButtonProps) {
+export function MobileMenuButton({ isMenuOpen, toggleMenu }: MobileMenuButtonProps) {
   return (
     <Button
-      variant="ghost"
-      size="sm"
-      className="md:hidden transition-transform duration-200"
+      variant='ghost'
+      size='sm'
+      className='md:hidden transition-transform duration-200'
       onClick={toggleMenu}
     >
-      <div
-        className={`transition-transform duration-200 ${
-          isMenuOpen ? 'rotate-90' : 'rotate-0'
-        }`}
-      >
-        {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      <div className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`}>
+        {isMenuOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
       </div>
     </Button>
   );

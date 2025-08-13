@@ -34,11 +34,11 @@ export function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+      <div className='container mx-auto flex h-16 items-center justify-between px-4'>
         {/* Logo */}
         <Logo
-          className="!size-8"
+          className='!size-8'
           classNames={{
             uploadIcon: '!size-8',
           }}
@@ -48,7 +48,7 @@ export function Header() {
         <DesktopNavigation navigationItems={navigationItems} />
 
         {/* Right Side Actions */}
-        <div className="flex items-center space-x-4">
+        <div className='flex items-center space-x-4'>
           {/* Language Selector */}
           {/* <LanguageSelector /> */}
 

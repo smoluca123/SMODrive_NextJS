@@ -21,7 +21,7 @@ export const uploadSimpleFile = async (
     tags: string;
     isPublic?: boolean;
   },
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
 ) => {
   try {
     const result = await uploadFileAPI({
@@ -133,11 +133,7 @@ async function initiateUpload(file: File) {
 /**
  * Get signed URLs for all parts of a multipart upload
  */
-async function getSignedUrls(
-  key: string,
-  uploadId: string,
-  partsCount: number
-) {
+async function getSignedUrls(key: string, uploadId: string, partsCount: number) {
   return Promise.all(
     Array.from({ length: partsCount }, (_, i) =>
       getMultipartSignedUrlAPI({
@@ -146,8 +142,8 @@ async function getSignedUrls(
           uploadId,
           partNumber: i + 1,
         },
-      }).then((res) => res.data.signedUrl)
-    )
+      }).then((res) => res.data.signedUrl),
+    ),
   );
 }
 
@@ -160,7 +156,7 @@ async function uploadPart(
   partNumber: number,
   etags: { ETag: string; PartNumber: number }[],
   onCompleted?: () => void,
-  maxRetries: number = 3
+  maxRetries: number = 3,
 ) {
   let attempts = 0;
   while (attempts < maxRetries) {
@@ -179,15 +175,10 @@ async function uploadPart(
       return; // Success, exit function
     } catch (error) {
       attempts++;
-      console.warn(
-        `Part ${partNumber} upload failed, attempt ${attempts}/${maxRetries}`,
-        error
-      );
+      console.warn(`Part ${partNumber} upload failed, attempt ${attempts}/${maxRetries}`, error);
 
       if (attempts >= maxRetries) {
-        throw new Error(
-          `Failed to upload part ${partNumber} after ${maxRetries} attempts`
-        );
+        throw new Error(`Failed to upload part ${partNumber} after ${maxRetries} attempts`);
       }
 
       // Exponential backoff delay before retry
@@ -205,7 +196,7 @@ async function uploadParts(
   signedUrls: string[],
   concurrency: number = 3, // Reduced concurrency for better stability
   onProgress?: (percent: number) => void,
-  maxRetries: number = 3
+  maxRetries: number = 3,
 ) {
   let completed = 0;
   const etags: { ETag: string; PartNumber: number }[] = new Array(parts.length);
@@ -234,7 +225,7 @@ async function uploadParts(
               onProgress(Math.round((completed / parts.length) * 100));
             }
           },
-          maxRetries
+          maxRetries,
         );
       } catch (error) {
         // If part upload fails even after retries, add to failedParts list
@@ -260,7 +251,7 @@ async function uploadParts(
         failedParts.length
       } parts could not be uploaded. Failed part numbers: ${failedParts
         .map((i) => i + 1)
-        .join(', ')}`
+        .join(', ')}`,
     );
   }
 
@@ -274,7 +265,7 @@ async function completeUpload(
   key: string,
   uploadId: string,
   parts: { ETag: string; PartNumber: number }[],
-  file: File
+  file: File,
 ) {
   return completeMultipartUploadAPI({
     payload: {
@@ -302,10 +293,7 @@ async function abortMultipartUpload(key: string, uploadId: string) {
 /**
  * Main function to handle multipart upload of a file with improved error handling
  */
-export async function multipartUpload(
-  file: File,
-  onProgress?: (percent: number) => void
-) {
+export async function multipartUpload(file: File, onProgress?: (percent: number) => void) {
   let uploadId: string | undefined;
   let key: string | undefined;
 
@@ -332,8 +320,7 @@ export async function multipartUpload(
     console.error('Multipart upload failed:', error);
 
     // If the error is from a part upload, provide more context
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
     // If we have uploadId and key, attempt to abort the upload
     if (uploadId && key) {

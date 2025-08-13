@@ -11,11 +11,7 @@ import { useRouter } from 'next/navigation';
 export function UploadContainer() {
   const [files, setFiles] = useState<File | null>(null);
   const router = useRouter();
-  const {
-    mutate: uploadFile,
-    uploadProgress,
-    uploadStatus,
-  } = useUploadFileMutation();
+  const { mutate: uploadFile, uploadProgress, uploadStatus } = useUploadFileMutation();
 
   const handleSubmit = async (formData: UploadFileSchema) => {
     // Here you would implement the actual upload logic
@@ -39,12 +35,11 @@ export function UploadContainer() {
       {
         onSuccess: (data) => {
           toast.success('Upload successful!', {
-            description:
-              'Your files have been uploaded and are now available for sharing.',
+            description: 'Your files have been uploaded and are now available for sharing.',
           });
           if (data) router.push(`/file/${data.data.id}`);
         },
-      }
+      },
     );
 
     // Clear files after successful upload
@@ -52,7 +47,7 @@ export function UploadContainer() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className='space-y-8'>
       <FileUploadZone file={files} onFileChange={setFiles} />
       <UploadForm
         file={files}

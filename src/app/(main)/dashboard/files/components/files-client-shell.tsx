@@ -78,11 +78,8 @@ export function FilesClientShell() {
   };
 
   const filteredFiles = getCurrentFolderContents().filter((file) => {
-    const matchesSearch = file.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesFilter =
-      filterBy === 'all' || file.type === filterBy || file.status === filterBy;
+    const matchesSearch = file.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = filterBy === 'all' || file.type === filterBy || file.status === filterBy;
     return matchesSearch && matchesFilter;
   });
 
@@ -91,9 +88,7 @@ export function FilesClientShell() {
       case 'name':
         return a.name.localeCompare(b.name);
       case 'date':
-        return (
-          new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
-        );
+        return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime();
       case 'size':
         if (!a.size || !b.size) return 0;
         return Number.parseFloat(a.size) - Number.parseFloat(b.size);
@@ -106,36 +101,29 @@ export function FilesClientShell() {
 
   if (loading) {
     return (
-      <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[50vh]">
-        <div className="text-center space-y-2">
+      <div className='p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[50vh]'>
+        <div className='text-center space-y-2'>
           <svg
-            className="h-8 w-8 animate-spin mx-auto text-muted-foreground"
-            fill="none"
-            viewBox="0 0 24 24"
+            className='h-8 w-8 animate-spin mx-auto text-muted-foreground'
+            fill='none'
+            viewBox='0 0 24 24'
           >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-              opacity="0.25"
-            />
+            <circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' opacity='0.25' />
             <path
-              d="M4 12a8 8 0 018-8"
-              stroke="currentColor"
-              strokeWidth="4"
-              strokeLinecap="round"
+              d='M4 12a8 8 0 018-8'
+              stroke='currentColor'
+              strokeWidth='4'
+              strokeLinecap='round'
             />
           </svg>
-          <p className="text-muted-foreground">Loading files...</p>
+          <p className='text-muted-foreground'>Loading files...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+    <div className='p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6'>
       <FilesHeaderSection
         onReset={resetFileSystem}
         onCreateFolder={() => setCreateFolderModalOpen(true)}
@@ -162,11 +150,7 @@ export function FilesClientShell() {
           onUpload={() => {}}
         />
       ) : (
-        <FilesGridSection
-          files={sortedFiles}
-          viewMode={viewMode}
-          onFileAction={handleFileAction}
-        />
+        <FilesGridSection files={sortedFiles} viewMode={viewMode} onFileAction={handleFileAction} />
       )}
       {/* Modals */}
       <FileEditModal

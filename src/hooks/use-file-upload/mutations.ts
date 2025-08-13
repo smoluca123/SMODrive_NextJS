@@ -1,8 +1,5 @@
 import { useAuth } from '@/hooks/use-auth';
-import {
-  multipartUpload,
-  uploadSimpleFile,
-} from '@/hooks/use-file-upload/actions/actions';
+import { multipartUpload, uploadSimpleFile } from '@/hooks/use-file-upload/actions/actions';
 import { FILE_SIZE_THRESHOLD } from '@/lib/constant/contants';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -42,7 +39,7 @@ export const useUploadFileMutation = () => {
           },
           (percent) => {
             setUploadProgress(percent);
-          }
+          },
         );
       }
     } catch (error) {

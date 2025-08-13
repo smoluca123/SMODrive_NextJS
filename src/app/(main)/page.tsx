@@ -8,7 +8,7 @@ import { FloatingChatButton } from './components/floating-chat-button';
 
 export default function HomePage() {
   return (
-    <div className="h-full overflow-y-auto">
+    <div className='h-full overflow-y-auto'>
       <HeroSection />
       <FeaturesSection />
       <TestimonialsSection />

@@ -12,24 +12,16 @@ interface SidebarContentProps {
   isMobile?: boolean;
 }
 
-export function SidebarContent({
-  collapsed,
-  onToggle,
-  isMobile = false,
-}: SidebarContentProps) {
+export function SidebarContent({ collapsed, onToggle, isMobile = false }: SidebarContentProps) {
   return (
     <div
       className={cn(
         'flex flex-col h-full bg-card border-r transition-all duration-300',
         !isMobile && (collapsed ? 'w-16' : 'w-64'),
-        isMobile && 'w-full'
+        isMobile && 'w-full',
       )}
     >
-      <SidebarHeader
-        collapsed={collapsed}
-        onToggle={onToggle}
-        isMobile={isMobile}
-      />
+      <SidebarHeader collapsed={collapsed} onToggle={onToggle} isMobile={isMobile} />
       <SidebarUserProfile collapsed={collapsed} isMobile={isMobile} />
       <SidebarNavigation collapsed={collapsed} isMobile={isMobile} />
       <SidebarFooter collapsed={collapsed} isMobile={isMobile} />

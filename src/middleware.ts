@@ -11,14 +11,10 @@ export default async function middleware(request: NextRequest) {
 
   // Define protected routes
   const protectedPaths = ['/dashboard', '/settings', '/upload'];
-  const isProtectedPath = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
+  const isProtectedPath = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path));
   // Define authentication routes
   const authPaths = ['/login', '/register', '/forgot-password'];
-  const isAuthPath = authPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
+  const isAuthPath = authPaths.some((path) => request.nextUrl.pathname.startsWith(path));
   // Redirect authenticated users away from auth pages
   if (isAuthenticated && isAuthPath) {
     return NextResponse.redirect(new URL('/dashboard', request.url));

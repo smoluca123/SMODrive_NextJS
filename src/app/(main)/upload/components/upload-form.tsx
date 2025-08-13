@@ -7,19 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { UploadStatus } from '@/hooks/use-file-upload/mutations';
-import {
-  uploadFileSchema,
-  UploadFileSchema,
-} from '@/lib/zod-schemas/upload-file.schema';
+import { uploadFileSchema, UploadFileSchema } from '@/lib/zod-schemas/upload-file.schema';
 import InputTags from '@/components/ui/input-tags';
 import { Tag } from 'emblor';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,12 +32,7 @@ interface UploadFormProps {
   uploadStatus: UploadStatus;
 }
 
-export function UploadForm({
-  file,
-  onSubmit,
-  uploadProgress,
-  uploadStatus,
-}: UploadFormProps) {
+export function UploadForm({ file, onSubmit, uploadProgress, uploadStatus }: UploadFormProps) {
   const form = useForm<UploadFileSchema>({
     defaultValues: {
       description: '',
@@ -90,15 +76,14 @@ export function UploadForm({
       form.reset();
     } catch {
       toast.error('Upload failed', {
-        description:
-          'There was an error uploading your files. Please try again.',
+        description: 'There was an error uploading your files. Please try again.',
       });
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
         {/* File Information */}
         <Card>
           <CardHeader>
@@ -107,17 +92,17 @@ export function UploadForm({
               Provide details about your files to help users find them
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className='space-y-6'>
             <FormField
               control={form.control}
-              name="description"
+              name='description'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      id="description"
-                      placeholder="Describe your files, what they contain, and how they can be used..."
+                      id='description'
+                      placeholder='Describe your files, what they contain, and how they can be used...'
                       rows={4}
                       {...field}
                     />
@@ -142,8 +127,8 @@ export function UploadForm({
             />
           </div> */}
 
-            <div className="space-y-2">
-              <Label htmlFor="tags">Tags</Label>
+            <div className='space-y-2'>
+              <Label htmlFor='tags'>Tags</Label>
               {/* <Input
               id="tags"
               placeholder="Enter tags separated by commas (e.g., design, template, ui)"
@@ -158,11 +143,11 @@ export function UploadForm({
                   console.log(tags);
                   form.setValue('tags', tags as Tag[]);
                 }}
-                placeholder="Add a tag"
+                placeholder='Add a tag'
                 activeTagIndex={null}
                 setActiveTagIndex={() => {}}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className='text-xs text-muted-foreground'>
                 Tags help users discover your content. Use relevant keywords.
               </p>
             </div>
@@ -174,41 +159,37 @@ export function UploadForm({
           <CardHeader>
             <CardTitle>Privacy & Terms</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center space-x-2">
+          <CardContent className='space-y-6'>
+            <div className='flex items-center space-x-2'>
               <Checkbox
-                id="public"
+                id='public'
                 checked={isPublic}
-                onCheckedChange={(checked) =>
-                  form.setValue('isPublic', checked as boolean)
-                }
+                onCheckedChange={(checked) => form.setValue('isPublic', checked as boolean)}
               />
-              <Label htmlFor="public" className="text-sm">
+              <Label htmlFor='public' className='text-sm'>
                 Make this file public (recommended for earning)
               </Label>
             </div>
 
-            <div className="flex flex-col gap-x-4 md:flex-row ">
-              <div className="flex items-start space-x-2">
+            <div className='flex flex-col gap-x-4 md:flex-row '>
+              <div className='flex items-start space-x-2'>
                 <Checkbox
-                  id="terms"
+                  id='terms'
                   checked={agreeTerms}
-                  onCheckedChange={(checked) =>
-                    form.setValue('agreeTerms', checked as boolean)
-                  }
+                  onCheckedChange={(checked) => form.setValue('agreeTerms', checked as boolean)}
                   required
                 />
-                <Label htmlFor="terms" className="text-sm leading-relaxed">
-                  I confirm that I have the rights to upload and share these
-                  files, and I agree to the{' '}
+                <Label htmlFor='terms' className='text-sm leading-relaxed'>
+                  I confirm that I have the rights to upload and share these files, and I agree to
+                  the{' '}
                 </Label>
               </div>
-              <div className="text-sm leading-relaxed ">
-                <Link href="/terms" className="text-primary hover:underline">
+              <div className='text-sm leading-relaxed '>
+                <Link href='/terms' className='text-primary hover:underline'>
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-primary hover:underline">
+                <Link href='/privacy' className='text-primary hover:underline'>
                   Privacy Policy
                 </Link>
               </div>
@@ -216,34 +197,30 @@ export function UploadForm({
 
             {/* Upload Progress */}
             {uploadStatus === 'uploading' && (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
-                    Uploading files...
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {uploadProgress}%
-                  </span>
+              <div className='space-y-3'>
+                <div className='flex items-center justify-between'>
+                  <span className='text-sm font-medium'>Uploading files...</span>
+                  <span className='text-sm text-muted-foreground'>{uploadProgress}%</span>
                 </div>
-                <Progress value={uploadProgress} className="h-2" />
+                <Progress value={uploadProgress} className='h-2' />
               </div>
             )}
 
             {/* Submit Button */}
             <Button
-              type="submit"
-              size="lg"
-              className="w-full rounded-2xl"
+              type='submit'
+              size='lg'
+              className='w-full rounded-2xl'
               disabled={uploadStatus === 'uploading' || !file || !agreeTerms}
             >
               {uploadStatus === 'uploading' ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2'></div>
                   Uploading...
                 </>
               ) : (
                 <>
-                  <Upload className="mr-2 h-5 w-5" />
+                  <Upload className='mr-2 h-5 w-5' />
                   Upload Files
                 </>
               )}

@@ -5,6 +5,4 @@ type FileDetailContextType = {
   file: IFileDataType;
 };
 
-export const FileDetailContext = createContext<FileDetailContextType | null>(
-  null
-);
+export const FileDetailContext = createContext<FileDetailContextType | null>(null);

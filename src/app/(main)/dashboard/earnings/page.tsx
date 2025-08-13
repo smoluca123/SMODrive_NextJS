@@ -62,12 +62,12 @@ export default function EarningsPage() {
   ];
 
   return (
-    <div className="p-8 space-y-8">
+    <div className='p-8 space-y-8'>
       <EarningsHeaderSection />
 
       <EarningsOverviewGrid earningsData={earningsData} />
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className='grid lg:grid-cols-3 gap-8'>
         <RevenueChartSection />
         <PayoutInfoSection />
       </div>

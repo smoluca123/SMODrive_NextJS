@@ -15,8 +15,7 @@ import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
-type UserType = IUserWithStatsAndSubscriptionDataType &
-  IUserDataWithAccessTokenType;
+type UserType = IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType;
 
 interface AuthProviderProps {
   // initialUser: UserType | null;

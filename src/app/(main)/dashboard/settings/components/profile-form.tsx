@@ -1,11 +1,5 @@
 'use client';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -51,8 +45,7 @@ export function ProfileForm() {
     mode: 'onTouched',
   });
 
-  const { mutate: updateUserInfomation, isPending } =
-    useUpdateUserDataMutation();
+  const { mutate: updateUserInfomation, isPending } = useUpdateUserDataMutation();
 
   const handleSubmit = (value: UpdateUserInfomationValues) => {
     updateUserInfomation(value, {
@@ -77,67 +70,60 @@ export function ProfileForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span className="inline-block">
-            <svg width="20" height="20" fill="none">
+        <CardTitle className='flex items-center gap-2'>
+          <span className='inline-block'>
+            <svg width='20' height='20' fill='none'>
               <path
-                d="M10 10a4 4 0 100-8 4 4 0 000 8zM2 18a8 8 0 1116 0H2z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d='M10 10a4 4 0 100-8 4 4 0 000 8zM2 18a8 8 0 1116 0H2z'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
               />
             </svg>
           </span>
           Profile Information
         </CardTitle>
-        <CardDescription>
-          Update your personal information and profile details
-        </CardDescription>
+        <CardDescription>Update your personal information and profile details</CardDescription>
       </CardHeader>
       <CardContent>
         {user && (
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
               {/* User avatar */}
-              <div className="flex items-center space-x-4">
-                <Avatar className="h-20 w-20">
+              <div className='flex items-center space-x-4'>
+                <Avatar className='h-20 w-20'>
                   <AvatarImage src={user.avatar || '/placeholder.png'} />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
-                <div className="space-y-2">
+                <div className='space-y-2'>
                   <Button
                     onClick={() => setUpdateAvatarOpen(true)}
-                    type="button"
-                    variant="outline"
-                    size="sm"
+                    type='button'
+                    variant='outline'
+                    size='sm'
                   >
-                    <Camera className="h-4 w-4 mr-2" />
+                    <Camera className='h-4 w-4 mr-2' />
                     Change Photo
                   </Button>
                   <UpdateAvatarDialog
                     onClose={() => setUpdateAvatarOpen(false)}
                     isOpen={updateAvatarDialogOpen}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    JPG, PNG or GIF. Max size 2MB.
-                  </p>
+                  <p className='text-xs text-muted-foreground'>JPG, PNG or GIF. Max size 2MB.</p>
                 </div>
               </div>
 
               {/* Frist name / last name */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className='grid md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name='firstName'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="First name" {...field} />
+                        <Input {...field} placeholder='First name' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -145,12 +131,12 @@ export function ProfileForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name='lastName'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Last Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Last name" {...field} />
+                        <Input {...field} placeholder='Last name' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -161,12 +147,12 @@ export function ProfileForm() {
               {/* Email */}
               <FormField
                 control={form.control}
-                name="phone"
+                name='phone'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone number</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Phone number" {...field} />
+                      <Input {...field} placeholder='Phone number' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,15 +162,12 @@ export function ProfileForm() {
               {/* Bio */}
               <FormField
                 control={form.control}
-                name="bio"
+                name='bio'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Bio</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Tell us about yourself..."
-                      />
+                      <Textarea {...field} placeholder='Tell us about yourself...' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,12 +177,12 @@ export function ProfileForm() {
               {/* website */}
               <FormField
                 control={form.control}
-                name="website"
+                name='website'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="https://yourwebsite.com" />
+                      <Input {...field} placeholder='https://yourwebsite.com' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

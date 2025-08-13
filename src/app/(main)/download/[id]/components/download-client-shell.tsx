@@ -18,10 +18,7 @@ interface DownloadClientShellProps {
   relatedFiles: RelatedFile[];
 }
 
-export function DownloadClientShell({
-  file,
-  relatedFiles,
-}: DownloadClientShellProps) {
+export function DownloadClientShell({ file, relatedFiles }: DownloadClientShellProps) {
   const [isReady, setIsReady] = useState(false);
   if (!isReady) {
     return (
@@ -33,9 +30,9 @@ export function DownloadClientShell({
     );
   }
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto space-y-8">
+    <div className='min-h-screen bg-background'>
+      <div className='container mx-auto px-4 py-12'>
+        <div className='max-w-4xl mx-auto space-y-8'>
           <DownloadInfo file={file} />
           <RelatedFiles files={relatedFiles} />
           <DownloadCTA />

@@ -1,8 +1,5 @@
 'use server';
-import {
-  completeDownloadSessionAPI,
-  updateDownloadSessionAPI,
-} from '@/lib/apis/storage-apis';
+import { completeDownloadSessionAPI, updateDownloadSessionAPI } from '@/lib/apis/storage-apis';
 import { UpdateDownloadSessionSchema } from '@/lib/zod-schemas/storage-api.schemas';
 
 export const completeDownloadSession = async (id: string) => {
@@ -14,10 +11,7 @@ export const completeDownloadSession = async (id: string) => {
   }
 };
 
-export const updateDownloadSession = async (
-  id: string,
-  payload: UpdateDownloadSessionSchema
-) => {
+export const updateDownloadSession = async (id: string, payload: UpdateDownloadSessionSchema) => {
   try {
     const response = await updateDownloadSessionAPI({ id, payload });
     return response;

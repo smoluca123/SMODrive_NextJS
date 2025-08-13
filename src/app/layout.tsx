@@ -54,18 +54,13 @@ export default async function RootLayout({
   const userId = cookieStore.get('userId');
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
-      >
-        <AuthProvider
-          accessToken={accessToken?.value || ''}
-          userId={userId?.value || ''}
-        >
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
+        <AuthProvider accessToken={accessToken?.value || ''} userId={userId?.value || ''}>
           <ReactQueryProvider>
             <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
+              attribute='class'
+              defaultTheme='system'
               enableSystem
               disableTransitionOnChange={true}
             >
