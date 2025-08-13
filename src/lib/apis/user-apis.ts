@@ -4,11 +4,13 @@ import { env } from '@/lib/env.config';
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import {
+  IUserDataType,
   IUserDataWithAccessTokenType,
   IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
 } from '@/lib/types/interfaces/user.interfaces';
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
+import { UpdateUserInfomationValues } from '@/lib/zod-schemas/user-schema';
 import ky from 'ky';
 
 export const signInApi = async (
@@ -203,6 +205,26 @@ export const refreshAccessTokenApi = async (payload?: { accessToken?: string }) 
         IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType & { accessToken: string }>
       >();
     return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const updateUserInfomationAPI = async (userData: UpdateUserInfomationValues) => {
+  try {
+    const data = await kyInstance
+      .patch(`user/me`, {
+        json: userData,
+      })
+      .json<IApiResponseWrapperType<IUserDataType>>();
+
+    return data;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response) {
