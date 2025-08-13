@@ -8,23 +8,71 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera } from 'lucide-react';
-import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
+import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { useEffect, useState } from 'react';
+import {
+  updateUserInfomationSchema,
+  UpdateUserInfomationValues,
+} from '@/lib/zod-schemas/user-schema';
+import ProfileFormSkeleton from './profile-form-skeleton';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { UpdateAvatarDialog } from '@/components/update-avatar-dialog';
+import { useUpdateUserDataMutation } from '@/components/update-avatar-dialog/mutations';
+import LoadingButton from '@/components/ui/LoadingButton';
+import { toast } from 'sonner';
 
 export function ProfileForm() {
   const { user } = useAuth();
-  const [firstName, setFirstName] = useState(user?.firstName || '');
-  const [lastName, setLastName] = useState(user?.lastName || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [bio, setBio] = useState(
-    'Digital creator passionate about design and technology.'
-  );
-  const [website, setWebsite] = useState('');
-  // Avatar upload logic có thể bổ sung sau
+
+  const [updateAvatarDialogOpen, setUpdateAvatarOpen] = useState(false);
+
+  //react hook fomr
+  const form = useForm<UpdateUserInfomationValues>({
+    defaultValues: {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      phone: '',
+      bio: '',
+      website: '',
+    },
+    resolver: zodResolver(updateUserInfomationSchema),
+    mode: 'onTouched',
+  });
+
+  const { mutate: updateUserInfomation, isPending } =
+    useUpdateUserDataMutation();
+
+  const handleSubmit = (value: UpdateUserInfomationValues) => {
+    updateUserInfomation(value, {
+      onSuccess: (data) => {
+        toast.success(data.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  };
+
+  // render form values
+  useEffect(() => {
+    if (!user) return;
+    form.setValue('phone', '');
+    form.setValue('firstName', user.firstName);
+    form.setValue('lastName', user.lastName);
+    form.setValue('bio', '');
+  }, [user, form]);
 
   return (
     <Card>
@@ -47,68 +95,121 @@ export function ProfileForm() {
           Update your personal information and profile details
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src="/placeholder.png" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-          <div className="space-y-2">
-            <Button variant="outline" size="sm">
-              <Camera className="h-4 w-4 mr-2" />
-              Change Photo
-            </Button>
-            <p className="text-xs text-muted-foreground">
-              JPG, PNG or GIF. Max size 2MB.
-            </p>
-          </div>
-        </div>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            placeholder="Tell us about yourself..."
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="website">Website</Label>
-          <Input
-            id="website"
-            placeholder="https://yourwebsite.com"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div>
-        <Button>Save Changes</Button>
+      <CardContent>
+        {user && (
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              {/* User avatar */}
+              <div className="flex items-center space-x-4">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src={user.avatar || '/placeholder.png'} />
+                  <AvatarFallback>JD</AvatarFallback>
+                </Avatar>
+                <div className="space-y-2">
+                  <Button
+                    onClick={() => setUpdateAvatarOpen(true)}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Camera className="h-4 w-4 mr-2" />
+                    Change Photo
+                  </Button>
+                  <UpdateAvatarDialog
+                    onClose={() => setUpdateAvatarOpen(false)}
+                    isOpen={updateAvatarDialogOpen}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    JPG, PNG or GIF. Max size 2MB.
+                  </p>
+                </div>
+              </div>
+
+              {/* Frist name / last name */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="First name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Last name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone number</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Phone number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Bio */}
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Tell us about yourself..."
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* website */}
+              <FormField
+                control={form.control}
+                name="website"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Website</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="https://yourwebsite.com" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <LoadingButton loading={isPending}>Save Changes</LoadingButton>
+            </form>
+          </Form>
+        )}
+        {!user && <ProfileFormSkeleton />}
       </CardContent>
     </Card>
   );
