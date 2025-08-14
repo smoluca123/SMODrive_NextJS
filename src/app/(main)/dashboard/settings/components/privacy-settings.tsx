@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Shield } from 'lucide-react';
 import { useState } from 'react';
-import ChangePasswordDialog from '@/app/(main)/dashboard/settings/components/change-password-dialog';
+import ChangePasswordDialog from '@/components/change-password-dialog';
 
 export function PrivacySettings() {
   const [profileVisible, setProfileVisible] = useState(true);

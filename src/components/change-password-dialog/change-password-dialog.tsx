@@ -19,8 +19,9 @@ import { useForm } from 'react-hook-form';
 import PasswordInput from '@/components/ui/password-input';
 import { changePasswordSchema, ChangePasswordValues } from '@/lib/zod-schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useChangeUserPasswordMutation } from '@/app/(main)/dashboard/settings/components/mutations';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import { changePassword } from '@/components/change-password-dialog/actions/actions';
 
 export default function ChangePasswordDialog({
   open,
@@ -29,6 +30,8 @@ export default function ChangePasswordDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   // Khởi tạo form với react-hook-form và zod resolver
   const form = useForm<ChangePasswordValues>({
     defaultValues: {
@@ -40,9 +43,6 @@ export default function ChangePasswordDialog({
     mode: 'onTouched',
   });
 
-  // Mutation để đổi mật khẩu
-  const { mutate: changeUserPasswordMutate, isPending } = useChangeUserPasswordMutation();
-
   // Đóng dialog và reset form khi đóng
   const handleCloseDialog = (isOpen: boolean) => {
     if (!isOpen) {
@@ -52,16 +52,23 @@ export default function ChangePasswordDialog({
   };
 
   // Xử lý submit form đổi mật khẩu
-  const onSubmit = (values: ChangePasswordValues) => {
-    changeUserPasswordMutate(values, {
-      onSuccess: (data) => {
-        toast.success(data.message);
-        handleCloseDialog(false);
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    });
+  const onSubmit = async (values: ChangePasswordValues) => {
+    setIsLoading(true);
+    try {
+      const res = await changePassword(values);
+      if (res.success) {
+        toast.success(res.data.message);
+        onClose();
+      } else {
+        throw new Error(res.message);
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,7 +86,7 @@ export default function ChangePasswordDialog({
                 <FormItem>
                   <FormLabel>Current Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} placeholder='Enter your current password' />
+                    <PasswordInput showIcon {...field} placeholder='Enter your current password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,7 +117,7 @@ export default function ChangePasswordDialog({
                 <FormItem>
                   <FormLabel>Confirm New Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} placeholder='Re-enter your new password' />
+                    <PasswordInput showIcon {...field} placeholder='Re-enter your new password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,7 +128,7 @@ export default function ChangePasswordDialog({
               <Button type='button' variant='outline' onClick={onClose}>
                 Cancel
               </Button>
-              <LoadingButton loading={isPending} type='submit'>
+              <LoadingButton loading={isLoading} type='submit'>
                 Change Password
               </LoadingButton>
             </DialogFooter>

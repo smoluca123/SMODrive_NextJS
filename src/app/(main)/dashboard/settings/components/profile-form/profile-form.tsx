@@ -20,12 +20,12 @@ import {
   updateUserInfomationSchema,
   UpdateUserInfomationValues,
 } from '@/lib/zod-schemas/user-schema';
-import ProfileFormSkeleton from './profile-form-skeleton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateAvatarDialog } from '@/components/update-avatar-dialog';
 import LoadingButton from '@/components/ui/LoadingButton';
 import { toast } from 'sonner';
-import { useUpdateUserDataMutation } from '@/app/(main)/dashboard/settings/components/mutations';
+import { ProfileFormSkeleton } from '@/app/(main)/dashboard/settings/components/profile-form';
+import { useUpdateUserDataMutation } from '@/app/(main)/dashboard/settings/components/profile-form/mutations';
 
 export function ProfileForm() {
   const { user, updateAuthState } = useAuth();
