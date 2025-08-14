@@ -3,7 +3,6 @@ import { env } from '@/lib/env.config';
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import {
-  IUserDataType,
   IUserDataWithAccessTokenType,
   IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
@@ -223,7 +222,7 @@ export const updateUserInfomationAPI = async (userData: UpdateUserInfomationValu
       .patch(`user/me`, {
         json: userData,
       })
-      .json<IApiResponseWrapperType<IUserDataType>>();
+      .json<IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType>>();
 
     return data;
 

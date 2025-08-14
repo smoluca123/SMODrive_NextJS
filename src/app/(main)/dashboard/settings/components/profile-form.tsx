@@ -23,20 +23,20 @@ import {
 import ProfileFormSkeleton from './profile-form-skeleton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateAvatarDialog } from '@/components/update-avatar-dialog';
-import { useUpdateUserDataMutation } from '@/components/update-avatar-dialog/mutations';
 import LoadingButton from '@/components/ui/LoadingButton';
 import { toast } from 'sonner';
+import { useUpdateUserDataMutation } from '@/app/(main)/dashboard/settings/components/mutations';
 
 export function ProfileForm() {
-  const { user } = useAuth();
+  const { user, updateAuthState } = useAuth();
 
   const [updateAvatarDialogOpen, setUpdateAvatarOpen] = useState(false);
 
   //react hook fomr
   const form = useForm<UpdateUserInfomationValues>({
     defaultValues: {
-      firstName: user?.firstName,
-      lastName: user?.lastName,
+      firstName: '',
+      lastName: '',
       phone: '',
       bio: '',
       website: '',
@@ -51,6 +51,7 @@ export function ProfileForm() {
     updateUserInfomation(value, {
       onSuccess: (data) => {
         toast.success(data.message);
+        updateAuthState(data.data);
       },
       onError: (error) => {
         toast.error(error.message);
@@ -61,10 +62,11 @@ export function ProfileForm() {
   // render form values
   useEffect(() => {
     if (!user) return;
-    form.setValue('phone', '');
+    form.setValue('phone', user.phone);
     form.setValue('firstName', user.firstName);
     form.setValue('lastName', user.lastName);
-    form.setValue('bio', '');
+    form.setValue('bio', user.bio);
+    form.setValue('website', user.website);
   }, [user, form]);
 
   return (
@@ -123,7 +125,7 @@ export function ProfileForm() {
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder='First name' {...field} />
+                        <Input {...field} placeholder='First name' />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

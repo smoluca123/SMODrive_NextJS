@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Shield } from 'lucide-react';
 import { useState } from 'react';
+import ChangePasswordDialog from '@/app/(main)/dashboard/settings/components/change-password-dialog';
 
 export function PrivacySettings() {
   const [profileVisible, setProfileVisible] = useState(true);
   const [showEarnings, setShowEarnings] = useState(false);
+  const [changePasswordDialogOpen, setChangePasswordDialogOpne] = useState(false);
 
   return (
     <Card>
@@ -53,9 +55,17 @@ export function PrivacySettings() {
         </div>
         <Separator />
         <div className='space-y-2'>
-          <Button variant='outline' className='w-full bg-transparent'>
+          <Button
+            onClick={() => setChangePasswordDialogOpne(true)}
+            variant='outline'
+            className='w-full bg-transparent'
+          >
             Change Password
           </Button>
+          <ChangePasswordDialog
+            onClose={() => setChangePasswordDialogOpne(false)}
+            open={changePasswordDialogOpen}
+          />
           <Button variant='outline' className='w-full bg-transparent'>
             Download My Data
           </Button>
