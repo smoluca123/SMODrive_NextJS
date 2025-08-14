@@ -45,6 +45,7 @@ export interface PlanDetails {
   description: string;
   monthlyPrice: number;
   yearlyPrice: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any;
   color: string;
   features: readonly string[] | string[];

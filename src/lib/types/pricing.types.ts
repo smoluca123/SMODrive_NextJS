@@ -19,6 +19,7 @@ export interface Plan {
   monthlyPrice: number;
   yearlyPrice: number;
   badge: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any; // Lucide icon component
   color: string;
   bgColor: string;
