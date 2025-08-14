@@ -11,7 +11,7 @@ interface SidebarUserProfileProps {
 }
 
 export function SidebarUserProfile({ collapsed, isMobile = false }: SidebarUserProfileProps) {
-  const { isLoading, user } = useAuth();
+  const { session } = useAuth();
 
   return (
     <div
@@ -19,8 +19,8 @@ export function SidebarUserProfile({ collapsed, isMobile = false }: SidebarUserP
         'p-2 mx-auto': collapsed,
       })}
     >
-      {(isLoading || !user) && <SidebarUserProfileSkeleton />}
-      {!isLoading && user && (
+      {(session.isLoading || !session.user) && <SidebarUserProfileSkeleton collapsed={collapsed} />}
+      {!session.isLoading && session.user && (
         <div className='flex items-center space-x-3'>
           <Avatar className='h-10 w-10 flex-shrink-0'>
             <AvatarImage src='/placeholder.svg' alt='User' />
@@ -29,9 +29,9 @@ export function SidebarUserProfile({ collapsed, isMobile = false }: SidebarUserP
           {(!collapsed || isMobile) && (
             <div className='flex-1 min-w-0'>
               <p className='text-sm font-medium truncate'>
-                {user.firstName} {user.lastName}
+                {session.user.firstName} {session.user.lastName}
               </p>
-              <p className='text-xs text-muted-foreground truncate'>{user.email}</p>
+              <p className='text-xs text-muted-foreground truncate'>{session.user.email}</p>
             </div>
           )}
         </div>

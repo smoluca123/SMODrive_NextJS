@@ -7,6 +7,7 @@ import { Header } from '@/components/header';
 import ReactQueryProvider from '@/components/react-query-provider';
 import AuthProvider from '@/components/auth-provider';
 import { cookies } from 'next/headers';
+import { AdBlockerNotice } from '@/components/ads/ad-blocker-notice';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -64,6 +65,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange={true}
             >
+              <AdBlockerNotice />
               <Header />
               {children}
               <Toaster />

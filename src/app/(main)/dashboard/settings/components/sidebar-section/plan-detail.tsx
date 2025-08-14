@@ -6,14 +6,16 @@ import { SubscriptionBadge } from '@/components/subscription-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { useGetMyStats } from '@/hooks/querys/user.querys';
 import { useAuth } from '@/hooks/use-auth';
 import { formatFileSize } from '@/lib/utils';
 import { Star } from 'lucide-react';
 
 export function PlanDetail() {
-  const { user, isLoading } = useAuth();
-  const subscriptionExpiryDate = user?.subscription.endDate
-    ? new Date(user.subscription.endDate).toLocaleDateString('en-US', {
+  const { session } = useAuth();
+  const { data: stats, isFetching: isStatsFetching } = useGetMyStats();
+  const subscriptionExpiryDate = session.user?.subscription.endDate
+    ? new Date(session.user.subscription.endDate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -21,8 +23,8 @@ export function PlanDetail() {
     : 'Never';
   return (
     <>
-      {(isLoading || !user) && <SidebarSectionSkeleton />}
-      {user && !isLoading && (
+      {(session.isLoading || !session.user || isStatsFetching) && <SidebarSectionSkeleton />}
+      {session.user && stats && !session.isLoading && !isStatsFetching && (
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
@@ -34,19 +36,19 @@ export function PlanDetail() {
             <div className='space-y-2'>
               <Label>Plan</Label>
               <CardContentListItem label='Subscription:'>
-                <SubscriptionBadge planName={user.subscription.plan.name} />
+                <SubscriptionBadge planName={session.user.subscription.plan.name} />
               </CardContentListItem>
               <CardContentListItem label='Subscription Expiry:'>
                 <span className='text-sm font-medium'>{subscriptionExpiryDate}</span>
               </CardContentListItem>
               <CardContentListItem label='Storage Limit:'>
                 <span className='text-sm font-medium'>
-                  {formatFileSize(Number(user.subscription.plan.storageLimit))}
+                  {formatFileSize(Number(session.user.subscription.plan.storageLimit))}
                 </span>
               </CardContentListItem>
               <CardContentListItem label='Max File Size:'>
                 <span className='text-sm font-medium'>
-                  {formatFileSize(Number(user.subscription.plan.maxFileSize))}
+                  {formatFileSize(Number(session.user.subscription.plan.maxFileSize))}
                 </span>
               </CardContentListItem>
             </div>
@@ -56,8 +58,8 @@ export function PlanDetail() {
               <div className='space-y-2'>
                 <CardContentListItem label='Storage Used:'>
                   <span className='text-sm font-medium'>
-                    {formatFileSize(Number(user.userStats.totalStorageUsed))} /{' '}
-                    {formatFileSize(Number(user.subscription.plan.storageLimit))}
+                    {formatFileSize(Number(stats.totalStorageUsed))} /{' '}
+                    {formatFileSize(Number(session.user.subscription.plan.storageLimit))}
                   </span>
                 </CardContentListItem>
                 <StorageUsedProgress />

@@ -1,14 +1,15 @@
 import { Progress } from '@/components/ui/progress';
+import { useGetMyStats } from '@/hooks/querys/user.querys';
 import { useAuth } from '@/hooks/use-auth';
 
 export function StorageUsedProgress() {
-  const { user } = useAuth();
-  if (!user) return null;
+  const { session } = useAuth();
+  const { data: stats } = useGetMyStats();
+  if (!session.user || !stats) return null;
   return (
     <Progress
       value={
-        (Number(user.userStats.totalStorageUsed) / Number(user.subscription.plan.storageLimit)) *
-        100
+        (Number(stats.totalStorageUsed) / Number(session.user.subscription.plan.storageLimit)) * 100
       }
     />
   );

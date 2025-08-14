@@ -1,7 +1,7 @@
 'use client';
 import { DashboardStatsSkeletons } from '@/app/(main)/dashboard/components/dashboard-stats/dashboard-stats-skeletons';
-import { useGetMyStats } from '@/app/(main)/dashboard/components/dashboard-stats/querys';
 import { ResponsiveStatsGrid } from '@/components/responsive-stats-grid';
+import { useGetMyStats } from '@/hooks/querys/user.querys';
 import { formatCompactNumber, formatCurrencyNumber } from '@/lib/utils';
 import { DollarSign, Download, Eye, FileText } from 'lucide-react';
 

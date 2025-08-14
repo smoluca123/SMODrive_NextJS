@@ -1,38 +1,21 @@
 // src/context/AuthContext.tsx
 'use client';
 import { createContext } from 'react';
-import {
-  IUserDataWithAccessTokenType,
-  IUserWithStatsAndSubscriptionDataType,
-} from '@/lib/types/interfaces/user.interfaces';
+import { IUserWithSubscriptionDataType } from '@/lib/types/interfaces/user.interfaces';
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
+import { SessionType } from '@/components/auth-provider/auth-provider';
 
-type UserType = IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType;
+export type UserType = IUserWithSubscriptionDataType;
 
 type AuthContextType = {
-  isLoading: boolean;
+  session: SessionType;
   login: (credentials: LoginValues) => Promise<void>;
   logout: () => Promise<void>;
   register: (userData: RegisterValues) => Promise<void>;
-  error: string | null;
-  updateAuthState: (
-    newUser:
-      | IUserWithStatsAndSubscriptionDataType
-      | null
-      | ((
-          user: IUserWithStatsAndSubscriptionDataType | null,
-        ) => IUserWithStatsAndSubscriptionDataType | null),
+  updateSession: (
+    newSession: UserType | null | ((newSession: UserType | null) => UserType | null),
   ) => void;
-} & (
-  | {
-      user: UserType;
-      isAuthenticated: true;
-    }
-  | {
-      user: null;
-      isAuthenticated: false;
-    }
-);
+};
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

@@ -14,17 +14,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/use-auth';
 
 export function UserMenu() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { session, logout } = useAuth();
 
   return (
     <>
-      {isAuthenticated ? (
+      {session.isAuthenticated ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='ghost' className='relative h-8 w-8 rounded-full cursor-pointer'>
               <Avatar className='h-8 w-8'>
                 <AvatarImage src='/placeholder.png' alt='User' />
-                <AvatarFallback>{user.lastName}</AvatarFallback>
+                <AvatarFallback>{session.user.lastName}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>

@@ -26,7 +26,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import LoadingButton from '@/components/ui/LoadingButton';
 
 export function RegisterForm() {
-  const { register, isLoading, error } = useAuth();
+  const { register, session } = useAuth();
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [marketingEmails, setMarketingEmails] = useState(false);
 
@@ -74,9 +74,9 @@ export function RegisterForm() {
           </div>
         </div>
 
-        {error && (
+        {session.error && (
           <Alert variant='destructive' className='text-center'>
-            <AlertDescription className='justify-items-center'>{error}</AlertDescription>
+            <AlertDescription className='justify-items-center'>{session.error}</AlertDescription>
           </Alert>
         )}
 
@@ -207,14 +207,15 @@ export function RegisterForm() {
                   checked={agreeTerms}
                   onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
                   required
+                  tabIndex={-1}
                 />
                 <Label htmlFor='terms' className='text-sm leading-relaxed'>
                   I agree to the{' '}
-                  <Link href='/terms' className='text-primary hover:underline'>
+                  <Link href='/terms' className='text-primary hover:underline' tabIndex={-1}>
                     Terms of Service
                   </Link>{' '}
                   and{' '}
-                  <Link href='/privacy' className='text-primary hover:underline'>
+                  <Link href='/privacy' className='text-primary hover:underline' tabIndex={-1}>
                     Privacy Policy
                   </Link>
                 </Label>
@@ -225,6 +226,7 @@ export function RegisterForm() {
                   id='marketing'
                   checked={marketingEmails}
                   onCheckedChange={(checked) => setMarketingEmails(checked as boolean)}
+                  tabIndex={-1}
                 />
                 <Label htmlFor='marketing' className='text-sm leading-relaxed'>
                   I&apos;d like to receive product updates and marketing emails
@@ -235,7 +237,7 @@ export function RegisterForm() {
             <LoadingButton
               type='submit'
               className='w-full rounded-2xl'
-              loading={isLoading}
+              loading={session.isLoading}
               disabled={!agreeTerms || Object.keys(form.formState.errors).length > 0}
             >
               Create Account
