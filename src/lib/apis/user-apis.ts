@@ -124,15 +124,19 @@ export const getMeApi = async () => {
   }
 };
 
-export const getMyStatsApi = async () => {
+export const getStatsApi = async () => {
   try {
     const data = await kyInstance
       .get('user/stats')
       .json<IApiResponseWrapperType<IUserStatsAndUserDataType>>();
     return data;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error as string);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
   }
 };
 

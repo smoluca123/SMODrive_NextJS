@@ -4,14 +4,16 @@ import { SidebarSectionSkeleton } from '@/app/(main)/dashboard/settings/componen
 import { SubscriptionBadge } from '@/components/subscription-badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useGetMyStats } from '@/hooks/querys/user.querys';
 import { useAuth } from '@/hooks/use-auth';
 
 export function AccountStatus() {
-  const { user, isLoading } = useAuth();
+  const { session } = useAuth();
+  const { data: stats } = useGetMyStats();
   return (
     <>
-      {(isLoading || !user) && <SidebarSectionSkeleton />}
-      {user && !isLoading && (
+      {(session.isLoading || !session.user) && <SidebarSectionSkeleton />}
+      {session.user && (
         <Card>
           <CardHeader>
             <CardTitle>Account Status</CardTitle>
@@ -19,12 +21,12 @@ export function AccountStatus() {
           <CardContent className='space-y-4'>
             <div className='flex items-center justify-between'>
               <span className='text-sm'>Subscription</span>
-              <SubscriptionBadge planName={user.subscription.plan.name} />
+              <SubscriptionBadge planName={session.user.subscription.plan.name} />
             </div>
             <div className='flex items-center justify-between'>
               <span className='text-sm'>Member Since</span>
               <span className='text-sm font-medium'>
-                {user.createdAt.toLocaleDateString('en-US', {
+                {session.user.createdAt.toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -33,7 +35,7 @@ export function AccountStatus() {
             </div>
             <div className='flex items-center justify-between'>
               <span className='text-sm'>Files Uploaded</span>
-              <span className='text-sm font-medium'>{user.userStats.totalFilesUploaded}</span>
+              {stats && <span className='text-sm font-medium'>{stats.totalFilesUploaded}</span>}
             </div>
             <Button className='w-full'>Upgrade to Pro</Button>
           </CardContent>

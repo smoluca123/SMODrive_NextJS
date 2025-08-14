@@ -5,6 +5,7 @@ import { SidebarUserProfile } from './sidebar-user-profile';
 import { SidebarNavigation } from './sidebar-navigation';
 import { SidebarFooter } from './sidebar-footer';
 import { cn } from '@/lib/utils';
+import { SidebarStorageUsedProgress } from '@/components/responsive-sidebar/components/sidebar-storage-used-progress';
 
 interface SidebarContentProps {
   collapsed: boolean;
@@ -24,6 +25,7 @@ export function SidebarContent({ collapsed, onToggle, isMobile = false }: Sideba
       <SidebarHeader collapsed={collapsed} onToggle={onToggle} isMobile={isMobile} />
       <SidebarUserProfile collapsed={collapsed} isMobile={isMobile} />
       <SidebarNavigation collapsed={collapsed} isMobile={isMobile} />
+      <SidebarStorageUsedProgress />
       <SidebarFooter collapsed={collapsed} isMobile={isMobile} />
     </div>
   );

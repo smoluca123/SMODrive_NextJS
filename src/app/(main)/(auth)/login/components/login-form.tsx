@@ -25,7 +25,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import InputIcon from '@/components/ui/input-icon';
 
 export function LoginForm() {
-  const { login, isLoading, error } = useAuth();
+  const { login, session } = useAuth();
 
   const form = useForm<LoginValues>({
     defaultValues: {
@@ -63,9 +63,9 @@ export function LoginForm() {
           </div>
         </div>
 
-        {error && (
+        {session.error && (
           <Alert variant='destructive' className='text-center'>
-            <AlertDescription className='justify-items-center'>{error}</AlertDescription>
+            <AlertDescription className='justify-items-center'>{session.error}</AlertDescription>
           </Alert>
         )}
 
@@ -133,18 +133,22 @@ export function LoginForm() {
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-2'>
-                <Checkbox id='remember' />
+                <Checkbox id='remember' tabIndex={-1} />
                 <Label htmlFor='remember' className='text-sm'>
                   Remember me
                 </Label>
               </div>
-              <Link href='/forgot-password' className='text-sm text-primary hover:underline'>
+              <Link
+                href='/forgot-password'
+                className='text-sm text-primary hover:underline'
+                tabIndex={-1}
+              >
                 Forgot password?
               </Link>
             </div>
 
-            <LoadingButton type='submit' className='w-full rounded-2xl' loading={isLoading}>
-              {!isLoading && 'Sign In'}
+            <LoadingButton type='submit' className='w-full rounded-2xl' loading={session.isLoading}>
+              {!session.isLoading && 'Sign In'}
             </LoadingButton>
           </form>
         </Form>

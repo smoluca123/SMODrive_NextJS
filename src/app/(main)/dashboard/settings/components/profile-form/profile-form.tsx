@@ -28,7 +28,7 @@ import { ProfileFormSkeleton } from '@/app/(main)/dashboard/settings/components/
 import { useUpdateUserDataMutation } from '@/app/(main)/dashboard/settings/components/profile-form/mutations';
 
 export function ProfileForm() {
-  const { user, updateAuthState } = useAuth();
+  const { session, updateSession } = useAuth();
 
   const [updateAvatarDialogOpen, setUpdateAvatarOpen] = useState(false);
 
@@ -51,7 +51,7 @@ export function ProfileForm() {
     updateUserInfomation(value, {
       onSuccess: (data) => {
         toast.success(data.message);
-        updateAuthState(data.data);
+        updateSession(data.data);
       },
       onError: (error) => {
         toast.error(error.message);
@@ -61,13 +61,14 @@ export function ProfileForm() {
 
   // render form values
   useEffect(() => {
+    const { user } = session;
     if (!user) return;
     form.setValue('phone', user.phone);
     form.setValue('firstName', user.firstName);
     form.setValue('lastName', user.lastName);
     form.setValue('bio', user.bio);
     form.setValue('website', user.website);
-  }, [user, form]);
+  }, [session, form]);
 
   return (
     <Card>
@@ -89,13 +90,13 @@ export function ProfileForm() {
         <CardDescription>Update your personal information and profile details</CardDescription>
       </CardHeader>
       <CardContent>
-        {user && (
+        {session.user && (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
               {/* User avatar */}
               <div className='flex items-center space-x-4'>
                 <Avatar className='h-20 w-20'>
-                  <AvatarImage src={user.avatar || '/placeholder.png'} />
+                  <AvatarImage src={session.user.avatar || '/placeholder.png'} />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
                 <div className='space-y-2'>
@@ -194,7 +195,7 @@ export function ProfileForm() {
             </form>
           </Form>
         )}
-        {!user && <ProfileFormSkeleton />}
+        {session.isLoading && <ProfileFormSkeleton />}
       </CardContent>
     </Card>
   );

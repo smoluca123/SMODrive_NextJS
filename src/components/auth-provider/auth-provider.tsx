@@ -1,5 +1,5 @@
 'use client';
-import { AuthContext } from '@/context/auth-context';
+import { AuthContext, UserType } from '@/context/auth-context';
 import { deleteAuthCookie, setAuthCookie } from '@/lib/apis/auth-apis';
 import {
   refreshAccessTokenApi,
@@ -7,15 +7,9 @@ import {
   signUpApi,
   validateAccessTokenApi,
 } from '@/lib/apis/user-apis';
-import {
-  IUserDataWithAccessTokenType,
-  IUserWithStatsAndSubscriptionDataType,
-} from '@/lib/types/interfaces/user.interfaces';
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
-
-type UserType = IUserWithStatsAndSubscriptionDataType & IUserDataWithAccessTokenType;
 
 interface AuthProviderProps {
   // initialUser: UserType | null;
@@ -23,6 +17,17 @@ interface AuthProviderProps {
   accessToken: string;
   userId: string;
 }
+
+export type SessionType = { error: string | null; isLoading: boolean } & (
+  | {
+      isAuthenticated: true;
+      user: UserType;
+    }
+  | {
+      isAuthenticated: false;
+      user: null;
+    }
+);
 
 export default function AuthProvider({
   children,
@@ -35,20 +40,40 @@ export default function AuthProvider({
   // const validInitialUser = initialIsAuthenticated ? initialUser : null;
   // const validInitialIsAuthenticated = !!initialUser;
 
-  const [user, setUser] = useState<IUserWithStatsAndSubscriptionDataType | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [session, setSession] = useState<SessionType>({
+    isAuthenticated: false,
+    user: null,
+    isLoading: false,
+    error: null,
+  });
   const router = useRouter();
+
+  const setSessionLoading = (isLoading: boolean) => {
+    setSession((prev) => ({
+      ...prev,
+      isLoading,
+    }));
+  };
+
+  const setSessionError = (error: string | null) => {
+    setSession((prev) => ({
+      ...prev,
+      error,
+    }));
+  };
 
   // // Kiểm tra auth state khi component mount
   useEffect(() => {
     const checkAuth = async () => {
-      setIsLoading(true);
+      setSessionLoading(true);
       try {
         if (!accessToken || !userId) {
-          setUser(null);
-          setIsAuthenticated(false);
+          setSession({
+            isAuthenticated: false,
+            user: null,
+            isLoading: false,
+            error: null,
+          });
           return;
         }
         // Gọi API để kiểm tra token hiện tại
@@ -60,8 +85,12 @@ export default function AuthProvider({
             const res = await refreshAccessTokenApi({
               accessToken,
             });
-            setUser(res.data);
-            setIsAuthenticated(true);
+            setSession({
+              isAuthenticated: true,
+              user: res.data,
+              isLoading: false,
+              error: null,
+            });
             await setAuthCookie({
               accessToken: res.data.accessToken,
               userId,
@@ -69,8 +98,12 @@ export default function AuthProvider({
             return;
           } catch (error) {
             console.error('Error refreshing access token:', error);
-            setUser(null);
-            setIsAuthenticated(false);
+            setSession({
+              isAuthenticated: false,
+              user: null,
+              isLoading: false,
+              error: null,
+            });
             return;
           }
         }
@@ -81,8 +114,12 @@ export default function AuthProvider({
         //   updatedAt: Date.now(),
         // });
 
-        setUser(userData);
-        setIsAuthenticated(true);
+        setSession({
+          error: null,
+          isAuthenticated: true,
+          user: userData,
+          isLoading: false,
+        });
         await setAuthCookie({
           accessToken: res.data.data.accessToken,
           userId,
@@ -90,10 +127,14 @@ export default function AuthProvider({
       } catch (error) {
         console.error('Error validating access token:', error);
         // Token không hợp lệ hoặc hết hạn
-        setUser(null);
-        setIsAuthenticated(false);
+        setSession({
+          error: null,
+          isAuthenticated: false,
+          user: null,
+          isLoading: false,
+        });
       } finally {
-        setIsLoading(false);
+        setSessionLoading(false);
       }
     };
 
@@ -101,45 +142,57 @@ export default function AuthProvider({
   }, [accessToken, userId]);
 
   // Helper function to update both user and authentication state consistently
-  const updateAuthState = (
-    newUser:
-      | (IUserWithStatsAndSubscriptionDataType | null)
-      | ((
-          user: IUserWithStatsAndSubscriptionDataType | null,
-        ) => IUserWithStatsAndSubscriptionDataType | null),
+  const updateSession = (
+    newUserData: UserType | null | ((newUserData: UserType | null) => UserType | null),
   ) => {
-    if (typeof newUser === 'function') {
-      const newData = newUser(user);
+    if (typeof newUserData === 'function') {
+      const newData = newUserData(session.user);
       if (newData) {
-        setUser(newData);
-        setIsAuthenticated(true);
+        setSession({
+          isAuthenticated: true,
+          user: newData,
+          isLoading: false,
+          error: null,
+        });
       } else {
-        setUser(null);
-        setIsAuthenticated(false);
+        setSession({
+          isAuthenticated: false,
+          user: null,
+          isLoading: false,
+          error: null,
+        });
       }
       return;
     }
 
-    if (newUser) {
-      setUser((currentUser) => ({
-        ...(currentUser || {}),
-        ...newUser,
+    if (newUserData) {
+      setSession((currentSession) => ({
+        isAuthenticated: true,
+        user: {
+          ...(currentSession.user || {}),
+          ...newUserData,
+        },
+        isLoading: false,
+        error: null,
       }));
-      setIsAuthenticated(true);
     } else {
-      setUser(null);
-      setIsAuthenticated(false);
+      setSession({
+        isAuthenticated: false,
+        user: null,
+        isLoading: false,
+        error: null,
+      });
     }
   };
 
   const login = async (credentials: LoginValues) => {
-    setIsLoading(true);
-    setError(null);
+    setSessionLoading(true);
+    setSessionError(null);
     try {
       const res = await signInApi(credentials);
 
       if (res.success) {
-        updateAuthState(res.data.data);
+        updateSession(res.data.data);
         await setAuthCookie({
           accessToken: res.data.data.accessToken,
           userId: res.data.data.id,
@@ -151,15 +204,15 @@ export default function AuthProvider({
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setError(error.message as string);
+      setSessionError(error.message as string);
     } finally {
-      setIsLoading(false);
+      setSessionLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      updateAuthState(null);
+      updateSession(null);
       await deleteAuthCookie();
       // refresh page
     } catch (error) {
@@ -171,13 +224,13 @@ export default function AuthProvider({
   };
 
   const register = async (userData: RegisterValues) => {
-    setIsLoading(true);
-    setError(null);
+    setSessionLoading(true);
+    setSessionError(null);
     try {
       const res = await signUpApi(userData);
 
       if (res.success) {
-        updateAuthState(res.data.data);
+        updateSession(res.data.data);
         await setAuthCookie({
           accessToken: res.data.data.accessToken,
           userId: res.data.data.id,
@@ -189,35 +242,29 @@ export default function AuthProvider({
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setError(error.message as string);
+      setSessionError(error.message as string);
     } finally {
-      setIsLoading(false);
+      setSessionLoading(false);
     }
   };
 
   return (
     <AuthContext.Provider
       value={
-        isAuthenticated
+        session.isAuthenticated
           ? {
-              user: user as UserType, // TypeScript knows user must be non-null when isAuthenticated is true
-              isLoading,
-              isAuthenticated: true,
-              updateAuthState,
+              session, // TypeScript knows user must be non-null when isAuthenticated is true
+              updateSession,
               login,
               logout,
               register,
-              error,
             }
           : {
-              user: null,
-              isLoading,
-              isAuthenticated: false,
-              updateAuthState,
+              session,
+              updateSession,
               login,
               logout,
               register,
-              error,
             }
       }
     >
