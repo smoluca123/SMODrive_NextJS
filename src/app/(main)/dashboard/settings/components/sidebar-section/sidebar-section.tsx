@@ -1,33 +1,19 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CreditCard, Globe, Trash2 } from 'lucide-react';
-import { Label } from '@/components/ui/label';
+import { CreditCard, Trash2 } from 'lucide-react';
+import { AccountStatus } from '@/app/(main)/dashboard/settings/components/sidebar-section';
+import { PlanDetail } from '@/app/(main)/dashboard/settings/components/sidebar-section/plan-detail';
+import { PropsWithChildren } from 'react';
 
 export function SidebarSection() {
   return (
     <div className='space-y-6'>
       {/* Account Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Account Status</CardTitle>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div className='flex items-center justify-between'>
-            <span className='text-sm'>Account Type</span>
-            <Badge>Free</Badge>
-          </div>
-          <div className='flex items-center justify-between'>
-            <span className='text-sm'>Member Since</span>
-            <span className='text-sm font-medium'>Jan 2024</span>
-          </div>
-          <div className='flex items-center justify-between'>
-            <span className='text-sm'>Files Uploaded</span>
-            <span className='text-sm font-medium'>28</span>
-          </div>
-          <Button className='w-full'>Upgrade to Pro</Button>
-        </CardContent>
-      </Card>
+      <AccountStatus />
+
+      {/* Plan Detail */}
+      <PlanDetail />
 
       {/* Payment Methods */}
       <Card>
@@ -52,7 +38,7 @@ export function SidebarSection() {
       </Card>
 
       {/* Language & Region */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle className='flex items-center gap-2'>
             <Globe className='h-5 w-5' />
@@ -79,7 +65,7 @@ export function SidebarSection() {
             </select>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Danger Zone */}
       <Card className='border-red-200 dark:border-red-800'>
@@ -100,6 +86,15 @@ export function SidebarSection() {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+export function CardContentListItem({ label, children }: { label: string } & PropsWithChildren) {
+  return (
+    <div className='flex items-center justify-between'>
+      <span className='text-sm'>{label}</span>
+      {children}
     </div>
   );
 }
