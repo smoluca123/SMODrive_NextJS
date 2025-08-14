@@ -34,6 +34,18 @@ export const commentSchema = z.object({
   content: requiredString('Content'),
 });
 
+export const changePasswordSchema = z
+  .object({
+    oldPassword: requiredString('Password'),
+    newPassword: passwordSchema,
+    confirmPassword: requiredString('Confirm password'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
 export type LoginValues = z.infer<typeof loginSchema>;
 export type RegisterValues = z.infer<typeof registerSchema>;
 export type CommentValues = z.infer<typeof commentSchema>;
+export type ChangePasswordValues = z.infer<typeof changePasswordSchema>;

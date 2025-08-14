@@ -3,7 +3,6 @@ import { env } from '@/lib/env.config';
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import {
-  IUserDataType,
   IUserDataWithAccessTokenType,
   IUserStatsAndUserDataType,
   IUserWithStatsAndSubscriptionDataType,
@@ -223,7 +222,33 @@ export const updateUserInfomationAPI = async (userData: UpdateUserInfomationValu
       .patch(`user/me`, {
         json: userData,
       })
-      .json<IApiResponseWrapperType<IUserDataType>>();
+      .json<IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType>>();
+
+    return data;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const changeUserPasswordAPI = async ({
+  oldPassword,
+  newPassword,
+}: {
+  oldPassword: string;
+  newPassword: string;
+}) => {
+  try {
+    const data = await kyInstance
+      .put('auth/change-password', {
+        json: { oldPassword, newPassword },
+      })
+      .json<IApiResponseWrapperType<IUserWithStatsAndSubscriptionDataType>>();
 
     return data;
 
