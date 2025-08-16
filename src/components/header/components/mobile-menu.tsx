@@ -14,7 +14,7 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onLinkClick, navigationItems }: MobileMenuProps) {
-  const { isAuthenticated } = useAuth();
+  const { session } = useAuth();
 
   if (!isOpen) return null;
 
@@ -34,7 +34,7 @@ export function MobileMenu({ isOpen, onLinkClick, navigationItems }: MobileMenuP
 
         <Separator />
 
-        {!isAuthenticated && (
+        {!session.isAuthenticated && (
           <div className='pt-4 border-t space-y-2'>
             <Button asChild className='w-full rounded-2xl'>
               <Link href='/upload' onClick={onLinkClick}>
@@ -42,7 +42,7 @@ export function MobileMenu({ isOpen, onLinkClick, navigationItems }: MobileMenuP
                 Upload
               </Link>
             </Button>
-            {!isAuthenticated && (
+            {!session.isAuthenticated && (
               <div className='space-y-2'>
                 <Link href='/login' className='block w-full cursor-pointer'>
                   <Button variant='ghost' className='w-full cursor-pointer' onClick={onLinkClick}>
@@ -59,7 +59,7 @@ export function MobileMenu({ isOpen, onLinkClick, navigationItems }: MobileMenuP
           </div>
         )}
 
-        {isAuthenticated && (
+        {session.isAuthenticated && (
           <div className='text-center'>
             <UserMenu />
           </div>
