@@ -8,7 +8,7 @@ import { Input } from '../ui/input';
 import { ImageMinus } from 'lucide-react';
 
 export function UpdateAvatarDialog({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { user } = useAuth();
+  const { session } = useAuth();
 
   const handleCloseDialog = (isOpne: boolean) => {
     if (!isOpne) {
@@ -20,7 +20,7 @@ export function UpdateAvatarDialog({ isOpen, onClose }: { isOpen: boolean; onClo
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string>(user?.avatar || '');
+  const [avatarPreview, setAvatarPreview] = useState<string>(session.user?.avatar || '');
 
   const onChangeAvatar = () => {
     if (!avatarInputRef) return;
@@ -58,6 +58,8 @@ export function UpdateAvatarDialog({ isOpen, onClose }: { isOpen: boolean; onClo
   useEffect(() => {
     return removeOldObjURL;
   }, [removeOldObjURL]);
+
+  if (!session.isAuthenticated) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseDialog}>
