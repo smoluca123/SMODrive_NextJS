@@ -9,8 +9,9 @@ export interface IFileDataType {
   originalName: string;
   key: string;
   size: string;
+  slug: string;
   mimetype: string;
-  status: string;
+  status: 'ACTIVE' | 'INACTIVE';
   description: string;
   tags: string[];
   isPublic: boolean;

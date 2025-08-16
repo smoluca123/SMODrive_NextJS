@@ -270,7 +270,22 @@ const initialFileSystem: FileItem[] = [
   },
 ];
 
-export function useFileSystem() {
+interface UseFileSystemProps {
+  fileSystem: FileItem[];
+  currentFolderId: string | null;
+  loading: boolean;
+  getCurrentFolderContents: () => FileItem[];
+  getBreadcrumbPath: () => FileItem[];
+  navigateToFolder: (folderId: string | null) => void;
+  createFolder: (name: string, description: string) => FileItem;
+  updateItem: (id: string, updates: Partial<FileItem>) => void;
+  deleteItem: (id: string) => void;
+  getFileById: (id: string) => FileItem | undefined;
+  searchFiles: (query: string, folderId?: string | null) => FileItem[];
+  resetFileSystem: () => void;
+}
+
+export function useFileSystem(): UseFileSystemProps {
   const [fileSystem, setFileSystem] = useState<FileItem[]>([]);
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

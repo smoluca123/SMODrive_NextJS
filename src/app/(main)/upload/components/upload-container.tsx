@@ -37,7 +37,7 @@ export function UploadContainer() {
           toast.success('Upload successful!', {
             description: 'Your files have been uploaded and are now available for sharing.',
           });
-          if (data) router.push(`/file/${data.data.id}`);
+          if (data) router.push(`/file/${data.data.id}/${data.data.slug}`);
         },
       },
     );

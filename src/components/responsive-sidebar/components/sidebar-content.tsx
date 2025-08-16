@@ -25,7 +25,7 @@ export function SidebarContent({ collapsed, onToggle, isMobile = false }: Sideba
       <SidebarHeader collapsed={collapsed} onToggle={onToggle} isMobile={isMobile} />
       <SidebarUserProfile collapsed={collapsed} isMobile={isMobile} />
       <SidebarNavigation collapsed={collapsed} isMobile={isMobile} />
-      <SidebarStorageUsedProgress />
+      <SidebarStorageUsedProgress collapsed={collapsed} />
       <SidebarFooter collapsed={collapsed} isMobile={isMobile} />
     </div>
   );
