@@ -97,6 +97,7 @@ export default function AuthProvider({
             });
             return;
           } catch (error) {
+            await deleteAuthCookie();
             console.error('Error refreshing access token:', error);
             setSession({
               isAuthenticated: false,

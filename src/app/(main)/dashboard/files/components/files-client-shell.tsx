@@ -150,7 +150,7 @@ export function FilesClientShell() {
           onUpload={() => {}}
         />
       ) : (
-        <FilesGridSection files={sortedFiles} viewMode={viewMode} onFileAction={handleFileAction} />
+        <FilesGridSection viewMode={viewMode} onFileAction={handleFileAction} />
       )}
       {/* Modals */}
       <FileEditModal

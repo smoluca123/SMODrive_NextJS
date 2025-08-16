@@ -1,11 +1,12 @@
 'use client';
-import { useInitiateDownload } from '@/app/(main)/file/[id]/components/download-section/mutations';
+
 import { Card, CardContent } from '@/components/ui/card';
 import LoadingButton from '@/components/ui/LoadingButton';
 import { setCookieApi } from '@/lib/apis/next-apis';
 import { Download } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { addMinutes } from 'date-fns';
+import { useInitiateDownload } from '@/app/(main)/file/[id]/[slug]/components/download-section/mutations';
 
 interface DownloadSectionProps {
   fileId: string;

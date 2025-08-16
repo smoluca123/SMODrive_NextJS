@@ -1,10 +1,15 @@
 import { kyInstance } from '@/lib/kyInstance/ky';
 import { kyClientInstance } from '@/lib/kyInstance/kyClient';
-import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
+import {
+  IApiPaginationResponseWrapperType,
+  IApiResponseWrapperType,
+} from '@/lib/types/interfaces/api.interfaces';
+import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
 import {
   IDownloadSessionWithFileAndUserDataType,
   IFileDataType,
 } from '@/lib/types/interfaces/storage.interfaces';
+import { IPaginationParamsType } from '@/lib/types/interfaces/utils.interfaces';
 import {
   GetMultipartSignedUrlSchema,
   getMultipartSignedUrlSchema,
@@ -251,6 +256,71 @@ export const completeDownloadSessionAPI = async ({ id }: { id: string }) => {
       .json<
         IApiResponseWrapperType<IDownloadSessionWithFileAndUserDataType & { downloadUrl: string }>
       >();
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const createFolderAPI = async ({ name, parentId }: { name: string; parentId?: string }) => {
+  try {
+    const response = await kyClientInstance
+      .post('storage/folder/create', {
+        json: { name, parentId: parentId || null },
+      })
+      .json<IApiResponseWrapperType<IFolderWithOwnerDataType>>();
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const getFoldersAPI = async () => {
+  try {
+    const response = await kyClientInstance
+      .get('storage/folder')
+      .json<IApiResponseWrapperType<IFolderWithOwnerDataType[]>>();
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const getUploadedFilesAPI = async ({
+  folderId = '',
+  limit,
+  page,
+  keyword = '',
+  tags = '',
+}: { folderId?: string; keyword?: string; tags?: string } & IPaginationParamsType) => {
+  try {
+    const response = await kyClientInstance
+      .get(`storage/file/uploaded`, {
+        searchParams: {
+          folderId,
+          limit,
+          page,
+          keyword,
+          tags,
+        },
+      })
+      .json<IApiPaginationResponseWrapperType<IFileDataType>>();
+    console.log(response);
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

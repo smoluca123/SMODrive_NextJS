@@ -1,13 +1,16 @@
+import { getStatsQueryKey } from '@/hooks/querys/user.querys';
 import { useAuth } from '@/hooks/use-auth';
 import { multipartUpload, uploadSimpleFile } from '@/hooks/use-file-upload/actions/actions';
 import { FILE_SIZE_THRESHOLD } from '@/lib/constant/contants';
-import { useMutation } from '@tanstack/react-query';
+import { IUserStatsAndUserDataType } from '@/lib/types/interfaces/user.interfaces';
+import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 export type UploadStatus = 'idle' | 'uploading' | 'completed' | 'error';
 
 export const useUploadFileMutation = () => {
-  const { user, updateAuthState } = useAuth();
+  const { session } = useAuth();
+  const queryClient = useQueryClient();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const smartUploadFile = async ({
@@ -22,7 +25,7 @@ export const useUploadFileMutation = () => {
     isPublic: boolean;
   }) => {
     setStatus('uploading');
-    if (!user) return;
+    if (!session) return;
     try {
       if (file.size >= FILE_SIZE_THRESHOLD) {
         return await multipartUpload(file, (percent) => {
@@ -52,18 +55,32 @@ export const useUploadFileMutation = () => {
     mutationFn: smartUploadFile,
     onSuccess: (variables) => {
       if (!variables) return;
-      updateAuthState((curentUser) => {
-        if (!curentUser) return null;
+
+      const userStatsQueryFilters: QueryFilters = {
+        queryKey: getStatsQueryKey,
+      };
+
+      queryClient.cancelQueries({ queryKey: getStatsQueryKey });
+      queryClient.setQueriesData(userStatsQueryFilters, (old: IUserStatsAndUserDataType) => {
+        if (!old) return;
         return {
-          ...curentUser,
-          userStats: {
-            ...curentUser.userStats,
-            totalStorageUsed: String(
-              Number(curentUser.userStats.totalStorageUsed) + Number(variables.data.size),
-            ),
-          },
+          ...old,
+          totalStorageUsed: String(Number(old.totalStorageUsed) + Number(variables.data.size)),
         };
       });
+
+      // updateSession((currentUser) => {
+      //   if (!currentUser) return null;
+      //   return {
+      //     ...currentUser,
+      //     userStats: {
+      //       ...currentUser.userStats,
+      //       totalStorageUsed: String(
+      //         Number(currentUser.userStats.totalStorageUsed) + Number(variables.data.size),
+      //       ),
+      //     },
+      //   };
+      // });
     },
   });
 

@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import { FolderPlus } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCreateFolder } from '@/components/create-folder-modal/mutations';
+import LoadingButton from '@/components/ui/LoadingButton';
 
 interface CreateFolderModalProps {
   open: boolean;
@@ -23,28 +25,34 @@ interface CreateFolderModalProps {
   onFolderCreated: (name: string, description: string) => void;
 }
 
-export function CreateFolderModal({ open, onOpenChange, onFolderCreated }: CreateFolderModalProps) {
+export function CreateFolderModal({ open, onOpenChange }: CreateFolderModalProps) {
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
+    parentId: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: createFolder, isPending } = useCreateFolder();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    onFolderCreated(formData.name, formData.description);
+    createFolder(
+      { name: formData.name, parentId: formData.parentId },
+      {
+        onSuccess: () => {
+          toast("'Folder created successfully'", {
+            description: `"${formData.name}" has been created.`,
+          });
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
 
-    toast("'Folder created successfully'", {
-      description: `"${formData.name}" has been created.`,
-    });
-
-    setFormData({ name: '', description: '' });
-    setIsLoading(false);
+    setFormData({ name: '', parentId: '' });
     onOpenChange(false);
   };
 
@@ -73,27 +81,16 @@ export function CreateFolderModal({ open, onOpenChange, onFolderCreated }: Creat
 
           <div className='space-y-2'>
             <Label htmlFor='folder-description'>Description (Optional)</Label>
-            <Textarea
-              id='folder-description'
-              value={formData.description}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
-              placeholder='Describe this folder...'
-              rows={3}
-            />
+            <Textarea id='folder-description' placeholder='Describe this folder...' rows={3} />
           </div>
 
           <DialogFooter>
             <Button type='button' variant='outline' onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type='submit' disabled={isLoading}>
-              {isLoading ? 'Creating...' : 'Create Folder'}
-            </Button>
+            <LoadingButton type='submit' loading={isPending}>
+              Create Folder
+            </LoadingButton>
           </DialogFooter>
         </form>
       </DialogContent>
