@@ -1,4 +1,4 @@
-import { initiateDownload } from '@/app/(main)/file/[id]/[slug]/components/download-section/actions/actions';
+import { initiateDownload } from '@/app/(main)/file/[id]/components/download-section/actions/actions';
 import { useMutation } from '@tanstack/react-query';
 
 export const useInitiateDownload = () => {

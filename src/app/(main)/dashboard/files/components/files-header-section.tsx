@@ -3,6 +3,10 @@ import { Button } from '@/components/ui/button';
 import { BreadcrumbNavigation } from '@/components/breadcrumb-navigation';
 import { RefreshCw, FolderPlus, Upload, ArrowLeft } from 'lucide-react';
 import type { FileItem } from '@/hooks/use-file-system';
+import { useQueryClient } from '@tanstack/react-query';
+import { getFilesQueryKey, getFoldersQueryKey } from '@/hooks/use-file-system/querys';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface FilesHeaderSectionProps {
   onReset: () => void;
@@ -15,7 +19,6 @@ interface FilesHeaderSectionProps {
 }
 
 export function FilesHeaderSection({
-  onReset,
   onCreateFolder,
   onUpload,
   currentFolderId,
@@ -23,6 +26,20 @@ export function FilesHeaderSection({
   breadcrumbPath,
   onNavigate,
 }: FilesHeaderSectionProps) {
+  const [isRefetching, setIsRefetching] = useState(false);
+  const queryClient = useQueryClient();
+  const onRefetch = async () => {
+    setIsRefetching(true);
+    try {
+      await queryClient.refetchQueries({ queryKey: getFilesQueryKey });
+      await queryClient.refetchQueries({ queryKey: getFoldersQueryKey() });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsRefetching(false);
+    }
+  };
+
   return (
     <>
       {/* Header */}
@@ -37,11 +54,16 @@ export function FilesHeaderSection({
           <Button
             variant='outline'
             size='sm'
-            onClick={onReset}
-            className='w-full sm:w-auto bg-transparent'
+            onClick={onRefetch}
+            className='w-full sm:w-auto bg-transparent cursor-pointer'
+            disabled={isRefetching}
           >
-            <RefreshCw className='h-4 w-4 mr-2' />
-            Reset Demo Data
+            <RefreshCw
+              className={cn('h-4 w-4 mr-2', {
+                'animate-spin': isRefetching,
+              })}
+            />
+            Refresh
           </Button>
           <Button variant='outline' onClick={onCreateFolder} className='w-full sm:w-auto'>
             <FolderPlus className='h-4 w-4 mr-2' />

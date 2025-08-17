@@ -1,32 +1,30 @@
-'use client';
 import { getFoldersQueryKey } from '@/hooks/use-file-system/querys';
-import { createFolderAPI } from '@/lib/apis/storage-apis';
+import { deleteFolderAPI } from '@/lib/apis/storage-apis';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
 import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const useCreateFolder = () => {
+export const useDeleteFolder = () => {
   const queryClient = useQueryClient();
-  const createFolder = async ({ name, parentId }: { name: string; parentId?: string }) => {
+  const deleteFolder = async (folderId: string) => {
     try {
-      const { data } = await createFolderAPI({ name, parentId });
+      const { data } = await deleteFolderAPI({ id: folderId });
       return data;
     } catch (error) {
       throw new Error(error as string);
     }
   };
   return useMutation({
-    mutationFn: createFolder,
-    onSuccess: (data, { parentId }) => {
+    mutationKey: ['delete-folder'],
+    mutationFn: deleteFolder,
+    onSuccess: (data) => {
       const folderQueryFilters: QueryFilters = {
-        queryKey: getFoldersQueryKey(parentId),
+        queryKey: getFoldersQueryKey(data.parentId),
       };
-      console.log(folderQueryFilters);
-      queryClient.cancelQueries({ queryKey: getFoldersQueryKey(parentId) });
+      queryClient.cancelQueries(folderQueryFilters);
 
       queryClient.setQueriesData(folderQueryFilters, (old: IFolderWithOwnerDataType[]) => {
         if (!old) return;
-
-        return [data, ...old];
+        return old.filter((folder) => folder.id !== data.id);
       });
     },
     onError: (error) => {
