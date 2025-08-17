@@ -285,6 +285,22 @@ export const createFolderAPI = async ({ name, parentId }: { name: string; parent
   }
 };
 
+export const deleteFolderAPI = async ({ id }: { id: string }) => {
+  try {
+    const response = await kyClientInstance
+      .delete(`storage/folder/${id}`)
+      .json<IApiResponseWrapperType<IFolderWithOwnerDataType>>();
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
 export const getFoldersAPI = async () => {
   try {
     const response = await kyClientInstance

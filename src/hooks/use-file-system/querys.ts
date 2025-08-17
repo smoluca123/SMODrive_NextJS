@@ -3,8 +3,11 @@ import { getFoldersAPI, getUploadedFilesAPI } from '@/lib/apis/storage-apis';
 import { GC_TIME, STALE_TIME } from '@/lib/constant/contants';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
-export const getFoldersQueryKey = ['folders'];
-export const useGetFolders = (options?: { enabled: boolean }) => {
+export const getFoldersQueryKey = (parentId?: string | null) => [
+  'folders',
+  { parentId: parentId || null },
+];
+export const useGetFolders = (parentId?: string, options?: { enabled: boolean }) => {
   const getFolders = async () => {
     try {
       const { data } = await getFoldersAPI();
@@ -16,7 +19,7 @@ export const useGetFolders = (options?: { enabled: boolean }) => {
   };
 
   return useQuery({
-    queryKey: getFoldersQueryKey,
+    queryKey: getFoldersQueryKey(parentId),
     queryFn: getFolders,
     enabled: options?.enabled || true,
     gcTime: GC_TIME,

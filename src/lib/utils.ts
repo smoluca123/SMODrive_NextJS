@@ -65,3 +65,62 @@ export function getFileType(
   }
   return 'unknown';
 }
+
+export function isArchiveFile(mimeType: string) {
+  return /^application\/(zip|x-rar-compressed|x-7z-compressed|gzip|x-tar|x-bzip2|x-xz|vnd\.rar|octet-stream)|^application\/x-(zip-compressed|rar|7z|gtar|bzip|compress)|^multipart\/x-zip$/.test(
+    mimeType,
+  );
+}
+
+export function isImageFile(mimeType: string) {
+  return /^image\/(jpeg|jpg|png|gif|webp|bmp|tiff|tif|svg\+xml|x-icon|ico|avif|heic|heif)|^application\/postscript$/.test(
+    mimeType,
+  );
+}
+
+export function isVideoFile(mimeType: string) {
+  return /^video\/(mp4|mpeg|avi|quicktime|x-msvideo|x-ms-wmv|webm|ogg|3gpp|x-flv|mkv)|^application\/(mp4|x-mpegURL)$/.test(
+    mimeType,
+  );
+}
+
+export function isAudioFile(mimeType: string) {
+  return /^audio\/(mpeg|mp3|wav|ogg|aac|flac|x-wav|x-ms-wma|webm|m4a|opus)|^application\/(ogg|x-mpegURL)$/.test(
+    mimeType,
+  );
+}
+
+export function isPdfFile(mimeType: string) {
+  return /^application\/pdf$/.test(mimeType);
+}
+
+export function isTextFile(mimeType: string) {
+  return /^text\/(plain|html|css|javascript|csv|xml|rtf)|^application\/(rtf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document|vnd\.ms-excel|vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet|vnd\.ms-powerpoint|vnd\.openxmlformats-officedocument\.presentationml\.presentation|json|xml)$/.test(
+    mimeType,
+  );
+}
+
+export function isApplicationFile(mimeType: string) {
+  return /^application\/(x-msdownload|x-ms-dos-executable|x-executable|x-msdos-program|x-winexe|vnd\.microsoft\.portable-executable|x-dosexec)|^application\/(vnd\.android\.package-archive|java-archive|x-java-archive|x-jar)|^application\/(x-apple-diskimage|x-ms-installer|vnd\.ms-cab-compressed)|^application\/(x-debian-package|x-redhat-package-manager|x-rpm)|^application\/(x-sh|x-shellscript|x-csh)|^text\/x-shellscript$/.test(
+    mimeType,
+  );
+}
+
+export function getApplicationType(mimeType: string) {
+  const appTypes = {
+    windows:
+      /^application\/(x-msdownload|x-ms-dos-executable|x-executable|x-msdos-program|x-winexe|vnd\.microsoft\.portable-executable|x-dosexec|x-ms-installer)$/,
+    android: /^application\/vnd\.android\.package-archive$/,
+    java: /^application\/(java-archive|x-java-archive|x-jar)$/,
+    macos: /^application\/x-apple-diskimage$/,
+    linux: /^application\/(x-debian-package|x-redhat-package-manager|x-rpm)$/,
+    script: /^application\/(x-sh|x-shellscript|x-csh)|^text\/x-shellscript$/,
+  };
+
+  for (const [type, regex] of Object.entries(appTypes)) {
+    if (regex.test(mimeType)) {
+      return type;
+    }
+  }
+  return 'unknown-app';
+}
