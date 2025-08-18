@@ -1,4 +1,3 @@
-import { DeleteFolderButton, EditFolderButton } from '@/components/folder-actions/';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,10 +8,8 @@ import {
 import { IFileDataType } from '@/lib/types/interfaces/storage.interfaces';
 import { Copy, Delete, Download, Edit, Eye, MoreHorizontal, Share2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export function FileMoreButton({ file }: { file: IFileDataType }) {
-  const navigate = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
