@@ -1,1 +1,1 @@
-export { CreateFolderDialog } from './create-folder-dialog';
+export { EditFolderDialog } from './edit-folder-dialog';
