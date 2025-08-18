@@ -39,3 +39,16 @@ export const updateDownloadSessionSchema = z.object({
   step: z.coerce.number(),
 });
 export type UpdateDownloadSessionSchema = z.infer<typeof updateDownloadSessionSchema>;
+
+export const createFolderSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  parentId: z.string().optional(),
+});
+export type CreateFolderSchema = z.infer<typeof createFolderSchema>;
+
+export const updateFolderSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+});
+export type UpdateFolderSchema = z.infer<typeof updateFolderSchema>;

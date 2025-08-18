@@ -1,4 +1,4 @@
-import { useDeleteFolder } from '@/components/responsive-file-grid/folder-more-button/mutations';
+import { DeleteFolderButton, EditFolderButton } from '@/components/folder-actions/';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -7,25 +7,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
-import { Copy, Download, Edit, Eye, MoreHorizontal, Share2, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { Copy, Eye, MoreHorizontal, Share2 } from 'lucide-react';
 
 export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType }) {
-  const { mutate: deleteFolder } = useDeleteFolder();
-  const handleDeleteFolder = () => {
-    deleteFolder(folder.id, {
-      onSuccess: () => {
-        toast.success('Successfully', {
-          description: 'Folder deleted successfully',
-        });
-      },
-      onError: () => {
-        toast.error('Failed', {
-          description: 'Failed to delete folder',
-        });
-      },
-    });
-  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,17 +25,10 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
           Preview
         </DropdownMenuItem>
         <DropdownMenuItem
-        // onClick={() => onFileAction('edit', file)}
+          asChild
+          // onClick={() => onFileAction('edit', file)}
         >
-          <Edit className='mr-2 h-4 w-4' />
-          Edit
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-        // onClick={() => onFileAction('download', file)}
-        >
-          <Download className='mr-2 h-4 w-4' />
-          Download
+          <EditFolderButton folderData={folder} />
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -66,9 +43,8 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
           <Share2 className='mr-2 h-4 w-4' />
           Share
         </DropdownMenuItem>
-        <DropdownMenuItem className='text-red-600' onClick={handleDeleteFolder}>
-          <Trash2 className='mr-2 h-4 w-4' />
-          Delete
+        <DropdownMenuItem asChild>
+          <DeleteFolderButton folderId={folder.id} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -4,6 +4,7 @@ export interface IFolderDataType {
   id: string;
   name: string;
   slug: string;
+  description: string;
   ownerId: string;
   parentId: string | null;
   createdAt: string;
