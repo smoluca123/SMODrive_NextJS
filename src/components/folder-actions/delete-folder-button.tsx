@@ -1,4 +1,4 @@
-import { DeleteFolderDialog } from '@/components/delete-folder-dialog/delete-folder-dialog';
+import { DeleteFolderDialog } from '@/components/delete-folder-dialog';
 import { cn } from '@/lib/utils';
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
