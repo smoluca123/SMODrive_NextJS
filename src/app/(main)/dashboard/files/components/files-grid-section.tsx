@@ -20,7 +20,7 @@ export function FilesGridSection({ viewMode, onFileAction }: FilesGridSectionPro
       {foldersData && filesData && (
         <ResponsiveFileGrid
           InfiniteFilesData={filesData}
-          folders={foldersData || []}
+          folders={foldersData}
           viewMode={viewMode}
           onFileAction={onFileAction}
         />

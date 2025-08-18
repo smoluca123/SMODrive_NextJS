@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useFileSystem } from '@/hooks/use-file-system';
 import { FileEditModal } from '@/components/file-edit-modal';
 import { FilePreviewModal } from '@/components/file-preview-modal';
-import { CreateFolderModal } from '@/components/create-folder-modal';
+import { CreateFolderDialog } from '@/components/create-folder-dialog';
 import { toast } from 'sonner';
 import { FilesHeaderSection } from './files-header-section';
 import { FilesToolbarSection } from './files-toolbar-section';
@@ -19,7 +19,7 @@ export function FilesClientShell() {
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
-  const [createFolderModalOpen, setCreateFolderModalOpen] = useState(false);
+  const [CreateFolderDialogOpen, setCreateFolderDialogOpen] = useState(false);
 
   const {
     loading,
@@ -126,7 +126,7 @@ export function FilesClientShell() {
     <div className='p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6'>
       <FilesHeaderSection
         onReset={resetFileSystem}
-        onCreateFolder={() => setCreateFolderModalOpen(true)}
+        onCreateFolder={() => setCreateFolderDialogOpen(true)}
         onUpload={() => {}}
         currentFolderId={currentFolderId}
         onBackToRoot={() => navigateToFolder(null)}
@@ -146,7 +146,7 @@ export function FilesClientShell() {
       {sortedFiles.length === 0 ? (
         <FilesEmptyState
           searchQuery={searchQuery}
-          onCreateFolder={() => setCreateFolderModalOpen(true)}
+          onCreateFolder={() => setCreateFolderDialogOpen(true)}
           onUpload={() => {}}
         />
       ) : (
@@ -164,9 +164,9 @@ export function FilesClientShell() {
         onOpenChange={setPreviewModalOpen}
         file={selectedFile}
       />
-      <CreateFolderModal
-        open={createFolderModalOpen}
-        onOpenChange={setCreateFolderModalOpen}
+      <CreateFolderDialog
+        open={CreateFolderDialogOpen}
+        onOpenChange={setCreateFolderDialogOpen}
         onFolderCreated={handleCreateFolder}
       />
     </div>

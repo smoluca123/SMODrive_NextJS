@@ -1,16 +1,11 @@
+import { FileMoreButton } from '@/components/file-more-button';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useGetFileIcon } from '@/hooks/use-get-file-icon';
 import { IFileDataType } from '@/lib/types/interfaces/storage.interfaces';
 import { formatFileSize, isImageFile } from '@/lib/utils';
-import { Copy, Download, Edit, Eye, MoreHorizontal, Share2, Trash2 } from 'lucide-react';
+import { Edit, Eye } from 'lucide-react';
 import Image from 'next/image';
 
 export function FileItem({ file, viewMode }: { file: IFileDataType; viewMode: 'grid' | 'list' }) {
@@ -82,65 +77,15 @@ export function GridFileItem({ file }: { file: IFileDataType }) {
               >
                 {file.originalName}
               </h3>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='ghost' size='sm' className='h-8 w-8 p-0 flex-shrink-0'>
-                    <MoreHorizontal className='h-4 w-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end'>
-                  <DropdownMenuItem
-                  // onClick={() => onFileAction('preview', file)}
-                  >
-                    <Eye className='mr-2 h-4 w-4' />
-                    Preview
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                  // onClick={() => onFileAction('edit', file)}
-                  >
-                    <Edit className='mr-2 h-4 w-4' />
-                    Edit
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                  // onClick={() => onFileAction('download', file)}
-                  >
-                    <Download className='mr-2 h-4 w-4' />
-                    Download
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                  // onClick={() => onFileAction('copy', file)}
-                  >
-                    <Copy className='mr-2 h-4 w-4' />
-                    Copy Link
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                  // onClick={() => onFileAction('share', file)}
-                  >
-                    <Share2 className='mr-2 h-4 w-4' />
-                    Share
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className='text-red-600'
-                    // onClick={() => onFileAction('delete', file)}
-                  >
-                    <Trash2 className='mr-2 h-4 w-4' />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <FileMoreButton file={file} />
             </div>
 
             <div className='flex items-center justify-between text-xs text-muted-foreground'>
               <span className='truncate'>
                 {formatFileSize(Number(file.size)) || 'Unknown size'}
               </span>
-              <Badge
-                variant={file.status === 'ACTIVE' ? 'default' : 'secondary'}
-                className='text-xs'
-              >
-                {file.status}
+              <Badge variant={file.isPublic ? 'default' : 'secondary'} className='text-xs'>
+                {file.isPublic ? 'Public' : 'Private'}
               </Badge>
             </div>
 
@@ -174,7 +119,9 @@ export function ListFileItem({ file }: { file: IFileDataType }) {
 
       <div className='flex items-center space-x-2 sm:space-x-4 flex-shrink-0'>
         <div className='hidden sm:flex items-center space-x-4'>
-          <Badge variant={file.status === 'ACTIVE' ? 'default' : 'secondary'}>{file.status}</Badge>
+          <Badge variant={file.isPublic ? 'default' : 'secondary'}>
+            {file.isPublic ? 'Public' : 'Private'}
+          </Badge>
           {/* {file.type === 'file' && file.earnings && (
       <span className='font-medium text-sm'>${file.earnings.toFixed(2)}</span>
     )} */}
@@ -183,53 +130,7 @@ export function ListFileItem({ file }: { file: IFileDataType }) {
           </span>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-            <Button variant='ghost' size='sm' className='h-8 w-8 p-0'>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuItem
-            // onClick={() => onFileAction('preview', file)}
-            >
-              <Eye className='mr-2 h-4 w-4' />
-              Preview
-            </DropdownMenuItem>
-            <DropdownMenuItem
-            // onClick={() => onFileAction('edit', file)}
-            >
-              <Edit className='mr-2 h-4 w-4' />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-            // onClick={() => onFileAction('download', file)}
-            >
-              <Download className='mr-2 h-4 w-4' />
-              Download
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-            // onClick={() => onFileAction('copy', file)}
-            >
-              <Copy className='mr-2 h-4 w-4' />
-              Copy Link
-            </DropdownMenuItem>
-            <DropdownMenuItem
-            // onClick={() => onFileAction('share', file)}
-            >
-              <Share2 className='mr-2 h-4 w-4' />
-              Share
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className='text-red-600'
-              // onClick={() => onFileAction('delete', file)}
-            >
-              <Trash2 className='mr-2 h-4 w-4' />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <FileMoreButton file={file} />
       </div>
     </div>
   );

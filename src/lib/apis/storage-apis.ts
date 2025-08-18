@@ -19,6 +19,8 @@ import {
   completeMultipartUploadSchema,
   UpdateDownloadSessionSchema,
   updateDownloadSessionSchema,
+  CreateFolderSchema,
+  UpdateFolderSchema,
 } from '@/lib/zod-schemas/storage-api.schemas';
 
 export const uploadFileAPI = async ({
@@ -267,11 +269,11 @@ export const completeDownloadSessionAPI = async ({ id }: { id: string }) => {
   }
 };
 
-export const createFolderAPI = async ({ name, parentId }: { name: string; parentId?: string }) => {
+export const createFolderAPI = async (payload: CreateFolderSchema) => {
   try {
     const response = await kyClientInstance
-      .post('storage/folder/create', {
-        json: { name, parentId: parentId || null },
+      .post('storage/folder', {
+        json: payload,
       })
       .json<IApiResponseWrapperType<IFolderWithOwnerDataType>>();
     return response;
@@ -289,6 +291,30 @@ export const deleteFolderAPI = async ({ id }: { id: string }) => {
   try {
     const response = await kyClientInstance
       .delete(`storage/folder/${id}`)
+      .json<IApiResponseWrapperType<IFolderWithOwnerDataType>>();
+    return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw errorData.message;
+    }
+    throw error.message;
+  }
+};
+
+export const updateFolderAPI = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: UpdateFolderSchema;
+}) => {
+  try {
+    const response = await kyClientInstance
+      .patch(`storage/folder/${id}`, {
+        json: payload,
+      })
       .json<IApiResponseWrapperType<IFolderWithOwnerDataType>>();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

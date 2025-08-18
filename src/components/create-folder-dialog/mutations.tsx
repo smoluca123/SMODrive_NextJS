@@ -6,9 +6,17 @@ import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query
 
 export const useCreateFolder = () => {
   const queryClient = useQueryClient();
-  const createFolder = async ({ name, parentId }: { name: string; parentId?: string }) => {
+  const createFolder = async ({
+    name,
+    description,
+    parentId,
+  }: {
+    name: string;
+    description: string;
+    parentId?: string;
+  }) => {
     try {
-      const { data } = await createFolderAPI({ name, parentId });
+      const { data } = await createFolderAPI({ name, description, parentId });
       return data;
     } catch (error) {
       throw new Error(error as string);

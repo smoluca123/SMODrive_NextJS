@@ -1,4 +1,4 @@
-import { useDeleteFolder } from '@/components/responsive-file-grid/folder-more-button/mutations';
+import { DeleteFolderButton, EditFolderButton } from '@/components/folder-actions/';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -6,26 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
-import { Copy, Download, Edit, Eye, MoreHorizontal, Share2, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { IFileDataType } from '@/lib/types/interfaces/storage.interfaces';
+import { Copy, Delete, Download, Edit, Eye, MoreHorizontal, Share2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType }) {
-  const { mutate: deleteFolder } = useDeleteFolder();
-  const handleDeleteFolder = () => {
-    deleteFolder(folder.id, {
-      onSuccess: () => {
-        toast.success('Successfully', {
-          description: 'Folder deleted successfully',
-        });
-      },
-      onError: () => {
-        toast.error('Failed', {
-          description: 'Failed to delete folder',
-        });
-      },
-    });
-  };
+export function FileMoreButton({ file }: { file: IFileDataType }) {
+  const navigate = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,6 +28,7 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
           Preview
         </DropdownMenuItem>
         <DropdownMenuItem
+
         // onClick={() => onFileAction('edit', file)}
         >
           <Edit className='mr-2 h-4 w-4' />
@@ -48,10 +36,13 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
         </DropdownMenuItem>
 
         <DropdownMenuItem
-        // onClick={() => onFileAction('download', file)}
+          // onClick={() => onFileAction('download', file)}
+          asChild
         >
-          <Download className='mr-2 h-4 w-4' />
-          Download
+          <Link href={`/file/${file.id}`} target='_blank'>
+            <Download className='mr-2 h-4 w-4' />
+            Download
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -66,8 +57,8 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
           <Share2 className='mr-2 h-4 w-4' />
           Share
         </DropdownMenuItem>
-        <DropdownMenuItem className='text-red-600' onClick={handleDeleteFolder}>
-          <Trash2 className='mr-2 h-4 w-4' />
+        <DropdownMenuItem>
+          <Delete className='mr-2 h-4 w-4' />
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
