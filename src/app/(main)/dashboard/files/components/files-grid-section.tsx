@@ -2,6 +2,7 @@ import { FileGridSectionSkeletons } from '@/app/(main)/dashboard/files/component
 import { ResponsiveFileGrid } from '@/components/responsive-file-grid';
 import type { FileItem } from '@/hooks/use-file-system';
 import { useGetFolders, useGetUploadedFiles } from '@/hooks/use-file-system/querys';
+import { useFolderStore } from '@/hooks/zustand/useFolder';
 
 interface FilesGridSectionProps {
   viewMode: 'grid' | 'list';
@@ -9,8 +10,12 @@ interface FilesGridSectionProps {
 }
 
 export function FilesGridSection({ viewMode, onFileAction }: FilesGridSectionProps) {
-  const { data: foldersData, isFetching: isFetchingFolders } = useGetFolders();
-  const { data: filesData, isFetching: isFetchingFiles } = useGetUploadedFiles({ folderId: '' });
+  const { selectedFolders } = useFolderStore();
+  const lastSelectedFolderId = selectedFolders[selectedFolders.length - 1]?.id || '';
+  const { data: foldersData, isFetching: isFetchingFolders } = useGetFolders(lastSelectedFolderId);
+  const { data: filesData, isFetching: isFetchingFiles } = useGetUploadedFiles({
+    folderId: lastSelectedFolderId,
+  });
 
   return (
     <>

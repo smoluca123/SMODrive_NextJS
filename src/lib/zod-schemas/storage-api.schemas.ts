@@ -1,3 +1,4 @@
+import { requiredString } from '@/lib/zod-schemas/schema';
 import { z } from 'zod';
 
 export const initiateMultipartUploadSchema = z.object({
@@ -41,8 +42,8 @@ export const updateDownloadSessionSchema = z.object({
 export type UpdateDownloadSessionSchema = z.infer<typeof updateDownloadSessionSchema>;
 
 export const createFolderSchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: requiredString('Name'),
+  description: z.string().optional(),
   parentId: z.string().optional(),
 });
 export type CreateFolderSchema = z.infer<typeof createFolderSchema>;

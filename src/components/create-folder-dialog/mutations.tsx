@@ -2,22 +2,15 @@
 import { getFoldersQueryKey } from '@/hooks/use-file-system/querys';
 import { createFolderAPI } from '@/lib/apis/storage-apis';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
+import { CreateFolderSchema } from '@/lib/zod-schemas/storage-api.schemas';
 import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateFolder = () => {
   const queryClient = useQueryClient();
-  const createFolder = async ({
-    name,
-    description,
-    parentId,
-  }: {
-    name: string;
-    description: string;
-    parentId?: string;
-  }) => {
+  const createFolder = async (data: CreateFolderSchema) => {
     try {
-      const { data } = await createFolderAPI({ name, description, parentId });
-      return data;
+      const { data: folder } = await createFolderAPI(data);
+      return folder;
     } catch (error) {
       throw new Error(error as string);
     }

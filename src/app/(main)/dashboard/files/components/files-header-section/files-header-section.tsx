@@ -1,12 +1,12 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BreadcrumbNavigation } from '@/components/breadcrumb-navigation';
-import { RefreshCw, FolderPlus, Upload, ArrowLeft } from 'lucide-react';
+import { RefreshCw, FolderPlus, Upload } from 'lucide-react';
 import type { FileItem } from '@/hooks/use-file-system';
 import { useQueryClient } from '@tanstack/react-query';
 import { getFilesQueryKey, getFoldersQueryKey } from '@/hooks/use-file-system/querys';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { BreadcrumbSection } from '@/app/(main)/dashboard/files/components/files-header-section/breadcrumb-section';
+import { useFolderStore } from '@/hooks/zustand/useFolder';
 
 interface FilesHeaderSectionProps {
   onReset: () => void;
@@ -18,21 +18,16 @@ interface FilesHeaderSectionProps {
   onNavigate: (id: string | null) => void;
 }
 
-export function FilesHeaderSection({
-  onCreateFolder,
-  onUpload,
-  currentFolderId,
-  onBackToRoot,
-  breadcrumbPath,
-  onNavigate,
-}: FilesHeaderSectionProps) {
+export function FilesHeaderSection({ onCreateFolder, onUpload }: FilesHeaderSectionProps) {
   const [isRefetching, setIsRefetching] = useState(false);
   const queryClient = useQueryClient();
+  const { selectedFolders } = useFolderStore();
+  const lastSelectedFolderId = selectedFolders[selectedFolders.length - 1]?.id || '';
   const onRefetch = async () => {
     setIsRefetching(true);
     try {
-      await queryClient.refetchQueries({ queryKey: getFilesQueryKey });
-      await queryClient.refetchQueries({ queryKey: getFoldersQueryKey() });
+      await queryClient.refetchQueries({ queryKey: getFilesQueryKey(lastSelectedFolderId) });
+      await queryClient.refetchQueries({ queryKey: getFoldersQueryKey(lastSelectedFolderId) });
     } catch (error) {
       console.error(error);
     } finally {
@@ -76,24 +71,7 @@ export function FilesHeaderSection({
         </div>
       </div>
       {/* Breadcrumb Navigation */}
-      <Card>
-        <CardContent className='p-3 sm:p-4'>
-          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0'>
-            <BreadcrumbNavigation path={breadcrumbPath} onNavigate={onNavigate} />
-            {currentFolderId && (
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={onBackToRoot}
-                className='self-start sm:self-auto'
-              >
-                <ArrowLeft className='h-4 w-4 mr-2' />
-                Back to Root
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <BreadcrumbSection />
     </>
   );
 }

@@ -327,10 +327,14 @@ export const updateFolderAPI = async ({
   }
 };
 
-export const getFoldersAPI = async () => {
+export const getFoldersAPI = async ({ parentId = '' }: { parentId?: string }) => {
   try {
     const response = await kyClientInstance
-      .get('storage/folder')
+      .get('storage/folder', {
+        searchParams: {
+          parentId,
+        },
+      })
       .json<IApiResponseWrapperType<IFolderWithOwnerDataType[]>>();
     return response;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

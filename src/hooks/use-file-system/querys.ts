@@ -10,7 +10,7 @@ export const getFoldersQueryKey = (parentId?: string | null) => [
 export const useGetFolders = (parentId?: string, options?: { enabled: boolean }) => {
   const getFolders = async () => {
     try {
-      const { data } = await getFoldersAPI();
+      const { data } = await getFoldersAPI({ parentId });
       return data;
     } catch (error) {
       console.log(error);
@@ -27,7 +27,7 @@ export const useGetFolders = (parentId?: string, options?: { enabled: boolean })
   });
 };
 
-export const getFilesQueryKey = ['files'];
+export const getFilesQueryKey = (folderId?: string) => ['files', { folderId: folderId || null }];
 export const useGetUploadedFiles = (
   { folderId = '' }: { folderId?: string },
   options?: { enabled: boolean },
@@ -47,7 +47,7 @@ export const useGetUploadedFiles = (
   };
 
   return useInfiniteQuery({
-    queryKey: getFilesQueryKey,
+    queryKey: getFilesQueryKey(folderId),
     queryFn: ({ pageParam = 1 }) => getFiles({ pageParam }),
     enabled: options?.enabled || true,
     gcTime: GC_TIME,

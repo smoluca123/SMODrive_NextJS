@@ -24,10 +24,7 @@ export function FolderMoreButton({ folder }: { folder: IFolderWithOwnerDataType 
           <Eye className='mr-2 h-4 w-4' />
           Preview
         </DropdownMenuItem>
-        <DropdownMenuItem
-          asChild
-          // onClick={() => onFileAction('edit', file)}
-        >
+        <DropdownMenuItem asChild>
           <EditFolderButton folderData={folder} />
         </DropdownMenuItem>
 
