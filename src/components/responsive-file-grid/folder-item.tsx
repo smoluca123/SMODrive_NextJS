@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useGetFileIcon } from '@/hooks/use-get-file-icon';
+import { useFolderStore } from '@/hooks/zustand/useFolder';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
 import { Edit, Eye } from 'lucide-react';
 import { useState } from 'react';
@@ -23,10 +24,14 @@ export function FolderItem({
 
 export function GridFolderItem({ folder }: { folder: IFolderWithOwnerDataType }) {
   const getFileIcon = useGetFileIcon();
+  const { addSelectedFolder } = useFolderStore();
   return (
     <Card
       key={folder.id}
       className='group hover:shadow-lg transition-all duration-200 cursor-pointer'
+      onDoubleClick={() => {
+        addSelectedFolder({ id: folder.id, name: folder.name });
+      }}
     >
       <CardContent className='p-3 sm:p-4'>
         <div className='space-y-3'>
@@ -41,16 +46,7 @@ export function GridFolderItem({ folder }: { folder: IFolderWithOwnerDataType })
 
             {/* Actions Overlay - Hidden on mobile, shown on hover for desktop */}
             <div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2 sm:flex'>
-              <Button
-                size='sm'
-                variant='secondary'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // onFileAction('preview', file);
-                }}
-              >
-                <Eye className='h-4 w-4' />
-              </Button>
+              <PreviewActionOverlay folder={folder} />
 
               <EditActionOverlay folder={folder} />
             </div>
@@ -131,5 +127,21 @@ export function EditActionOverlay({ folder }: { folder: IFolderWithOwnerDataType
       </Button>
       <EditFolderDialog open={open} onOpenChange={setOpen} folderData={folder} />
     </>
+  );
+}
+
+export function PreviewActionOverlay({ folder }: { folder: IFolderWithOwnerDataType }) {
+  const { addSelectedFolder } = useFolderStore();
+  return (
+    <Button
+      size='sm'
+      variant='secondary'
+      onClick={() => {
+        addSelectedFolder({ id: folder.id, name: folder.name });
+      }}
+      className='cursor-pointer'
+    >
+      <Eye className='h-4 w-4' />
+    </Button>
   );
 }

@@ -27,6 +27,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { createFolderSchema, CreateFolderSchema } from '@/lib/zod-schemas/storage-api.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useFolderStore } from '@/hooks/zustand/useFolder';
 
 interface CreateFolderDialogProps {
   open: boolean;
@@ -35,6 +36,8 @@ interface CreateFolderDialogProps {
 }
 
 export function CreateFolderDialog({ open, onOpenChange }: CreateFolderDialogProps) {
+  const { selectedFolders } = useFolderStore();
+  const lastSelectedFolderId = selectedFolders[selectedFolders.length - 1]?.id || '';
   const form = useForm<CreateFolderSchema>({
     defaultValues: {
       name: '',
@@ -47,6 +50,9 @@ export function CreateFolderDialog({ open, onOpenChange }: CreateFolderDialogPro
   const { mutate: createFolder, isPending } = useCreateFolder();
 
   const handleSubmit = (data: CreateFolderSchema) => {
+    if (lastSelectedFolderId) {
+      data.parentId = lastSelectedFolderId;
+    }
     createFolder(data, {
       onSuccess: () => {
         toast("'Folder created successfully'", {
