@@ -10,8 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/use-auth';
+import UserAvatar from '@/components/user-avatar';
 
 export function UserMenu() {
   const { session, logout } = useAuth();
@@ -22,10 +22,11 @@ export function UserMenu() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='ghost' className='relative h-8 w-8 rounded-full cursor-pointer'>
-              <Avatar className='h-8 w-8'>
-                <AvatarImage src='/placeholder.png' alt='User' />
-                <AvatarFallback>{session.user.lastName}</AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                className='size-8'
+                avatarUrl={session.user.avatar}
+                fallbackName={session.user.lastName}
+              />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className='w-56' align='center' forceMount>

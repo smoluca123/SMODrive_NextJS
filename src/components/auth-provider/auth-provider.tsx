@@ -1,12 +1,12 @@
 'use client';
 import { AuthContext, UserType } from '@/context/auth-context';
-import { deleteAuthCookie, setAuthCookie } from '@/lib/apis/auth-apis';
+import { deleteAuthCookie, setAuthCookie } from '@/lib/apis/server/auth-apis';
 import {
   refreshAccessTokenApi,
   signInApi,
   signUpApi,
   validateAccessTokenApi,
-} from '@/lib/apis/user-apis';
+} from '@/lib/apis/server/user-apis';
 import { LoginValues, RegisterValues } from '@/lib/zod-schemas/auth.schema';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';

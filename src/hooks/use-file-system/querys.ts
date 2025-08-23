@@ -1,5 +1,5 @@
 'use client';
-import { getFoldersAPI, getUploadedFilesAPI } from '@/lib/apis/storage-apis';
+import { getFoldersAPI, getUploadedFilesAPI } from '@/lib/apis/client/storage-apis';
 import { GC_TIME, STALE_TIME } from '@/lib/constant/contants';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
