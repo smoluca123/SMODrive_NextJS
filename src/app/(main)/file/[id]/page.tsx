@@ -7,7 +7,7 @@ import { SocialShare } from './components/social-share';
 import { CommentsSection } from './components/comments-section';
 import { ReportButton } from './components/report-button';
 import { BannerAd, SkyscraperAd } from '@/components/ads';
-import { getFileDetailAPI } from '@/lib/apis/storage-apis';
+import { getFileDetailAPI } from '@/lib/apis/server/storage-apis';
 import { notFound } from 'next/navigation';
 
 export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }) => {

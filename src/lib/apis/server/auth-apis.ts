@@ -1,4 +1,4 @@
-import { kyNextInstance } from '../kyInstance/kyNext';
+import { kyNextInstance } from '../../kyInstance/kyNext';
 
 export const setAuthCookie = async ({
   accessToken,

@@ -1,5 +1,5 @@
 'use server';
-import { changeUserPasswordAPI } from '@/lib/apis/user-apis';
+import { changeUserPasswordAPI } from '@/lib/apis/server/user-apis';
 import { IApiResponseWrapperType } from '@/lib/types/interfaces/api.interfaces';
 import { IUserWithStatsAndSubscriptionDataType } from '@/lib/types/interfaces/user.interfaces';
 import { ChangePasswordValues } from '@/lib/zod-schemas/auth.schema';

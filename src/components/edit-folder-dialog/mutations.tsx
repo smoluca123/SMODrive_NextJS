@@ -1,6 +1,6 @@
 'use client';
 import { getFoldersQueryKey } from '@/hooks/use-file-system/querys';
-import { updateFolderAPI } from '@/lib/apis/storage-apis';
+import { updateFolderAPI } from '@/lib/apis/client/storage-apis';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
 import { UpdateFolderSchema } from '@/lib/zod-schemas/storage-api.schemas';
 import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';

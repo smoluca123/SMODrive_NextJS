@@ -1,5 +1,8 @@
 'use server';
-import { completeDownloadSessionAPI, updateDownloadSessionAPI } from '@/lib/apis/storage-apis';
+import {
+  completeDownloadSessionAPI,
+  updateDownloadSessionAPI,
+} from '@/lib/apis/server/storage-apis';
 import { UpdateDownloadSessionSchema } from '@/lib/zod-schemas/storage-api.schemas';
 
 export const completeDownloadSession = async (id: string) => {

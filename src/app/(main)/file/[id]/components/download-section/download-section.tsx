@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import LoadingButton from '@/components/ui/LoadingButton';
-import { setCookieApi } from '@/lib/apis/next-apis';
+import { setCookieApi } from '@/lib/apis/server/next-apis';
 import { Download } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { addMinutes } from 'date-fns';
