@@ -1,4 +1,4 @@
-import { updateUserInfomationAPI } from '@/lib/apis/user-apis';
+import { updateUserInfomationAPI } from '@/lib/apis/server/user-apis';
 import { UpdateUserInfomationValues } from '@/lib/zod-schemas/user-schema';
 import { useMutation } from '@tanstack/react-query';
 

@@ -6,7 +6,7 @@ import { IFileDataType } from '@/lib/types/interfaces/storage.interfaces';
 import { formatFileSize } from '@/lib/utils';
 import { useCompleteDownloadSession } from '@/app/(main)/download/[id]/components/mutations';
 import { useRouter } from 'next/navigation';
-import { getCookieApi } from '@/lib/apis/next-apis';
+import { getCookieApi } from '@/lib/apis/server/next-apis';
 import ky from 'ky';
 import fileDownload from 'js-file-download';
 

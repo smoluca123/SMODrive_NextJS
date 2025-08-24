@@ -1,4 +1,4 @@
-import { getMeApi, getStatsApi } from '@/lib/apis/user-apis';
+import { getMeApi, getStatsApi } from '@/lib/apis/server/user-apis';
 import { GC_TIME, STALE_TIME } from '@/lib/constant/contants';
 import { useQuery } from '@tanstack/react-query';
 

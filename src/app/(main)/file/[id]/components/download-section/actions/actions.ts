@@ -1,6 +1,6 @@
 'use server';
 
-import { initiateDownloadAPI } from '@/lib/apis/storage-apis';
+import { initiateDownloadAPI } from '@/lib/apis/server/storage-apis';
 
 export const initiateDownload = async (fileId: string) => {
   try {

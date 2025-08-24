@@ -3,7 +3,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useForm } from 'react-hook-form';
@@ -26,6 +25,7 @@ import LoadingButton from '@/components/ui/LoadingButton';
 import { toast } from 'sonner';
 import { ProfileFormSkeleton } from '@/app/(main)/dashboard/settings/components/profile-form';
 import { useUpdateUserDataMutation } from '@/app/(main)/dashboard/settings/components/profile-form/mutations';
+import UserAvatar from '@/components/user-avatar';
 
 export function ProfileForm() {
   const { session, updateSession } = useAuth();
@@ -62,6 +62,7 @@ export function ProfileForm() {
   // render form values
   useEffect(() => {
     const { user } = session;
+    console.log(user);
     if (!user) return;
     form.setValue('phone', user.phone);
     form.setValue('firstName', user.firstName);
@@ -95,10 +96,11 @@ export function ProfileForm() {
             <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
               {/* User avatar */}
               <div className='flex items-center space-x-4'>
-                <Avatar className='h-20 w-20'>
-                  <AvatarImage src={session.user.avatar || '/placeholder.png'} />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  className='h-20 w-20'
+                  avatarUrl={session.user.avatar}
+                  fallbackName={`${session.user.firstName} ${session.user.lastName}`}
+                />
                 <div className='space-y-2'>
                   <Button
                     onClick={() => setUpdateAvatarOpen(true)}

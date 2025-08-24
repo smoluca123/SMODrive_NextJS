@@ -1,7 +1,7 @@
 'use client';
 
 import { SidebarUserProfileSkeleton } from '@/components/responsive-sidebar/components/sidebar-user-profile/sidebar-user-profile-skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import UserAvatar from '@/components/user-avatar';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
@@ -22,10 +22,11 @@ export function SidebarUserProfile({ collapsed, isMobile = false }: SidebarUserP
       {(session.isLoading || !session.user) && <SidebarUserProfileSkeleton collapsed={collapsed} />}
       {!session.isLoading && session.user && (
         <div className='flex items-center space-x-3'>
-          <Avatar className='h-10 w-10 flex-shrink-0'>
-            <AvatarImage src='/placeholder.svg' alt='User' />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            className='size-10'
+            avatarUrl={session.user.avatar}
+            fallbackName={session.user.lastName}
+          />
           {(!collapsed || isMobile) && (
             <div className='flex-1 min-w-0'>
               <p className='text-sm font-medium truncate'>

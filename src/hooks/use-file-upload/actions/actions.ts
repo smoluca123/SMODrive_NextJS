@@ -4,7 +4,7 @@ import {
   getMultipartSignedUrlAPI,
   initiateMultipartUploadAPI,
   uploadFileAPI,
-} from '@/lib/apis/storage-apis';
+} from '@/lib/apis/client/storage-apis';
 import { CHUNK_SIZE } from '@/lib/constant/contants';
 import { splitFile } from '@/lib/utils';
 import ky from 'ky';

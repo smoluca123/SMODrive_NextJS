@@ -1,5 +1,5 @@
 import { getFoldersQueryKey } from '@/hooks/use-file-system/querys';
-import { deleteFolderAPI } from '@/lib/apis/storage-apis';
+import { deleteFolderAPI } from '@/lib/apis/client/storage-apis';
 import { IFolderWithOwnerDataType } from '@/lib/types/interfaces/folder.interfaces';
 import { QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
 

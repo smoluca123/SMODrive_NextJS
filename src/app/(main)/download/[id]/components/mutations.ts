@@ -2,7 +2,7 @@ import {
   completeDownloadSession,
   updateDownloadSession,
 } from '@/app/(main)/download/[id]/components/actions/actions';
-import { deleteCookieApi, getCookieApi } from '@/lib/apis/next-apis';
+import { deleteCookieApi, getCookieApi } from '@/lib/apis/server/next-apis';
 import { UpdateDownloadSessionSchema } from '@/lib/zod-schemas/storage-api.schemas';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

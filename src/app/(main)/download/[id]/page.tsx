@@ -1,5 +1,5 @@
 import { DownloadClientShell } from './components/download-client-shell';
-import { getDownloadSessionAPI, getFileDetailAPI } from '@/lib/apis/storage-apis';
+import { getDownloadSessionAPI, getFileDetailAPI } from '@/lib/apis/server/storage-apis';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
