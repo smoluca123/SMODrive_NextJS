@@ -1,62 +1,22 @@
 import { ReferralStatsGrid } from './components/referral-stats-grid';
 import { EarningsBreakdown } from './components/earnings-breakdown';
-import { HowItWorks } from './components/how-it-works';
 import { RecentReferralsList } from './components/recent-referrals-list';
-import { ReferralLinkBox } from './components/referral-link-box';
 import { ShareLinkButton } from './components/share-link-button';
-
-import { Users, DollarSign, TrendingUp } from 'lucide-react';
+import { ReferralLink } from '@/app/(main)/dashboard/referrals/components/referral-link';
 
 export default function ReferralsPage() {
-  const referralStats = [
+  const topReferrals = [
     {
-      title: 'Total Referrals',
-      value: '24',
-      change: '+3 this month',
-      icon: Users,
+      name: 'Nguyen Van B',
+      earnings: '22%',
     },
     {
-      title: 'Total Earned',
-      value: '$486.50',
-      change: '+$45.20 this month',
-      icon: DollarSign,
+      name: 'Nguyen Van B',
+      earnings: '22%',
     },
     {
-      title: 'Conversion Rate',
-      value: '12.5%',
-      change: '+2.1% improvement',
-      icon: TrendingUp,
-    },
-  ];
-
-  const recentReferrals = [
-    {
-      name: 'Alice Johnson',
-      email: 'alice@example.com',
-      joinDate: '2024-01-20',
-      earnings: '$24.50',
-      status: 'active',
-    },
-    {
-      name: 'Bob Smith',
-      email: 'bob@example.com',
-      joinDate: '2024-01-18',
-      earnings: '$18.75',
-      status: 'active',
-    },
-    {
-      name: 'Carol Davis',
-      email: 'carol@example.com',
-      joinDate: '2024-01-15',
-      earnings: '$31.20',
-      status: 'active',
-    },
-    {
-      name: 'David Wilson',
-      email: 'david@example.com',
-      joinDate: '2024-01-12',
-      earnings: '$12.30',
-      status: 'pending',
+      name: 'Nguyen Van B',
+      earnings: '22%',
     },
   ];
 
@@ -74,33 +34,17 @@ export default function ReferralsPage() {
       </div>
 
       {/* Stats Overview */}
-      <ReferralStatsGrid stats={referralStats} />
+      <ReferralStatsGrid />
 
       <div className='grid lg:grid-cols-2 gap-8'>
         {/* Referral Link */}
-        <div>
-          <div className='bg-card rounded-xl shadow p-6 space-y-4'>
-            <h2 className='font-semibold text-lg mb-2'>Your Referral Link</h2>
-            <ReferralLinkBox />
-            <div className='grid grid-cols-2 gap-4 pt-4'>
-              <div className='text-center p-4 bg-muted/50 rounded-lg'>
-                <p className='text-2xl font-bold'>192</p>
-                <p className='text-sm text-muted-foreground'>Link Clicks</p>
-              </div>
-              <div className='text-center p-4 bg-muted/50 rounded-lg'>
-                <p className='text-2xl font-bold'>24</p>
-                <p className='text-sm text-muted-foreground'>Conversions</p>
-              </div>
-            </div>
-            <HowItWorks />
-          </div>
-        </div>
+        <ReferralLink />
         {/* Earnings Breakdown */}
-        <EarningsBreakdown topReferrals={recentReferrals.slice(0, 3)} />
+        <EarningsBreakdown topReferrals={topReferrals} />
       </div>
 
       {/* Recent Referrals */}
-      <RecentReferralsList referrals={recentReferrals} />
+      <RecentReferralsList />
     </div>
   );
 }

@@ -4,9 +4,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 export function RecentReferralsListSkeleton({ length = 4 }: { length?: number }) {
   return (
     <Card>
-      <CardHeader>
-        <Skeleton className='h-4 w-40' />
-        <Skeleton className='h-4 w-64' />
+      <CardHeader className='flex justify-between'>
+        <div className='space-y-2'>
+          <Skeleton className='h-4 w-40' />
+          <Skeleton className='h-4 w-64' />
+        </div>
+        <Skeleton className='h-9 w-20' />
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>

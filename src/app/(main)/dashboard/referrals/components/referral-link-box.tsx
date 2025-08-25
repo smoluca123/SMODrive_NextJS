@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 
-export function ReferralLinkBox() {
-  const referralLink = 'https://shareearn.com/ref/johndoe';
+export function ReferralLinkBox({ referralCode }: { referralCode: string }) {
+  const referralLink = 'https://shareearn.com/ref/' + referralCode.toLowerCase();
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink);
     toast.success('Link copied!', {

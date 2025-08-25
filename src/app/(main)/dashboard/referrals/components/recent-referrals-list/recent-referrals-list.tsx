@@ -1,56 +1,48 @@
+'use client';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useGetReferralUsersQuery } from '@/app/(main)/dashboard/referrals/components/recent-referrals-list/querys';
+import { RecentReferralsListSkeleton } from '@/app/(main)/dashboard/referrals/components/recent-referrals-list/recent-referrals-list-skeleton';
+import { Button } from '@/components/ui/button';
+import RecentReferralsListDialog from '@/app/(main)/dashboard/referrals/components/recent-referrals-list/recent-referrals-list-dialog';
+import { useState } from 'react';
+import { ReferralItem } from '@/app/(main)/dashboard/referrals/components/recent-referrals-list/referral-item';
 
-interface Referral {
-  name: string;
-  email: string;
-  joinDate: string;
-  earnings: string;
-  status: string;
-}
+export function RecentReferralsList() {
+  const { data, isFetching } = useGetReferralUsersQuery({});
+  const [recentReferralsListDialogOpen, setRecentReferralsListDialogOpen] = useState(false);
 
-export function RecentReferralsList({ referrals }: { referrals: Referral[] }) {
+  if (isFetching) return <RecentReferralsListSkeleton />;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Referrals</CardTitle>
-        <CardDescription>Users who joined through your referral link</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className='space-y-4'>
-          {referrals.map((referral, index) => (
-            <div key={index} className='flex items-center justify-between p-4 border rounded-lg'>
-              <div className='flex items-center space-x-4'>
-                <Avatar>
-                  <AvatarImage src='/placeholder.png' />
-                  <AvatarFallback>
-                    {referral.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className='font-medium'>{referral.name}</p>
-                  <p className='text-sm text-muted-foreground'>{referral.email}</p>
-                </div>
-              </div>
-              <div className='flex items-center space-x-4'>
-                <div className='text-right'>
-                  <p className='font-medium'>{referral.earnings}</p>
-                  <p className='text-xs text-muted-foreground'>
-                    Joined {new Date(referral.joinDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <Badge variant={referral.status === 'active' ? 'default' : 'secondary'}>
-                  {referral.status}
-                </Badge>
-              </div>
+    <>
+      <Card>
+        <CardHeader className='flex justify-between'>
+          <div className='space-y-2'>
+            <CardTitle>Recent Referrals</CardTitle>
+            <CardDescription>Users who joined through your referral link</CardDescription>
+          </div>
+          <Button onClick={() => setRecentReferralsListDialogOpen(true)} variant='outline'>
+            See more
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {data && data.pages[0].data.items.length > 0 ? (
+            <div className='space-y-4'>
+              {data.pages[0].data.items.slice(0, 4).map((referral) => (
+                <ReferralItem key={referral.id} userData={referral.user} />
+              ))}
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          ) : (
+            <h1 className='text-center text-muted-foreground'>
+              You don&#39;t have any referral to show
+            </h1>
+          )}
+        </CardContent>
+      </Card>
+      <RecentReferralsListDialog
+        onClose={() => setRecentReferralsListDialogOpen(false)}
+        open={recentReferralsListDialogOpen}
+      />
+    </>
   );
 }
